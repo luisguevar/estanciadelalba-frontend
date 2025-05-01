@@ -1,0 +1,272 @@
+<div class="modal  d-block" tabindex="-1" role="dialog">
+    <div class="modal-dialog modal-dialog-centered modal-xl" role="document">
+        <div class="modal-content">
+            <div class="modal-header d-flex">
+                <h5 class="modal-title">Buscar Estancia<span class="spinner-border spinner-border-sm align-middle ms-2"
+                        *ngIf="isLoading$ | async"></span>
+                </h5>
+
+
+            </div>
+            <div class="modal-body" *ngIf="!(isLoading$ | async)">
+
+
+                <div class="row">
+
+                    <div class="col-12 mb-5">
+
+                        <div class="row">
+                            <div class="col-4">
+                                <div class="form-group">
+                                    <!-- <label>Buscar Por Nombre: </label> -->
+                                    <input type="text" class="form-control" placeholder="Buscar por titular"
+                                        [(ngModel)]="filterNombres" />
+
+                                </div>
+                            </div>
+                            <div class="col-2">
+                                <div class="form-group">
+                                    <!-- <label>Buscar Por Nombre: </label> -->
+                                    <input type="text" class="form-control" placeholder="Buscar por  N° habitación"
+                                        [(ngModel)]="filterNroHabitacion" />
+
+                                </div>
+                            </div>
+
+                            <div class="col-2">
+                                <div class="form-group row">
+                                    <div class="col-12">
+                                        <input class="form-control" type="date" [(ngModel)]="filterCheckIn"
+                                            placeholder="Check-in" />
+                                    </div>
+                                    <label class="label-datepicket col-12 col-form-label">Buscar por fecha de
+                                        check-in</label>
+                                </div>
+                            </div>
+
+                            <div class="col-2">
+                                <div class="form-group row">
+                                    <div class="col-12">
+                                        <input class="form-control" type="date" [(ngModel)]="filterCheckOut"
+                                            placeholder="Check-out" />
+                                    </div>
+                                    <label class="label-datepicket col-12 col-form-label">Buscar por fecha de
+                                        check-out</label>
+                                </div>
+                            </div>
+
+                            <div class="col-2 mt-1">
+                                <button mat-raised-button color="primary" class="mr-2 me-2"
+                                    (click)="BotonListarHuespedes()">
+                                    <mat-icon>search</mat-icon> Listar</button>
+                            </div>
+                        </div>
+
+                    </div>
+                    <br>
+                    <div class="col-12 mt-2">
+                        <div id="kt_customers_table_wrapper" class="dt-container dt-bootstrap5 dt-empty-footer">
+                            <div class="table-responsive table-container">
+
+                                <table class="table align-middle table-row-dashed fs-6 gy-5 w-100"
+                                    id="kt_customers_table">
+                                    <colgroup>
+                                        <col data-dt-column="0">
+                                        <col data-dt-column="1">
+                                        <col data-dt-column="2">
+                                        <col data-dt-column="3">
+                                        <col data-dt-column="4">
+                                        <col data-dt-column="5">
+                                        <col data-dt-column="6">
+                                        <col data-dt-column="7">
+                                    </colgroup>
+                                    <thead>
+
+
+
+
+                                        <tr class="text-start text-gray-500 fw-bold fs-7 text-uppercase gs-0">
+
+                                            <th class="dt-orderable-asc dt-orderable-desc fixed-column"
+                                                data-dt-column="0" tabindex="0">
+                                                <span class="dt-column-title">N°</span>
+                                                <span class="dt-column-order"></span>
+                                            </th>
+
+
+                                            <th class="dt-orderable-asc dt-orderable-desc fixed-column"
+                                                data-dt-column="0" tabindex="0">
+                                                <span class="dt-column-title">TITULAR</span>
+                                                <span class="dt-column-order"></span>
+                                            </th>
+
+                                            <th class="dt-orderable-asc dt-orderable-desc fixed-column"
+                                                data-dt-column="1" tabindex="0">
+                                                <span class="dt-column-title">CORREO CONTACTO</span>
+                                                <span class="dt-column-order"></span>
+                                            </th>
+
+                                            <th class="dt-orderable-asc dt-orderable-desc fixed-column"
+                                                data-dt-column="2" tabindex="0">
+                                                <span class="dt-column-title">NRO DOCUMENTO</span>
+                                                <span class="dt-column-order"></span>
+                                            </th>
+                                            <th class="dt-orderable-asc dt-orderable-desc fixed-column"
+                                                data-dt-column="3" tabindex="0">
+                                                <span class="dt-column-title">CHECK IN</span>
+                                                <span class="dt-column-order"></span>
+                                            </th>
+                                            <th class="dt-orderable-asc dt-orderable-desc fixed-column"
+                                                data-dt-column="4" tabindex="0">
+                                                <span class="dt-column-title">CHECK OUT</span>
+                                                <span class="dt-column-order"></span>
+                                            </th>
+
+
+                                            <th class="dt-orderable-asc dt-orderable-desc fixed-column"
+                                                data-dt-column="6" tabindex="0">
+                                                <span class="dt-column-title">HABITACIÓN(ES)</span>
+                                                <span class="dt-column-order"></span>
+                                            </th>
+                                            <th class="dt-orderable-asc dt-orderable-desc fixed-column"
+                                                data-dt-column="6" tabindex="0">
+                                                <span class="dt-column-title">TOTAL A PAGAR</span>
+                                                <span class="dt-column-order"></span>
+                                            </th>
+                                            <th class="dt-orderable-asc dt-orderable-desc fixed-column"
+                                                data-dt-column="6" tabindex="0">
+                                                <span class="dt-column-title">TOTAL PAGADO</span>
+                                                <span class="dt-column-order"></span>
+                                            </th>
+
+                                            <th class="dt-orderable-asc dt-orderable-desc fixed-column"
+                                                data-dt-column="5" tabindex="0">
+                                                <span class="dt-column-title">ESTADO</span>
+                                                <span class="dt-column-order"></span>
+                                            </th>
+
+                                            <th class="dt-orderable-asc dt-orderable-desc fixed-column"
+                                                data-dt-column="5" tabindex="0">
+                                                <span class="dt-column-title">SELECCIONAR</span>
+                                                <span class="dt-column-order"></span>
+                                            </th>
+
+
+                                        </tr>
+                                    </thead>
+
+
+                                    <tbody class="fw-semibold text-gray-600">
+                                        <tr *ngFor="let estancia of lstEstancias  | slice:desde:hasta; let i = index">
+
+                                            <td class="fixed-column">
+                                                <span class="text-gray-600  mb-1">{{i + 1 + desde }}</span>
+
+                                            </td>
+
+
+                                            <td class="fixed-column">
+                                                <span class="text-gray-600  mb-1">{{ estancia.cNombreTitularCompleto }}
+                                                </span>
+
+                                            </td>
+
+                                            <td class="fixed-column">
+                                                <span class="text-gray-600  mb-1"> {{ estancia.cCorreo}}</span>
+
+                                            </td>
+                                            <td class="fixed-column">
+                                                <span class="text-gray-600  mb-1">{{ estancia.cNroDocumento }}</span>
+
+                                            </td>
+                                            <td class="fixed-column">
+                                                <span class="text-gray-600  mb-1">{{ estancia.cFechaEntrada }}</span>
+
+                                            </td>
+                                            <td class="fixed-column">
+                                                <span class="text-gray-600  mb-1">{{ estancia.cFechaSalida }}</span>
+
+                                            </td>
+                                            <td class="fixed-column">
+                                                <span class="text-gray-600  mb-1">{{ estancia.cHabitaciones }}</span>
+
+                                            </td>
+                                            <td class="fixed-column">
+                                                <span class="text-gray-600  mb-1">S/ {{ estancia.
+                                                    nTotalAPagar
+                                                    }}</span>
+
+                                            </td>
+                                            <td class="fixed-column">
+                                                <span class="text-gray-600  mb-1">S/ {{ estancia.
+
+                                                    nTotalPagado
+
+                                                    }}</span>
+
+                                            </td>
+
+                                            <td class="fixed-column">
+
+                                                <span *ngIf=" estancia.nEstado == 1"
+                                                    class="badge badge-light-success fs-8 fw-bolder">
+                                                    Reservado
+                                                </span>
+
+                                                <span *ngIf=" estancia.nEstado == 2"
+                                                    class="badge badge-light-success fs-8 fw-bolder">
+                                                    En Estancia
+                                                </span>
+
+
+                                                <span *ngIf=" estancia.nEstado == 3"
+                                                    class="badge badge-light-primary  fs-8 fw-bolder">
+                                                    Culminada
+                                                </span>
+
+
+                                                <span *ngIf=" estancia.nEstado == 4"
+                                                    class="badge badge-light-warning  fs-8 fw-bolder">
+                                                    Interrumpida
+                                                </span>
+
+
+                                                <span *ngIf=" estancia.nEstado == 5"
+                                                    class="badge badge-light-danger fs-8 fw-bolder">
+                                                    Cancelada
+                                                </span>
+
+
+                                            </td>
+                                            <td class="fixed-column">
+                                                <a href="#" onclick="return false"
+                                                    (click)="BotonSeleccionarEstancia(estancia)"><mat-icon>add_circle</mat-icon></a>
+                                            </td>
+
+
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+
+
+                                <mat-paginator [length]="lstEstancias.length" [pageSize]="pageSize"
+                                    (page)="cambiarPagina($event)">
+                                </mat-paginator>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal"
+                    (click)="dialogRef.close(false)">Cerrar</button>
+
+            </div>
+        </div>
+    </div>
+</div>

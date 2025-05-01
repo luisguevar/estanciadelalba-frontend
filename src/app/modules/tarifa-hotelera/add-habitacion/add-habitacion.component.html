@@ -1,0 +1,60 @@
+<div class="modal  d-block" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Agregar Habitación</h5>
+                <!-- <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <i aria-hidden="true" class="ki ki-close"></i>
+                </button> -->
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-4">
+                        <div class="form-group">
+                            <label>Nro Habitación<span class="text-danger">*</span></label>
+                            <input type="number" class="form-control" placeholder="Nro Habitación"
+                                [(ngModel)]="nNroHabitacion" />
+
+                        </div>
+                    </div>
+                    <div class="col-8">
+                        <div class="form-group">
+                            <label for="tipoHabitacionSelect">Tipo Habitación <span class="text-danger">*</span></label>
+                            <select class="form-control" id="tipoHabitacionSelect" [(ngModel)]="tipoHabitacion_id">
+                                <option disabled [value]="0">Seleccione una opción</option>
+                                <option *ngFor="let tipo of lstTiposHabitaciones" [value]="tipo.id">{{ tipo.cNombreTipo
+                                    }}</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="col-8 mt-1">
+                        <div class="form-group">
+                            <label for="tipoHabitacionSelect">Nivel <span class="text-danger">*</span></label>
+                            <select class="form-control" id="nivel_id" [(ngModel)]="nivel_id">
+                                <option disabled [value]="0">Seleccione una opción</option>
+                                <option *ngFor="let tipo of lstNiveles" [value]="tipo.id">{{ tipo.cNombreNivel
+                                    }}</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="col-4 mt-1">
+                        <div class="form-group">
+                            <label for="tipoHabitacionSelect">Estado <span class="text-danger">*</span></label>
+                            <select class="form-control" id="estado_id" [(ngModel)]="estado_id">
+                                <option disabled [value]="0">Bloqueado</option>
+                              
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal"
+                    (click)="dialogRef.close(false)">Cerrar</button>
+                <button type="button" class="btn btn-primary" (click)="BotonGuardar()">Guardar</button>
+            </div>
+        </div>
+    </div>
+</div>

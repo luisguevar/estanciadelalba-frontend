@@ -1,0 +1,62 @@
+<div class="modal  d-block" tabindex="-1" role="dialog">
+    <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Habitación</h5>
+
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-4">
+                        <div class="form-group">
+                            <label>Nro Habitación <span class="text-danger">*</span></label>
+                            <input type="text" class="form-control" placeholder="Nro Habitación" disabled
+                                [(ngModel)]="nNroHabitacion" />
+
+                        </div>
+                    </div>
+
+
+                    <div class="col-8">
+                        <div class="form-group">
+                            <label for="tipoHabitacionSelect">Estado <span class="text-danger">*</span></label>
+                            <select class="form-control" id="nEstado" [(ngModel)]="nEstado">
+
+                                <option *ngFor="let tipo of lstEstados" [value]="tipo.id">{{ tipo.descripcion
+                                    }}</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <br>
+                <div class="row">
+
+                    <div class="col-6">
+                        <div class="col-12 py-2">
+                            <label class="form-label">Sube tu imagen: <span class="text-danger">*</span></label>
+                            <div class="custom-file">
+                                <input type="file" class="custom-file-input" id="customFile"
+                                    accept=".jpeg, .bmp, .jpg, .png, .gif, .webp" (change)="processFile($event)">
+                            </div>
+                        </div>
+
+                        <!-- Contenedor de la imagen con tamaño fijo -->
+                        <div class="col-12 py-2" *ngIf="imagen_previzualiza">
+                            <div class="image-container">
+                                <img [src]="imagen_previzualiza" class="preview-image" alt="Imagen previa">
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal"
+                    (click)="dialogRef.close(false)">Cerrar</button>
+                <button type="button" class="btn btn-primary" (click)="BotonGuardar()">Guardar</button>
+            </div>
+        </div>
+    </div>
+</div>

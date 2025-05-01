@@ -1,0 +1,456 @@
+<div class="modal  d-block" tabindex="-1" role="dialog">
+    <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Editar Habitación</h5>
+                <!-- <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <i aria-hidden="true" class="ki ki-close"></i>
+                </button> -->
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-4">
+                        <div class="form-group">
+                            <label>Nro Habitación <span class="text-danger">*</span></label>
+                            <input type="text" class="form-control" placeholder="Nro Habitación"
+                                [(ngModel)]="nNroHabitacion" [disabled]="bReadOnly" />
+
+                        </div>
+                    </div>
+                    <div class="col-8">
+                        <div class="form-group">
+                            <label for="tipoHabitacionSelect">Tipo Habitación <span class="text-danger">*</span></label>
+                            <select class="form-control" id="tipoHabitacionSelect" [(ngModel)]="tipoHabitacion_id">
+                                <option disabled [value]="0">Seleccione una opción</option>
+                                <option [disabled]="bReadOnly" *ngFor="let tipo of lstTiposHabitaciones"
+                                    [value]="tipo.id">{{ tipo.cNombreTipo
+                                    }}</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="col-8 mt-2">
+                        <div class="form-group">
+                            <label for="tipoHabitacionSelect">Nivel <span class="text-danger">*</span></label>
+                            <select class="form-control" id="nivel_id" [(ngModel)]="nivel_id">
+                                <option disabled [value]="0">Seleccione una opción</option>
+                                <option [disabled]="bReadOnly" *ngFor="let tipo of lstNiveles" [value]="tipo.id">{{
+                                    tipo.cNombreNivel
+                                    }}</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="col-4 mt-2">
+                        <div class="form-group">
+                            <label for="tipoHabitacionSelect">Estado <span class="text-danger">*</span></label>
+                            <select class="form-control" id="estado_id" [formControl]="cboEstado">
+                                <option *ngFor="let tipo of lstEstado" [value]="tipo.id">
+                                    {{ tipo.cNombreEstado }}
+                                </option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <!-- Motivo Bloqueo solo si el estado es '0' -->
+                    <div class="col-12 mt-2"
+                        *ngIf="cboEstado.value !== '1' && cboEstado.value !== '2'  && cboEstado.value !== 1 && cboEstado.value !== 2">
+                        <div class="form-group">
+                            <label>Motivo Bloqueo <span class="text-danger">*</span></label>
+                            <input type="text" class="form-control" placeholder="Motivo Bloqueo"
+                                [(ngModel)]="cMotivoBloqueo" [disabled]="bReadOnly" />
+                        </div>
+                    </div>
+
+
+                </div>
+                <br>
+                <div class="row p-2">
+                    <mat-card>
+                        <div>
+                            <mat-tab-group>
+                                <mat-tab label="Precios por Defecto">
+
+                                    <div class="row w-100">
+                                        <div class="col-6">
+                                            <div id="kt_customers_table_wrapper"
+                                                class="dt-container dt-bootstrap5 dt-empty-footer">
+                                                <div class="table-responsive table-container mx-10">
+
+                                                    <table class="table align-middle table-row-dashed fs-6 gy-5 w-100"
+                                                        id="kt_customers_table">
+                                                        <colgroup>
+                                                            <col data-dt-column="0">
+                                                            <col data-dt-column="1">
+                                                            <col data-dt-column="2">
+                                                        </colgroup>
+                                                        <thead>
+                                                            <tr
+                                                                class="text-start text-gray-500 fw-bold fs-7 text-uppercase gs-0">
+
+                                                                <th class="dt-orderable-asc dt-orderable-desc fixed-column"
+                                                                    data-dt-column="0">
+                                                                    <span class="dt-column-title">NRO</span>
+                                                                    <span class="dt-column-order"></span>
+                                                                </th>
+
+                                                                <th class="dt-orderable-asc dt-orderable-desc fixed-column"
+                                                                    data-dt-column="0">
+                                                                    <span class="dt-column-title">DÍA</span>
+                                                                    <span class="dt-column-order"></span>
+                                                                </th>
+                                                                <th class="dt-orderable-asc dt-orderable-desc fixed-column"
+                                                                    data-dt-column="1">
+                                                                    <span class="dt-column-title">PRECIO</span>
+                                                                    <span class="dt-column-order"></span>
+                                                                </th>
+
+
+
+
+
+                                                            </tr>
+                                                        </thead>
+
+
+                                                        <tbody class="fw-semibold text-gray-600">
+                                                            <tr *ngFor="let tipo of lstPrecioLJ; let i = index">
+
+                                                                <td class="fixed-column">
+                                                                    <span class="text-gray-600 mb-1">{{ i + 1 }}</span>
+                                                                </td>
+
+
+                                                                <td class="fixed-column">
+                                                                    <span class="text-gray-600  mb-1">{{
+                                                                        tipo.cNombreDia
+                                                                        }}</span>
+
+                                                                </td>
+
+                                                                <td class="fixed-column w-xxl-175px">
+                                                                    <!--     <span class="text-gray-600  mb-1">{{
+                                                                    tipo.nPrecio
+                                                                    }}</span> -->
+                                                                    <input type="number"
+                                                                        class="form-control font-monospace"
+                                                                        [value]="tipo.nPrecio"
+                                                                        [(ngModel)]="tipo.nPrecio"
+                                                                        [disabled]="bReadOnly" />
+
+                                                                </td>
+
+
+
+                                                            </tr>
+                                                        </tbody>
+                                                    </table>
+
+
+
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-6">
+                                            <div id="kt_customers_table_wrapper"
+                                                class="dt-container dt-bootstrap5 dt-empty-footer">
+                                                <div class="table-responsive table-container mx-10">
+
+                                                    <table class="table align-middle table-row-dashed fs-6 gy-5 w-100"
+                                                        id="kt_customers_table">
+                                                        <colgroup>
+                                                            <col data-dt-column="0">
+                                                            <col data-dt-column="1">
+                                                            <col data-dt-column="2">
+                                                        </colgroup>
+                                                        <thead>
+                                                            <tr
+                                                                class="text-start text-gray-500 fw-bold fs-7 text-uppercase gs-0">
+
+                                                                <th class="dt-orderable-asc dt-orderable-desc fixed-column"
+                                                                    data-dt-column="0">
+                                                                    <span class="dt-column-title">NRO</span>
+                                                                    <span class="dt-column-order"></span>
+                                                                </th>
+
+                                                                <th class="dt-orderable-asc dt-orderable-desc fixed-column"
+                                                                    data-dt-column="0">
+                                                                    <span class="dt-column-title">DÍA</span>
+                                                                    <span class="dt-column-order"></span>
+                                                                </th>
+                                                                <th class="dt-orderable-asc dt-orderable-desc fixed-column"
+                                                                    data-dt-column="1">
+                                                                    <span class="dt-column-title">PRECIO</span>
+                                                                    <span class="dt-column-order"></span>
+                                                                </th>
+
+
+
+
+
+                                                            </tr>
+                                                        </thead>
+
+
+                                                        <tbody class="fw-semibold text-gray-600">
+                                                            <tr *ngFor="let tipo of lstPrecioVD; let i = index">
+
+                                                                <td class="fixed-column">
+                                                                    <span class="text-gray-600 mb-1">{{ i + 5 }}</span>
+                                                                </td>
+
+
+                                                                <td class="fixed-column">
+                                                                    <span class="text-gray-600  mb-1">{{
+                                                                        tipo.cNombreDia
+                                                                        }}</span>
+
+                                                                </td>
+
+                                                                <td class="fixed-column w-xxl-175px">
+                                                                    <!--     <span class="text-gray-600  mb-1">{{
+                                                                    tipo.nPrecio
+                                                                    }}</span> -->
+                                                                    <input type="number"
+                                                                        class="form-control font-monospace"
+                                                                        [value]="tipo.nPrecio"
+                                                                        [(ngModel)]="tipo.nPrecio"
+                                                                        [disabled]="bReadOnly" />
+
+                                                                </td>
+
+
+
+                                                            </tr>
+                                                        </tbody>
+                                                    </table>
+
+
+
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </mat-tab>
+                                <mat-tab label="Precios por Temporada">
+                                    <br>
+
+                                    <ng-container *ngIf="!bReadOnly">
+                                        <mat-accordion>
+                                            <mat-expansion-panel>
+                                                <mat-expansion-panel-header>
+                                                    <mat-panel-title> Agregar Precio Por Temporada </mat-panel-title>
+
+                                                </mat-expansion-panel-header>
+                                                <div class="row w-100">
+                                                    <div class="col-6">
+                                                        <div>
+                                                            <div class="form-group row">
+                                                                <div class="col-12">
+                                                                    <input class="form-control" type="date"
+                                                                        [(ngModel)]="cFechaInicio"
+                                                                        placeholder="Check-in" />
+                                                                </div>
+                                                                <label
+                                                                    class="label-datepicket col-12 col-form-label">Inicio
+                                                                    de
+                                                                    Temporada</label>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="col-6">
+                                                        <div>
+                                                            <div class="form-group row">
+                                                                <div class="col-12">
+                                                                    <input class="form-control" type="date"
+                                                                        [(ngModel)]="cFechaFin"
+                                                                        placeholder="Check-in" />
+                                                                </div>
+                                                                <label
+                                                                    class="label-datepicket col-12 col-form-label">Fin
+                                                                    de
+                                                                    Temporada</label>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="col-7">
+                                                        <div>
+                                                            <div class="form-group row">
+                                                                <div class="col-12">
+                                                                    <input class="form-control" type="text"
+                                                                        [(ngModel)]="cNombreTemporada"
+                                                                        placeholder="Nombre" />
+                                                                </div>
+                                                                <label
+                                                                    class="label-datepicket col-12 col-form-label">Nombre</label>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="col-2">
+                                                        <div>
+                                                            <div class="form-group row">
+                                                                <div class="col-12">
+                                                                    <input class="form-control" type="number" min="0"
+                                                                        [(ngModel)]="nPrecio" max="1000"
+                                                                        placeholder="100" />
+                                                                </div>
+                                                                <label
+                                                                    class="label-datepicket col-12 col-form-label">Precio</label>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="col-3">
+                                                        <button mat-raised-button color="primary"
+                                                            (click)="BotonAgregarTemporada()" class="mr-2 me-1 mt-1">
+                                                            <mat-icon>add_circle_outline</mat-icon> Agregar</button>
+                                                    </div>
+
+                                                </div>
+                                            </mat-expansion-panel>
+
+                                        </mat-accordion>
+                                    </ng-container>
+
+
+                                    <br>
+                                    <div id="kt_customers_table_wrapper mt-2"
+                                        class="dt-container dt-bootstrap5 dt-empty-footer">
+                                        <div class="table-responsive table-container mx-10">
+
+                                            <table class="table align-middle table-row-dashed fs-6 gy-5 w-100"
+                                                id="kt_customers_table">
+                                                <colgroup>
+                                                    <col data-dt-column="0">
+                                                    <col data-dt-column="1">
+                                                    <col data-dt-column="2">
+                                                </colgroup>
+                                                <thead>
+                                                    <tr
+                                                        class="text-start text-gray-500 fw-bold fs-7 text-uppercase gs-0">
+
+                                                        <th class="dt-orderable-asc dt-orderable-desc fixed-column"
+                                                            data-dt-column="0">
+                                                            <span class="dt-column-title">NRO</span>
+                                                            <span class="dt-column-order"></span>
+                                                        </th>
+
+                                                        <th class="dt-orderable-asc dt-orderable-desc fixed-column"
+                                                            data-dt-column="0">
+                                                            <span class="dt-column-title">INICIO</span>
+                                                            <span class="dt-column-order"></span>
+                                                        </th>
+                                                        <th class="dt-orderable-asc dt-orderable-desc fixed-column"
+                                                            data-dt-column="1">
+                                                            <span class="dt-column-title">FIN</span>
+                                                            <span class="dt-column-order"></span>
+                                                        </th>
+
+                                                        <th class="dt-orderable-asc dt-orderable-desc fixed-column"
+                                                            data-dt-column="1">
+                                                            <span class="dt-column-title">TEMPORADA</span>
+                                                            <span class="dt-column-order"></span>
+                                                        </th>
+
+                                                        <th class="dt-orderable-asc dt-orderable-desc fixed-column"
+                                                            data-dt-column="1">
+                                                            <span class="dt-column-title">PRECIO</span>
+                                                            <span class="dt-column-order"></span>
+                                                        </th>
+
+                                                        <th></th>
+
+
+
+                                                    </tr>
+                                                </thead>
+
+
+                                                <tbody class="fw-semibold text-gray-600">
+                                                    <tr
+                                                        *ngFor="let tipo of lstPreciosPorTemporada | slice:desde:hasta; let i = index">
+
+                                                        <td class="fixed-column">
+                                                            <span class="text-gray-600 mb-1"
+                                                                *ngIf="tipo.nEstado == 1">{{ i + 1 }}
+
+
+
+                                                            </span>
+
+                                                            <span class="text-gray-600 mb-1" *ngIf="tipo.nEstado == 0">
+                                                                ...
+
+
+
+                                                            </span>
+                                                        </td>
+
+
+                                                        <td class="fixed-column">
+                                                            <span class="text-gray-600  mb-1">{{
+                                                                tipo.cFechaInicio
+                                                                }}</span>
+
+                                                        </td>
+
+                                                        <td class="fixed-column">
+                                                            <span class="text-gray-600  mb-1">{{
+                                                                tipo.cFechaFin
+                                                                }}</span>
+
+                                                        </td>
+
+                                                        <td class="fixed-column">
+                                                            <span class="text-gray-600  mb-1">{{
+                                                                tipo.cNombreTemporada
+                                                                }}</span>
+
+                                                        </td>
+                                                        <td class="fixed-column w-125px">
+                                                            <!--  <span class="text-gray-600  mb-1"> S/ {{
+                                                                tipo.nPrecio
+                                                                }}</span> -->
+
+                                                            <input type="number" class="form-control font-monospace"
+                                                                [value]="tipo.nPrecio" [(ngModel)]="tipo.nPrecio" />
+                                                        </td>
+
+                                                        <td class="fixed-column">
+                                                            <a href="#" onclick="return false" style="color: red;"
+                                                                (click)="BotonEliminarTemporada(tipo)"><mat-icon>delete</mat-icon></a>
+                                                        </td>
+
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+
+                                            <mat-paginator [length]="lstPreciosPorTemporada.length"
+                                                [pageSize]="pageSize" (page)="cambiarPagina($event)">
+                                            </mat-paginator>
+
+                                        </div>
+                                    </div>
+
+
+
+                                </mat-tab>
+
+                            </mat-tab-group>
+                        </div>
+                    </mat-card>
+                </div>
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal"
+                    (click)="dialogRef.close(false)">Cerrar</button>
+                <button type="button" class="btn btn-primary" (click)="BotonGuardar()">Guardar</button>
+            </div>
+        </div>
+    </div>
+</div>

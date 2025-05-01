@@ -1,0 +1,262 @@
+<div class="card p-4">
+    <!--begin::Card header-->
+    <div class="card-header border-0 pt-6 p-4">
+        <!--begin::Card title-->
+        <div class="card-title">
+            <!--begin::Search-->
+            <div class="d-flex align-items-center position-relative my-1">
+                <b>MÓDULO DE RECEPCIÓN </b>
+
+                <span class="spinner-border spinner-border-sm align-middle ms-2" *ngIf="isLoading$ | async"></span>
+                <!--  <div class="d-flex align-items-center position-relative my-1">
+                    <i class="ki-duotone ki-magnifier fs-3 position-absolute ms-5"><span class="path1"></span><span
+                            class="path2"></span></i> <input type="text" data-kt-customer-table-filter="search"
+                        class="form-control form-control-solid w-250px ps-12" placeholder="Search Customers">
+                </div> -->
+            </div>
+
+            <!--end::Search-->
+        </div>
+        <!--begin::Card title-->
+
+
+        <!--begin::Card toolbar-->
+        <div class="card-toolbar">
+            <!--begin::Toolbar-->
+            <div class="d-flex justify-content-end" data-kt-customer-table-toolbar="base">
+
+                <!--   <button mat-raised-button color="accent" class="me-1" (click)="BotonNuevaHabitacion()">
+                    <mat-icon>add_circle</mat-icon>
+                    Habitación</button>
+                <button mat-raised-button color="primary" class="mr-2 me-1" (click)="BotonGestionarTipos()">
+                    <mat-icon>list</mat-icon> Tipos</button> -->
+
+                <!--  <a href=""><mat-icon>refresh</mat-icon></a> -->
+            </div>
+            <!--end::Toolbar-->
+
+
+        </div>
+        <!--end::Card toolbar-->
+    </div>
+
+
+
+
+
+    <div class="card-body pt-0">
+
+        <div class="row">
+
+            <div class="col-12 mb-5">
+
+                <div class="row">
+
+
+
+
+                    <div class="col-2">
+                        <div class="form-group row">
+                            <div class="col-12">
+                                <input class="form-control" type="datetime-local" placeholder="Check-in"
+                                    [(ngModel)]="dpFechaCheckIn" [max]="dpFechaCheckOut" />
+                            </div>
+                            <label class="label-datepicket col-12 col-form-label">Buscar por fecha de check-in</label>
+                        </div>
+                    </div>
+
+                    <div class="col-2">
+                        <div class="form-group row">
+                            <div class="col-12">
+                                <input class="form-control" type="datetime-local" placeholder="Check-out"
+                                    [(ngModel)]="dpFechaCheckOut" [min]="dpFechaCheckIn" />
+                            </div>
+                            <label class="label-datepicket col-12 col-form-label">Buscar por fecha de check-out</label>
+                        </div>
+                    </div>
+
+
+
+                    <div class="col-3 mt-1">
+
+                        <button mat-raised-button color="primary" class="mr-2 me-2" (click)="LoadData()">
+                            <mat-icon>search</mat-icon> Listar</button>
+                        <!--  <button mat-raised-button color="accent" class="mr-2 me-2">
+                            <mat-icon>add_circle</mat-icon> Reserva</button> -->
+
+
+                    </div>
+                    <!--  <div class="col-1 mt-1 ">
+
+
+                    </div> -->
+                </div>
+
+            </div>
+        </div>
+
+        <mat-tab-group mat-stretch-tabs="false" mat-align-tabs="start">
+            <ng-container *ngFor="let nivel of lstNiveles">
+                <mat-tab label="{{nivel.cNombreNivel}}">
+
+                    <div class="p-4 mt-5">
+                        <div class="row">
+                            <div class="col-xl-3 col-lg-6 col-md-6 col-sm-12  mb-2" *ngFor="let habitacion of nivel.lstHabitaciones">
+
+
+
+
+
+                                <a style="cursor: pointer;" [ngStyle]="getColorHabitacionStyle(habitacion)"
+                                    class=" card card-custom card-stretch gutter-b h-100"
+                                    (click)="BotonVerDetalle(habitacion)">
+
+                                    <!--begin::Body-->
+                                    <div class="card-body">
+                                        <div style="display: flex; align-items: center;  justify-content: end;">
+                                            <div style="display: flex; align-items: center; ">
+                                                <mat-icon>supervisor_account</mat-icon>
+                                                <span> {{ habitacion.nNumeroPersonas }}</span>
+
+
+                                            </div>
+                                            <div style="display: flex; align-items: center; margin-left: 10px; ">
+                                                <mat-icon> hotel</mat-icon>
+
+                                                <span style="margin-left: 3px;"> {{ habitacion.nNumeroCamas }}</span>
+                                            </div>
+                                        </div>
+                                        <div class="d-flex">
+                                            <div class="flex-grow-1" style="flex-basis: 40%;">
+                                                <div class="d-flex">
+                                                    <div>
+                                                        <mat-icon
+                                                            *ngIf="habitacion.nEstadoEstancia === 1">calendar_today
+                                                        </mat-icon>
+                                                        <mat-icon
+                                                            *ngIf="habitacion.nEstadoEstancia === 3 || habitacion.nEstadoEstancia === 4 || habitacion.nEstadoEstancia === 5 || habitacion.nEstadoEstancia === 0">meeting_room
+                                                        </mat-icon>
+                                                        <mat-icon
+                                                            *ngIf="habitacion.nEstadoEstancia === 2">no_meeting_room</mat-icon>
+
+
+                                                    </div>
+                                                    <div class="fs-3">
+                                                        {{ habitacion.nNroHabitacion }}
+                                                    </div>
+
+                                                </div>
+
+
+                                                <div class=" font-weight-bolder font-size-h5 mb-2 mt-5">
+                                                    <b>{{ habitacion.cNombreTipo }}</b>
+                                                </div>
+
+
+                                                <div style=" display: flex ;">
+                                                    <ng-container *ngIf="habitacion.nColorHabitacion === 1">
+                                                        <span class=" mx-1 badge badge-light fs-8 fw-bolder">
+                                                            Vacía
+                                                        </span>
+                                                    </ng-container>
+
+                                                    <ng-container *ngIf="habitacion.nColorHabitacion === 2">
+                                                        <span class="mx-1 badge badge-light-warning fs-8 fw-bolder">
+                                                            Sucia
+                                                        </span>
+                                                    </ng-container>
+
+                                                    <ng-container *ngIf="habitacion.nColorHabitacion ===3 ">
+                                                        <span class="mx-1 badge badge-light-success fs-8 fw-bolder">
+                                                            Reservada
+                                                        </span>
+                                                    </ng-container>
+
+                                                    <ng-container *ngIf="habitacion.nColorHabitacion ===4">
+                                                        <span class="mx-1 badge badge-light-danger fs-8 fw-bolder">
+                                                            Ocupada
+                                                        </span>
+                                                    </ng-container>
+
+                                                    <ng-container *ngIf="habitacion.nColorHabitacion ===5">
+                                                        <span class="mx-1 badge badge-light-primary fs-8 fw-bolder">
+                                                            Bloqueada
+                                                        </span>
+                                                    </ng-container>
+
+                                                    <ng-container *ngIf="habitacion.nColorHabitacion ===6">
+                                                        <span class="mx-1 badge badge-light-warning fs-8 fw-bolder">
+                                                            Sucia
+                                                        </span>
+                                                        <span class="mx-1 badge badge-light-success fs-8 fw-bolder">
+                                                            Reservada
+                                                        </span>
+                                                    </ng-container>
+
+                                                    <ng-container *ngIf="habitacion.nColorHabitacion ===7">
+                                                        <span class="mx-1 badge badge-light-primary fs-8 fw-bolder">
+                                                            Bloqueada
+                                                        </span>
+                                                        <span class="mx-1 badge badge-light-success fs-8 fw-bolder">
+                                                            Reservada
+                                                        </span>
+                                                    </ng-container>
+
+
+
+                                                </div>
+                                            </div>
+                                            <div class="flex-grow-1" style="flex-basis: 60%;"
+                                                *ngIf="habitacion.infoEstancia?.id">
+                                                <div style="display: flex; align-items: center;  padding: 1%; ">
+                                                    <mat-icon> person_pin</mat-icon>
+                                                    <span>{{habitacion.infoEstancia?.cNombreTitular}}</span>
+                                                </div>
+
+
+
+                                                <div style="display: flex; align-items: center;  padding: 1%;">
+                                                    <mat-icon>timer</mat-icon>
+
+                                                    <span>
+                                                        {{ (habitacion.infoEstancia?.dFechaCheckIn ||
+                                                        habitacion.infoEstancia?.dFechaCheckInProgramado) |
+                                                        date:'dd/MM/yyyy HH:mm' }}
+                                                    </span>
+
+
+
+                                                </div>
+                                                <div style="display: flex; align-items: center;  padding: 1%; ">
+                                                    <mat-icon>timer_off</mat-icon>
+                                                    <span>{{( habitacion.infoEstancia?.dFechaCheckOut ||
+                                                        habitacion.infoEstancia?.dFechaCheckOutProgramado ) |
+                                                        date:'dd/MM/yyyy HH:mm'}}</span>
+
+                                                </div>
+                                            </div>
+                                        </div>
+
+
+
+
+
+
+                                    </div>
+                                    <!--end::Body-->
+                                </a>
+                                <!--end::Stats Widget 13-->
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Aquí puedes poner el contenido que desees para cada tab -->
+                </mat-tab>
+            </ng-container>
+        </mat-tab-group>
+
+
+
+
+
+    </div>
+</div>

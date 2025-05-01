@@ -1,0 +1,299 @@
+<div class="card p-4">
+    <!--begin::Card header-->
+    <div class="card-header border-0 pt-6 p-4">
+        <!--begin::Card title-->
+        <div class="card-title">
+            <!--begin::Search-->
+            <div class="d-flex align-items-center position-relative my-1">
+                <b>GENERACIÓN DE COMPROBANTES</b>
+                <span class="spinner-border spinner-border-sm align-middle ms-2" *ngIf="isLoading$ | async"></span>
+
+            </div>
+            <!--end::Search-->
+        </div>
+        <!--begin::Card title-->
+
+
+
+    </div>
+
+    <div class="card-body pt-0">
+
+
+
+
+
+        <div class="row d-flex align-items-center">
+            <div class="col-3">
+                <div class="form-group row">
+                    <div class="col-12">
+                        <select [(ngModel)]="nTipoComprobante" class="form-control"
+                            (ngModelChange)="onTipoComprobanteChange()">
+                            <option value="0" disabled selected>Seleccione un Comprobante</option>
+                            <option value="2">Boleta</option>
+                            <option value="1">Factura</option>
+                        </select>
+                    </div>
+                    <label class="label-datepicket col-12 col-form-label">Tipo de Comprobante</label>
+                </div>
+            </div>
+
+            <div class="col-2">
+                <div class="form-group row">
+                    <div class="col-12">
+                        <input class="form-control" [(ngModel)]="cSerie" type="text" disabled placeholder="F/B">
+                    </div>
+                    <label class="label-datepicket col-12 col-form-label">Serie</label>
+                </div>
+            </div>
+
+            <div class="col-7  mt-2">
+                <div class="input-group mb-3">
+                    <input [(ngModel)]="cCliente" disabled type="text" class="form-control"
+                        placeholder="Seleccione un cliente" aria-label="" aria-describedby="basic-addon1">
+                    <div class="input-group-prepend">
+                        <button mat-raised-button color="primary" class="h-100 btn btn-outline-secondary"
+                            (click)="BotonBuscarCliente()" type="button"><mat-icon>search</mat-icon></button>
+                    </div>
+                    <label class="label-datepicket col-12 col-form-label">Cliente</label>
+                </div>
+            </div>
+        </div>
+
+        <div class="row d-flex align-items-center">
+            <div class="col-8">
+                <div class="form-group row">
+                    <div class="col-12">
+                        <input class="form-control" [(ngModel)]="cDireccion" type="text"
+                            placeholder="Ingrese una Dirección">
+                    </div>
+                    <label class="label-datepicket col-12 col-form-label">Dirección</label>
+                </div>
+            </div>
+
+            <div class="col-4">
+                <div class="form-group row">
+                    <div class="col-12">
+                        <input class="form-control" [(ngModel)]="cCorreo" type="text" placeholder="Ingrese un correo">
+                    </div>
+                    <label class="label-datepicket col-12 col-form-label">Correo</label>
+                </div>
+            </div>
+        </div>
+
+
+
+    </div>
+
+
+</div>
+
+<div class="card p-4 mt-2">
+    <div class="card-body pt-0">
+        <div class="row">
+            <div class="col-12 text-end">
+                <button mat-raised-button (click)="BotonBuscarEstancia()">
+                    <mat-icon>add_circle</mat-icon> Agregar Estancia
+                </button>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-12 mt-2">
+                <div id="kt_customers_table_wrapper" class="dt-container dt-bootstrap5 dt-empty-footer">
+                    <div class="table-responsive table-container">
+
+                        <table class="table align-middle table-row-dashed fs-6 gy-5 w-100" id="kt_customers_table">
+                            <colgroup>
+                                <col data-dt-column="0">
+                                <col data-dt-column="1">
+                                <col data-dt-column="2">
+                                <col data-dt-column="3">
+                                <col data-dt-column="4">
+                            </colgroup>
+                            <thead>
+
+
+
+
+                                <tr class="text-start text-gray-500 fw-bold fs-7 text-uppercase gs-0">
+
+
+
+
+                                    <th class="dt-orderable-asc dt-orderable-desc fixed-column" data-dt-column="0"
+                                        tabindex="0">
+                                        <span class="dt-column-title">HABITACIÓN</span>
+                                        <span class="dt-column-order"></span>
+                                    </th>
+                                    <th class="dt-orderable-asc dt-orderable-desc fixed-column" data-dt-column="1"
+                                        tabindex="0">
+                                        <span class="dt-column-title">FECHA ENTRADA</span>
+                                        <span class="dt-column-order"></span>
+                                    </th>
+
+                                    <th class="dt-orderable-asc dt-orderable-desc fixed-column" data-dt-column="2"
+                                        tabindex="0">
+                                        <span class="dt-column-title">FECHA SALIDA</span>
+                                        <span class="dt-column-order"></span>
+                                    </th>
+                                    <th class="dt-orderable-asc dt-orderable-desc fixed-column" data-dt-column="3"
+                                        tabindex="0">
+                                        <span class="dt-column-title">NOCHES</span>
+                                        <span class="dt-column-order"></span>
+                                    </th>
+                                    <th class="dt-orderable-asc dt-orderable-desc fixed-column" data-dt-column="4"
+                                        tabindex="0">
+                                        <span class="dt-column-title">SUB TOTAL</span>
+                                        <span class="dt-column-order"></span>
+                                    </th>
+
+                                    <th class="dt-orderable-asc dt-orderable-desc fixed-column" data-dt-column="4"
+                                        tabindex="0">
+                                        <span class="dt-column-title">REMOVER</span>
+                                        <span class="dt-column-order"></span>
+                                    </th>
+
+                                </tr>
+                            </thead>
+
+
+                            <tbody class="fw-semibold text-gray-600">
+                                <tr *ngFor="let habitacion of lstHabitaciones ">
+
+
+
+
+                                    <td class="fixed-column">
+                                        <span class="text-gray-600  mb-1">{{ habitacion.cNroHabitacion }} </span>
+
+                                    </td>
+
+                                    <td class="fixed-column">
+                                        <span class="text-gray-600  mb-1">{{ habitacion.cFechaEntrada }} </span>
+
+                                    </td>
+                                    <td class="fixed-column">
+                                        <span class="text-gray-600  mb-1">{{ habitacion.cFechaSalida }} </span>
+
+                                    </td>
+                                    <td class="fixed-column">
+                                        <span class="text-gray-600  mb-1">{{ habitacion.cNroNoches }} </span>
+
+                                    </td>
+                                    <td class="fixed-column">
+                                       S/ <input type="number" class="text-gray-600 mb-1 border rounded px-2 py-1 w-full"
+                                            [(ngModel)]="habitacion.cSubTotal" (ngModelChange)="recalcularTotales()" />
+                                    </td>
+
+
+                                    <td class="fixed-column" *ngIf="!bCargando">
+                                        <a href="#" onclick="return false "
+                                            (click)="BotonRemoverHabitacion(habitacion)"><mat-icon>delete</mat-icon></a>
+                                    </td>
+
+
+                                </tr>
+                            </tbody>
+                        </table>
+
+
+
+                    </div>
+                </div>
+            </div>
+
+            <div style="display: flex; justify-content: end; width: 100%;">
+                <div class="col-12 w-250px">
+                    <div id="kt_customers_table_wrapper" class="dt-container dt-bootstrap5 dt-empty-footer">
+                        <div class="table-responsive table-container">
+
+                            <table class="table align-middle table-row-dashed fs-6 gy-5 w-100" id="kt_customers_table">
+                                <colgroup>
+                                    <col data-dt-column="0">
+                                    <col data-dt-column="1">
+
+                                </colgroup>
+                                <thead>
+
+
+
+
+                                    <tr class="text-start text-gray-500 fw-bold fs-7 text-uppercase gs-0">
+
+
+
+
+                                        <th class="dt-orderable-asc dt-orderable-desc fixed-column" data-dt-column="0"
+                                            tabindex="0">
+                                            <span class="dt-column-title"><b>RESUMEN</b></span>
+                                            <span class="dt-column-order"></span>
+                                        </th>
+
+
+
+
+                                    </tr>
+                                </thead>
+
+
+                                <tbody class="fw-semibold text-gray-600" *ngIf="cTotal">
+
+                                    <tr>
+                                        <td class="fixed-column">
+                                            <span class="text-gray-600  mb-1">SUB TOTAL </span>
+
+                                        </td>
+
+                                        <td class="fixed-column ">
+                                            <span class="text-gray-600  mb-1">S/. {{cTotalGravada}} </span>
+
+                                        </td>
+                                    </tr>
+
+                                    <tr>
+                                        <td class="fixed-column">
+                                            <span class="text-gray-600  mb-1">IGV </span>
+
+                                        </td>
+
+                                        <td class="fixed-column ">
+                                            <span class="text-gray-600  mb-1">S/. {{cTotalIgv}} </span>
+
+                                        </td>
+                                    </tr>
+
+                                    <tr>
+                                        <td class="fixed-column">
+                                            <span class="text-gray-600  mb-1"> TOTAL </span>
+
+                                        </td>
+
+                                        <td class="fixed-column ">
+                                            <span class="text-gray-600  mb-1">S/. {{cTotal}} </span>
+
+                                        </td>
+                                    </tr>
+
+                                </tbody>
+                            </table>
+
+
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+
+
+<div class="d-flex justify-content-end" style="margin-top: 1%;" *ngIf="cTotal && !bCargando">
+    <button [disabled]="(isLoading$ | async)" mat-raised-button color="primary" style="background-color: #1b84ff;"
+        class="me-1" (click)="BotonContinuar()">
+        <mat-icon>save</mat-icon>
+        Guardar</button>
+</div>

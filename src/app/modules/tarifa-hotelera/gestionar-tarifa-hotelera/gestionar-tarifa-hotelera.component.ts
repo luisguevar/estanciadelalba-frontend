@@ -1,0 +1,269 @@
+import { ChangeDetectorRef, Component, Injectable } from '@angular/core';
+import { SvGeneralService } from '../../service/sv-general.service';
+import { DiaEntity, HabitacionEntity, ServicioEntity } from 'src/app/models/TarifaHoteleraEntity';
+import { PageEvent } from '@angular/material/paginator';
+import { ToastrService } from 'ngx-toastr';
+import { MatDialog } from '@angular/material/dialog';
+import { AddHabitacionComponent } from '../add-habitacion/add-habitacion.component';
+import { EditHabitacionComponent } from '../edit-habitacion/edit-habitacion.component';
+import { GestionarTiposHabitacionComponent } from '../gestionar-tipos-habitacion/gestionar-tipos-habitacion.component';
+
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { DateAdapter, MatNativeDateModule } from '@angular/material/core';
+import { DatePipe } from '@angular/common';
+import { AsignarPrecioTemporadaComponent } from '../asignar-precio-temporada/asignar-precio-temporada.component';
+import { AuthService } from '../../auth';
+
+@Component({
+  selector: 'app-gestionar-tarifa-hotelera',
+  templateUrl: './gestionar-tarifa-hotelera.component.html',
+  styleUrls: ['./gestionar-tarifa-hotelera.component.scss'],
+
+
+})
+export class GestionarTarifaHoteleraComponent {
+
+  isLoading$: any;
+  lstHabitaciones: HabitacionEntity[] = [];
+  serviciosDisponibles: ServicioEntity[] = [];
+  diasDisponibles: DiaEntity[] = [];
+
+
+
+  pageSize = 10;
+  desde: number = 0;
+  hasta: number = 10;
+
+  lstTiposHabitaciones: any = [];
+  cFechaInicioSemana: string;
+
+
+
+  bReadOnly: boolean = false;
+
+  constructor(
+    public _service: SvGeneralService,
+    public toaster: ToastrService,
+    private _dialog: MatDialog,
+    private cdr: ChangeDetectorRef,
+    private datePipe: DatePipe,
+    private authService: AuthService
+  ) {
+
+   
+
+    if (authService.user?.rol_id != 1) {
+      this.bReadOnly = true;
+    }
+  }
+
+  ngOnInit(): void {
+    this.isLoading$ = this._service.isLoading$;
+    this.cFechaInicioSemana = this.datePipe.transform(new Date(), 'yyyy-MM-dd', 'UTC-5') || ''; // Ajusta 'UTC-5' a tu zona horaria
+    this.LoadData(this.cFechaInicioSemana);
+  }
+
+
+  LoadData(dFechaInicioSemana: string) {
+
+    this._service.GetTarifaHotelera(dFechaInicioSemana).subscribe((resp: any) => {
+
+      if (resp.success) {
+
+        this.lstHabitaciones = resp.data;
+        this.serviciosDisponibles = resp.servicios;
+        this.diasDisponibles = resp.dias;
+        this.lstTiposHabitaciones = resp.tipoHabitaciones;
+        this.desde = 0;
+        this.hasta = 10;
+
+      }
+      /*      this.lstUsuarios = resp.usuarios; */
+
+    });
+  }
+
+  cambiarPagina(e: PageEvent) {
+
+    this.desde = e.pageIndex * e.pageSize;
+    this.hasta = this.desde + e.pageSize;
+  }
+
+
+  BotonGuardar() {
+
+
+    const data = {
+      "lstHabitaciones": this.lstHabitaciones
+    }
+
+
+    this._service.PostTarifaHotelera(data).subscribe((resp: any) => {
+
+      if (resp.success) {
+        this.toaster.success('Tarifa Hotelera', 'Se guardaron los cambios.')
+        this.LoadData(this.cFechaInicioSemana);
+      }
+    },
+      (error: any) => {
+        this.toaster.error('Tarifa Hotelera', 'Error al guardar los cambios.')
+        this.LoadData(this.cFechaInicioSemana);
+      }
+    )
+  }
+
+
+  BotonNuevaHabitacion() {
+    if (this.lstHabitaciones.length === 0) {
+      this.toaster.warning('Tarifa Hotelera', 'Opción no disponible por el momento.')
+      return;
+
+    }
+
+
+
+    const dialogRef = this._dialog.open(
+      AddHabitacionComponent,
+      {
+        width: 'auto ',
+        height: 'auto',
+        disableClose: true,
+        data: {
+          lstTiposHabitaciones: this.lstTiposHabitaciones,
+          lstHabitaciones: this.lstHabitaciones,
+          lstServicios: this.lstHabitaciones[0].lstServicios ?? [],
+          lstPrecios: this.lstHabitaciones[0].lstPrecios ?? [],
+        },
+      }
+    );
+
+    dialogRef.afterClosed().subscribe((result) => {
+      this.LoadData(this.cFechaInicioSemana);
+      /*  if (result) {
+ 
+         this.lstHabitaciones.push(result);
+         this.lstHabitaciones = this.lstHabitaciones.sort((a, b) => {
+           const nNroA = a.nNroHabitacion ?? 0; // Asigna 0 si es undefined
+           const nNroB = b.nNroHabitacion ?? 0; // Asigna 0 si es undefined
+           return nNroA - nNroB;
+         });
+ 
+         this.cdr.detectChanges();
+ 
+ 
+       } */
+    });
+  }
+
+  BotonEditarHabitacion(element: HabitacionEntity) {
+
+    const envio: HabitacionEntity = {
+      id: element.id,
+      nNroHabitacion: element.nNroHabitacion,
+      tipoHabitacion_id: element.tipoHabitacion_id,
+      nivelHabitacion_id: element.nivelHabitacion_id
+    };
+
+    const dialogRef = this._dialog.open(
+      EditHabitacionComponent,
+      {
+        width: 'auto ',
+        height: 'auto',
+        disableClose: true,
+        data: {
+          lstTiposHabitaciones: this.lstTiposHabitaciones,
+          lstHabitaciones: this.lstHabitaciones,
+          element: envio,
+          bReadOnly: this.bReadOnly
+        },
+      }
+    );
+    dialogRef.afterClosed().subscribe((result: HabitacionEntity) => {
+      this.LoadData(this.cFechaInicioSemana);
+      if (result) {
+
+
+        /*  const tipoHabitacionId = parseInt(result.tipoHabitacion_id as unknown as string, 10);
+         const resp: HabitacionEntity = {
+           id: result.id,
+           tipoHabitacion_id: tipoHabitacionId,
+           cNombreTipo: result.cNombreTipo,
+           nNroHabitacion: result.nNroHabitacion,
+           nivelHabitacion_id: result.nivelHabitacion_id
+         };
+ 
+ 
+         element.cNombreTipo = resp.cNombreTipo;
+         element.tipoHabitacion_id = resp.tipoHabitacion_id;
+         element.nNroHabitacion = resp.nNroHabitacion;
+         element.nivelHabitacion_id = resp.nivelHabitacion_id;
+         this.cdr.detectChanges();
+         // ...resto del código... */
+      }
+    });
+
+
+
+  }
+
+  BotonGestionarTipos() {
+    const dialogRef = this._dialog.open(
+      GestionarTiposHabitacionComponent,
+      {
+        width: 'auto ',
+        height: 'auto',
+        disableClose: true,
+        data: {
+          lstTiposHabitaciones: this.lstTiposHabitaciones,
+          bReadOnly: this.bReadOnly
+        },
+      }
+    );
+
+    dialogRef.afterClosed().subscribe((result) => {
+
+      if (result) {
+
+
+        this.cdr.detectChanges();
+
+
+      }
+    });
+  }
+
+  onFechaInicioChange() {
+
+    this.LoadData(this.cFechaInicioSemana);
+  }
+
+  BotonTemporada() {
+
+
+
+    const dialogRef = this._dialog.open(
+      AsignarPrecioTemporadaComponent,
+      {
+        width: 'auto ',
+        height: 'auto',
+        disableClose: true,
+        data: {
+          lstTiposHabitaciones: this.lstTiposHabitaciones,
+          lstHabitaciones: this.lstHabitaciones,
+        },
+      }
+    );
+    dialogRef.afterClosed().subscribe((result: any) => {
+      this.LoadData(this.cFechaInicioSemana);
+      if (result) {
+
+
+
+      }
+    });
+
+
+
+  }
+
+}

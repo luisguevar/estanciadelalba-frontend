@@ -1,0 +1,348 @@
+<div class="modal  d-block" tabindex="-1" role="dialog" *ngIf="!bEdit">
+    <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Tipos de Habitación</h5>
+                <span class="spinner-border spinner-border-sm align-middle ms-2" *ngIf="isLoading$ | async"></span>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <!-- <div class="col-12">
+                        <div id="kt_customers_table_wrapper" class="dt-container dt-bootstrap5 dt-empty-footer">
+                            <div class="table-responsive table-container">
+
+                                <table class="table align-middle table-row-dashed fs-6 gy-5 w-100"
+                                    id="kt_customers_table">
+
+                                    <thead>
+                                        <tr class="text-start text-gray-500 fw-bold fs-7 text-uppercase gs-0">
+
+                                            <th class="dt-orderable-asc dt-orderable-desc fixed-column"
+                                                data-dt-column="0" colspan="2">
+                                                <span class="dt-column-title">Nuevo Tipo Habitación</span>
+                                                <span class="dt-column-order"></span>
+                                            </th>
+
+
+                                        </tr>
+                                    </thead>
+
+                                    <tbody class="fw-semibold text-gray-600">
+                                        <tr>
+
+                                            <td class="fixed-column">
+                                                <span class="text-gray-600 mb-1">
+                                                    <div class="form-group">
+                                                       
+                                                        <input type="text" class="form-control"
+                                                            placeholder="Nombre Tipo" [(ngModel)]="cNuevoNombreTipo" />
+                                                    </div>
+                                                </span>
+                                            </td>
+
+                                            <td class="fixed-column">
+                                                <a (click)="BotonNuevoTipo()"
+                                                    class="text-gray-800 text-hover-primary mb-1 "
+                                                    role="button"><mat-icon>add_circle_outline</mat-icon></a>
+
+
+
+
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+
+
+                            </div>
+                        </div>
+
+
+
+
+                    </div> -->
+
+                    <div class="col-12 mt-2">
+                        <div class="card-body pt-0">
+
+
+
+                            <div class="row">
+
+                                <div class="col-12">
+                                    <div id="kt_customers_table_wrapper"
+                                        class="dt-container dt-bootstrap5 dt-empty-footer">
+                                        <div class="table-responsive table-container mx-10">
+
+                                            <table class="table align-middle table-row-dashed fs-6 gy-5 w-100"
+                                                id="kt_customers_table">
+                                                <colgroup>
+                                                    <col data-dt-column="0">
+                                                    <col data-dt-column="1">
+                                                    <col data-dt-column="2">
+                                                </colgroup>
+                                                <thead>
+                                                    <tr
+                                                        class="text-start text-gray-500 fw-bold fs-7 text-uppercase gs-0">
+
+                                                        <th class="dt-orderable-asc dt-orderable-desc fixed-column"
+                                                            data-dt-column="0">
+                                                            <span class="dt-column-title">N°</span>
+                                                            <span class="dt-column-order"></span>
+                                                        </th>
+                                                        <th class="dt-orderable-asc dt-orderable-desc fixed-column"
+                                                            data-dt-column="1">
+                                                            <span class="dt-column-title">TIPO HABITACIÓN</span>
+                                                            <span class="dt-column-order"></span>
+                                                        </th>
+
+                                                        <th class="dt-orderable-asc dt-orderable-desc fixed-column"
+                                                            data-dt-column="2">
+                                                            <span class="dt-column-title">CAMAS</span>
+                                                            <span class="dt-column-order"></span>
+                                                        </th>
+
+                                                        <th class="dt-orderable-asc dt-orderable-desc fixed-column"
+                                                            data-dt-column="2">
+                                                            <span class="dt-column-title">AFORO</span>
+                                                            <span class="dt-column-order"></span>
+                                                        </th>
+
+                                                        <th></th>
+                                                        <th class="dt-orderable-asc dt-orderable-desc fixed-column"
+                                                            data-dt-column="2">
+                                                            <span class="dt-column-title"></span>
+                                                            <span class="dt-column-order"></span>
+                                                        </th>
+
+
+
+                                                    </tr>
+                                                </thead>
+
+
+                                                <tbody class="fw-semibold text-gray-600">
+                                                    <tr
+                                                        *ngFor="let tipo of lstTiposHabitaciones  | slice:desde:hasta; let i = index">
+
+                                                        <td class="fixed-column">
+                                                            <span class="text-gray-600 mb-1">{{ i + 1 + desde }}</span>
+                                                        </td>
+
+
+                                                        <td class="fixed-column">
+                                                            <span class="text-gray-600  mb-1">{{
+                                                                tipo.cNombreTipo
+                                                                }}</span>
+
+                                                        </td>
+
+                                                        <td class="fixed-column">
+                                                            <span class="text-gray-600  mb-1">{{
+                                                                tipo.nTotalCamas
+                                                                }}</span>
+
+                                                        </td>
+
+                                                        <td class="fixed-column">
+                                                            <span class="text-gray-600  mb-1">{{
+                                                                tipo.nTotalPersonas
+                                                                }}</span>
+
+                                                        </td>
+
+                                                        <td></td>
+                                                        <td class="fixed-column">
+                                                            <span class="text-gray-600  mb-1"> <button mat-raised-button
+                                                                    color="primary" class="me-1"
+                                                                    (click)="BotonInfo(tipo)">
+                                                                    <mat-icon>info</mat-icon>
+                                                                    Información</button></span>
+
+                                                        </td>
+
+
+
+
+
+
+
+
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+
+
+                                            <mat-paginator [length]="lstTiposHabitaciones.length" [pageSize]="pageSize"
+                                                (page)="cambiarPagina($event)">
+                                            </mat-paginator>
+                                        </div>
+                                    </div>
+                                </div>
+
+
+
+
+
+
+                            </div>
+
+
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal"
+                    (click)="dialogRef.close(false)">Cerrar</button>
+                <!--  <button type="button" class="btn btn-primary">Guardar</button> -->
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal  d-block" tabindex="-1" role="dialog" *ngIf="bEdit">
+    <div class="modal-dialog modal-dialog-centered  modal-md" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Tipo de Habitación:<span> {{ tipoHabitacion.cNombreTipo }}</span></h5>
+
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-8">
+
+                        <div class="form-group">
+                            <label>Nombre Tipo <span class="text-danger">*</span></label>
+                            <input type="text" class="form-control" placeholder="Nombre Tipo" [(ngModel)]="cNombreTipo"
+                                [disabled]="bReadOnly" />
+
+                        </div>
+                    </div>
+
+                    <div class="col-4">
+                        <div class="form-group">
+                            <label>Aforo <span class="text-danger">*</span></label>
+                            <input [disabled]="bReadOnly" type="number" class="form-control" placeholder="Aforo"
+                                [(ngModel)]="nAforo" />
+
+                        </div>
+                    </div>
+
+                </div>
+
+                <div class="row">
+
+                    <div class="col-12">
+                        <div id="kt_customers_table_wrapper" class="dt-container dt-bootstrap5 dt-empty-footer">
+                            <div class="table-responsive table-container">
+
+                                <table class="table align-middle table-row-dashed fs-6 gy-5 w-100"
+                                    id="kt_customers_table">
+                                    <colgroup>
+                                        <col data-dt-column="0">
+                                        <col data-dt-column="1">
+                                        <col data-dt-column="2">
+                                        <col data-dt-column="3">
+                                    </colgroup>
+                                    <thead>
+                                        <tr class="text-start text-gray-500 fw-bold fs-7 text-uppercase gs-0">
+
+                                            <th class="dt-orderable-asc dt-orderable-desc fixed-column text-center"
+                                                data-dt-column="0">
+                                                <span class="dt-column-title">Activar</span>
+                                                <span class="dt-column-order"></span>
+                                            </th>
+                                            <th class="dt-orderable-asc dt-orderable-desc fixed-column"
+                                                data-dt-column="1">
+                                                <span class="dt-column-title">TIPO</span>
+                                                <span class="dt-column-order"></span>
+                                            </th>
+
+                                            <th class="dt-orderable-asc dt-orderable-desc fixed-column"
+                                                data-dt-column="1">
+                                                <span class="dt-column-title">CANTIDAD</span>
+                                                <span class="dt-column-order"></span>
+                                            </th>
+
+                                            <!--    <th class="dt-orderable-asc dt-orderable-desc fixed-column"
+                                                data-dt-column="2">
+                                                <span class="dt-column-title">PER X CAMA</span>
+                                                <span class="dt-column-order"></span>
+                                            </th> -->
+
+
+
+
+                                        </tr>
+                                    </thead>
+
+
+                                    <tbody class="fw-semibold text-gray-600">
+                                        <tr *ngFor="let tipo of lstCamas; let i = index ">
+
+                                            <td class="fixed-column" class="text-center gris">
+                                                <label class="checkbox">
+                                                    <input [disabled]="bReadOnly" type="checkbox"
+                                                        [(ngModel)]="tipo.bActivo" />
+                                                </label>
+                                            </td>
+
+
+                                            <td class="fixed-column">
+                                                <span class="text-gray-600  mb-1">{{
+                                                    tipo.cNombreCama
+                                                    }}</span>
+
+                                            </td>
+
+                                            <td>
+                                                <div class="form-group">
+                                                    <input type="number" class="form-control font-monospace w-100px"
+                                                        [value]="tipo.nNroPersonas" [disabled]="bReadOnly"
+                                                        [(ngModel)]="tipo.nCantidad" />
+                                                </div>
+                                            </td>
+
+
+                                            <!--   <td>
+                                                <div class="form-group">
+                                                    <input type="number" class="form-control font-monospace w-100px"
+                                                        [value]="tipo.nNroPersonas" [(ngModel)]="tipo.nNroPersonas" />
+                                                </div>
+                                            </td> -->
+
+
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+
+
+
+                            </div>
+                        </div>
+                    </div>
+
+
+
+
+
+
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button *ngIf="!bEdit" type="button" class="btn btn-secondary" data-dismiss="modal"
+                    (click)="dialogRef.close(false)">Cerrar</button>
+                <ng-container *ngIf="bEdit">
+                    <button type="button" class="btn btn-secondary" (click)="BotonVolver()">volver</button>
+                    <button *ngIf="!bReadOnly" type="button" class="btn btn-primary"
+                        (click)="BotonActualizar()">Actualizar</button>
+                </ng-container>
+
+            </div>
+        </div>
+    </div>
+</div>

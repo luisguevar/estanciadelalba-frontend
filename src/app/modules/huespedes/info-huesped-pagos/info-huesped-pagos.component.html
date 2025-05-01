@@ -1,0 +1,129 @@
+<div class="p-2 mx-4">
+    <div class="row">
+
+        <div class="col-12">
+            <div id="kt_customers_table_wrapper" class="dt-container dt-bootstrap5 dt-empty-footer">
+                <div class="table-responsive table-container">
+
+                    <table class="table align-middle table-row-dashed fs-6 gy-5 w-100" id="kt_customers_table">
+                        <colgroup>
+                            <col data-dt-column="0">
+                            <col data-dt-column="1">
+                            <col data-dt-column="2">
+                            <col data-dt-column="3">
+
+                        </colgroup>
+                        <thead>
+
+
+
+
+                            <tr class="text-start text-gray-500 fw-bold fs-7 text-uppercase gs-0">
+
+                                <th class="dt-orderable-asc dt-orderable-desc fixed-column" data-dt-column="0"
+                                    tabindex="0">
+                                    <span class="dt-column-title">N°</span>
+                                    <span class="dt-column-order"></span>
+                                </th>
+
+                                <!--   <th class="dt-orderable-asc dt-orderable-desc fixed-column"
+                                data-dt-column="0" tabindex="0">
+                                <span class="dt-column-title">NOMBRE</span>
+                                <span class="dt-column-order"></span>
+                            </th>
+-->
+
+                                <th class="dt-orderable-asc dt-orderable-desc fixed-column" data-dt-column="0"
+                                    tabindex="0">
+                                    <span class="dt-column-title">FECHA PAGO</span>
+                                    <span class="dt-column-order"></span>
+                                </th>
+
+                                <th class="dt-orderable-asc dt-orderable-desc fixed-column" data-dt-column="1"
+                                    tabindex="0">
+                                    <span class="dt-column-title">TIPO</span>
+                                    <span class="dt-column-order"></span>
+                                </th>
+
+                                <th class="dt-orderable-asc dt-orderable-desc fixed-column" data-dt-column="1"
+                                    tabindex="0">
+                                    <span class="dt-column-title">MONTO</span>
+                                    <span class="dt-column-order"></span>
+                                </th>
+
+                                <th></th>
+                                <th class="dt-orderable-asc dt-orderable-desc fixed-column" data-dt-column="1"
+                                    tabindex="0">
+                                    <span class="dt-column-title">DETALLE</span>
+                                    <span class="dt-column-order"></span>
+                                </th>
+
+
+
+
+
+
+
+                            </tr>
+                        </thead>
+
+
+                        <tbody>
+                            <tr *ngFor="let pago of DataPagos; let i = index">
+
+                                <td class="fixed-column">
+                                    <span class="  mb-1"> {{ i + 1 }}</span>
+
+                                </td>
+
+
+                                <!--     <td>
+                                {{ pago.cNombreTitular }}
+
+                            </td> -->
+
+                                <td class="fixed-column">
+                                    <span class="  mb-1">
+                                        {{ pago.cFechaPago }}
+
+                                    </span>
+
+                                </td>
+                                <td class="fixed-column">
+                                    <span class="  mb-1">
+
+
+                                        <span *ngIf="pago.nTipoPago == 1">PARCIAL</span>
+                                        <span *ngIf="pago.nTipoPago == 2">TOTAL</span>
+                                    </span>
+
+                                </td>
+                                <td class="fixed-column">
+                                    <span class="  mb-1">
+                                        {{ pago.nMontoPagado }}
+                                    </span>
+
+                                </td>
+
+                                <td></td>
+
+                                <td class="fixed-column">
+                                    <!--   <a href="" onclick="return false" style="color: red; "
+                                        (click)="BotonUpdatePago(pago)"><mat-icon>remove_circle_outline</mat-icon></a> -->
+                                    <a href="" onclick="return false"
+                                        (click)="BotonVerDetallePago(pago)"><mat-icon>assignment</mat-icon></a>
+                                </td>
+
+                            </tr>
+                        </tbody>
+                    </table>
+
+
+                    <mat-paginator [length]="DataPagos.length" [pageSize]="pageSize" (page)="cambiarPagina($event)">
+                    </mat-paginator>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>

@@ -1,0 +1,101 @@
+<div class="card p-4">
+    <!--begin::Card header-->
+    <div class="card-header border-0 pt-6 p-4">
+        <!--begin::Card title-->
+        <div class="card-title">
+            <!--begin::Search-->
+            <div class="d-flex align-items-center position-relative my-1">
+                <b>REPORTES DE GESTIÓN</b>
+                <span class="spinner-border spinner-border-sm align-middle ms-2" *ngIf="isLoading$ | async"></span>
+                <!--  <div class="d-flex align-items-center position-relative my-1">
+                    <i class="ki-duotone ki-magnifier fs-3 position-absolute ms-5"><span class="path1"></span><span
+                            class="path2"></span></i> <input type="text" data-kt-customer-table-filter="search"
+                        class="form-control form-control-solid w-250px ps-12" placeholder="Search Customers">
+                </div> -->
+            </div>
+            <!--end::Search-->
+        </div>
+        <!--begin::Card title-->
+
+
+
+    </div>
+
+    <div class="card-body pt-0">
+
+
+
+        <div class="row">
+
+            <div class="col-12">
+
+                <div class="row">
+
+
+                    <div class="col-6">
+                        <div class="form-group row">
+                            <div class="col-12">
+                                <select [(ngModel)]="nTipoReporte" class="form-control">
+                                    <option value="0" disabled selected>Seleccionar un reporte</option>
+                                    <option value="1">Reporte de Entradas y Salidas.</option>
+                                    <option value="2">Reporte de Cambios de Habitación.</option>
+                                    <option value="3">Reporte de Huésped Responsable de Habitación.</option>
+                                    <option value="4">Reporte de Ingresos por Tipo de Habitaciones.</option>
+                                    <option value="5">Reporte de Estado de Limpieza por Habitación y Piso.</option>
+                                    <option value="6">Reporte de Cancelaciones de Reservas.</option>
+                                </select>
+                            </div>
+                            <label class="label-datepicket col-12 col-form-label">Seleccionar un reporte
+                                disponible</label>
+                        </div>
+                    </div>
+
+                    <!--   <div class="col-2 mt-1">
+                        <button mat-raised-button color="primary" class="mr-2 me-2">
+                            <mat-icon>input</mat-icon> Seleccionar
+                        </button>
+                    </div> -->
+
+                </div>
+
+            </div>
+
+
+        </div>
+
+
+    </div>
+</div>
+
+
+<div class="mt-2" *ngIf="nTipoReporte === '1'">
+    <app-rpt-entrada-salida></app-rpt-entrada-salida>
+</div>
+
+<div class="mt-2" *ngIf="nTipoReporte === '2'">
+    <app-rpt-cambio-habitacion></app-rpt-cambio-habitacion>
+</div>
+
+<div class="mt-2" *ngIf="nTipoReporte === '3'">
+    <app-rpt-huesped-responsable></app-rpt-huesped-responsable>
+</div>
+
+<div class="mt-2" *ngIf="nTipoReporte === '4'">
+    <app-rpt-ingresos-tipohab></app-rpt-ingresos-tipohab>
+</div>
+
+<div class="mt-2" *ngIf="nTipoReporte === '5'">
+    <app-rpt-estado-habitacion></app-rpt-estado-habitacion>
+</div>
+
+<div class="mt-2" *ngIf="nTipoReporte === '6'">
+    <app-rpt-cancelaciones></app-rpt-cancelaciones>
+</div>
+
+
+
+<!-- <div class="d-flex justify-content-end" style="margin-top: 1%;">
+    <button mat-raised-button color="primary" style="background-color: #1b84ff;" class="me-1" (click)="BotonGuardar()">
+        <mat-icon>save</mat-icon>
+        Guardar</button>
+</div> -->

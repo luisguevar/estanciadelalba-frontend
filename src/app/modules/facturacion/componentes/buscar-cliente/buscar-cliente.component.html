@@ -1,0 +1,82 @@
+<div class="modal  d-block" tabindex="-1" role="dialog">
+    <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header d-flex">
+                <h5 class="modal-title">Buscar Cliente<span class="spinner-border spinner-border-sm align-middle ms-2"
+                        *ngIf="isLoading$ | async"></span>
+                </h5>
+
+
+            </div>
+            <div class="modal-body" *ngIf="!(isLoading$ | async)">
+                <div class="row mb-3">
+
+                    <div class="col-4">
+                        <div class="form-group row">
+                            <div class="col-12">
+                                <select [disabled]="bReadOnly" [(ngModel)]="cTipoDocumento" class="form-control">
+                                    <option value="0" disabled selected>Seleccione un Documento</option>
+                                    <option value="1">DNI</option>
+                                    <option value="6">RUC</option>
+                                    <option value="7">PASAPORTE</option>
+                                    <option value="-">VARIOS</option>
+                                </select>
+                            </div>
+                            <label class="label-datepicket col-12 col-form-label">Tipo de Documento</label>
+                        </div>
+                    </div>
+
+                    <div class="col-3">
+
+                        <div class="form-group row">
+                            <div class="col-12">
+                                <input [disabled]="bReadOnly" class="form-control" [(ngModel)]="cNroDocumento" type="text"
+                                    placeholder="Nro Documento">
+                            </div>
+                            <label class="label-datepicket col-12 col-form-label" >Nro
+                                Documento</label>
+                        </div>
+
+                    </div>
+
+                    <div class="col-2 flex-column-fluid">
+                        <button (click)="BotonBuscar()" mat-raised-button color="primary" class="m-1">
+                            <mat-icon>search</mat-icon> Buscar
+                        </button>
+
+                        <button (click)="BotonLimpiar()" mat-raised-button color="warn">
+                            <mat-icon>refresh</mat-icon> Limpiar
+                        </button>
+
+
+
+                    </div>
+
+
+                </div>
+
+                <div class="row mb-3">
+                    <div class="col-12">
+
+                        <div class="form-group row">
+                            <div class="col-12">
+                                <input class="form-control" [(ngModel)]="cCliente" type="text"
+                                    placeholder="Nombre Cliente" [disabled]="bReadOnly">
+                            </div>
+                            <label class="label-datepicket col-12 col-form-label">Nombre Cliente</label>
+                        </div>
+
+                    </div>
+                </div>
+
+
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal"
+                    (click)="dialogRef.close(false)">Cerrar</button>
+                <button type="button" class="btn btn-primary" (click)="BotonAgregar()">Agregar</button>
+            </div>
+        </div>
+    </div>
+</div>

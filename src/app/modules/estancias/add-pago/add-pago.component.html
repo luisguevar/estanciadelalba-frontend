@@ -1,0 +1,127 @@
+<div class="modal  d-block" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Agregar Pago</h5>
+                <!-- <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <i aria-hidden="true" class="ki ki-close"></i>
+                </button> -->
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-8 mb-2">
+                        <div class="form-group row">
+                            <div class="col-12">
+                                <input class="form-control" type="text" [(ngModel)]="cNombreTitular"
+                                    placeholder="Titular" />
+                                <label class="label-datepicket" for="exampleTextarea">Titular del Pago</label>
+                            </div>
+
+
+                        </div>
+
+                    </div>
+
+                    <div class="col-4 mb-2">
+                        <div class="form-group row">
+                            <div class="col-12">
+                                <input class="form-control" type="text" [(ngModel)]="cNroDocumentoTitular"
+                                    placeholder="Nro Documento" />
+                                <label class="label-datepicket" for="exampleTextarea">Nro Documento</label>
+                            </div>
+
+
+                        </div>
+
+                    </div>
+
+                    <div class="col-12 mb-2">
+                        <div class="form-group row">
+                            <div class="col-12">
+                                <input class="form-control" type="text" [(ngModel)]="cCorreoTitular"
+                                    placeholder="Correo" />
+                                <label class="label-datepicket" for="exampleTextarea">Correo electrónico del
+                                    Titular</label>
+                            </div>
+
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+                <div class="row">
+                    <div class="col-6 mb-2">
+                        <div class="form-group row">
+                            <div class="col-12">
+                                <input class="form-control" type="datetime-local" [(ngModel)]="dFechaPago"
+                                    placeholder="Fecha Pago" />
+                                <label class="label-datepicket" for="exampleTextarea">Fecha de Pago</label>
+                            </div>
+
+
+                        </div>
+
+                    </div>
+
+                    <div class="col-6 mb-2">
+                        <div class="form-group row">
+                            <div class="col-12">
+                                <select class="form-control" [(ngModel)]="nTipoPago">
+                                    <option [value]="0" disabled selected>Seleccionar</option>
+                                    <option [value]="1">Parcial</option>
+                                    <option [value]="2">Total</option>
+                                </select>
+                                <label class="label-datepicket" for="exampleTextarea">Tipo de Pago</label>
+                            </div>
+
+
+                        </div>
+
+                    </div>
+
+                    <div class="col-6 mb-2">
+                        <div class="form-group row">
+                            <div class="col-12">
+                                <select class="form-control" [(ngModel)]="nMetodoPago">
+                                    <option [value]="0" disabled selected>Seleccionar</option>
+                                    <option [value]="1">Efectivo</option>
+                                    <option [value]="2">Tarjeta</option>
+                                    <option [value]="3">Culqi</option>
+                                </select>
+                                <label class="label-datepicket" for="exampleTextarea">Método de Pago</label>
+
+                            </div>
+
+
+                        </div>
+
+                    </div>
+
+                    <div class="col-6 mb-2">
+                        <div class="form-group row">
+                            <div class="col-12">
+                                <input class="form-control" type="number" min="0" [(ngModel)]="nMontoPagado"
+                                    placeholder="Monto Pagado" />
+                                <label class="label-datepicket" for="exampleTextarea">Monto Pagado</label>
+                            </div>
+
+
+                        </div>
+
+                    </div>
+
+
+
+                </div>
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal"
+                    (click)="dialogRef.close(false)">Cancelar</button>
+                <button type="button" class="btn btn-primary" (click)="BotonGuardar()">Aceptar</button>
+            </div>
+        </div>
+    </div>
+</div>

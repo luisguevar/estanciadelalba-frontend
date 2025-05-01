@@ -1,0 +1,265 @@
+<div class="card p-4">
+    <!--begin::Card header-->
+    <div class="card-header border-0 pt-6 p-4">
+        <!--begin::Card title-->
+        <div class="card-title">
+            <!--begin::Search-->
+            <div class="d-flex align-items-center position-relative my-1">
+                <b>GESTIONAR QUEJAS / RECLAMACIONES</b>
+                <span class="spinner-border spinner-border-sm align-middle ms-2" *ngIf="isLoading$ | async"></span>
+
+            </div>
+            <!--end::Search-->
+        </div>
+        <!--begin::Card title-->
+
+
+
+    </div>
+
+    <div class="card-body pt-0">
+
+
+        <div class="row">
+
+            <div class="col-12 mb-5">
+
+                <div class="row">
+                    <div class="col-3">
+                        <div class="form-group">
+                            <select [(ngModel)]="filterTipoMotivimiento" class="form-control">
+                                <option value="-1" disabled selected>Seleccionar un Tipo</option>
+                                <option value="3">Todos</option>
+                                <option value="0">Pendiente</option>
+                                <option value="1">No Atendido</option>
+                                <option value="2">Atendido</option>
+
+                            </select>
+
+                            <label class="label-datepicket col-12 col-form-label">Estado</label>
+
+                        </div>
+                    </div>
+
+
+                    <div class="col-3">
+                        <div class="form-group row">
+                            <div class="col-12">
+                                <input class="form-control" type="text" [(ngModel)]="filterDocumento"
+                                    placeholder="Documento Cliente" />
+                            </div>
+                            <label class="label-datepicket col-12 col-form-label">Documento Reclamante</label>
+                        </div>
+                    </div>
+
+                    <div class="col-2">
+                        <div class="form-group row">
+                            <div class="col-12">
+                                <input class="form-control" type="date" [(ngModel)]="filterDesde" placeholder="Desde" />
+                            </div>
+                            <label class="label-datepicket col-12 col-form-label">Buscar desde</label>
+                        </div>
+                    </div>
+
+                    <div class="col-2">
+                        <div class="form-group row">
+                            <div class="col-12">
+                                <input class="form-control" type="date" [(ngModel)]="filterHasta" placeholder="Hasta" />
+                            </div>
+                            <label class="label-datepicket col-12 col-form-label">Buscar hasta</label>
+                        </div>
+                    </div>
+
+                    <div class="col-2 mt-1">
+                        <button mat-raised-button color="primary" class="mr-2 me-2" (click)="LoadData()">
+                            <mat-icon>search</mat-icon> Listar
+                        </button>
+
+
+
+                    </div>
+
+
+
+
+
+
+                </div>
+
+            </div>
+            <br>
+            <div class="col-12 mt-2">
+                <div id="kt_customers_table_wrapper" class="dt-container dt-bootstrap5 dt-empty-footer">
+                    <div class="table-responsive table-container">
+
+                        <table class="table align-middle table-row-dashed fs-6 gy-5 w-100" id="kt_customers_table">
+                            <colgroup>
+                                <col data-dt-column="0">
+                                <col data-dt-column="1">
+                                <col data-dt-column="2">
+                                <col data-dt-column="3">
+                                <col data-dt-column="4">
+                                <col data-dt-column="5">
+                                <col data-dt-column="6">
+                                <col data-dt-column="7">
+                            </colgroup>
+                            <thead>
+
+
+
+
+                                <tr class="text-start text-gray-500 fw-bold fs-7 text-uppercase gs-0">
+
+                                    <th class="dt-orderable-asc dt-orderable-desc fixed-column" data-dt-column="0"
+                                        tabindex="0">
+                                        <span class="dt-column-title">N°</span>
+                                        <span class="dt-column-order"></span>
+                                    </th>
+
+
+                                    <th class="dt-orderable-asc dt-orderable-desc fixed-column" data-dt-column="0"
+                                        tabindex="0">
+                                        <span class="dt-column-title">CORRELATIVO </span>
+                                        <span class="dt-column-order"></span>
+                                    </th>
+
+                                    <th class="dt-orderable-asc dt-orderable-desc fixed-column" data-dt-column="1"
+                                        tabindex="0">
+                                        <span class="dt-column-title">RECLAMANTE</span>
+                                        <span class="dt-column-order"></span>
+                                    </th>
+
+                                    <th class="dt-orderable-asc dt-orderable-desc fixed-column" data-dt-column="6"
+                                        tabindex="0">
+                                        <span class="dt-column-title">MONTO </span>
+                                        <span class="dt-column-order"></span>
+                                    </th>
+
+                                    <th class="dt-orderable-asc dt-orderable-desc fixed-column" data-dt-column="6"
+                                        tabindex="0">
+                                        <span class="dt-column-title">ASUNTO </span>
+                                        <span class="dt-column-order"></span>
+                                    </th>
+
+                                    <th class="dt-orderable-asc dt-orderable-desc fixed-column" data-dt-column="2"
+                                        tabindex="0">
+                                        <span class="dt-column-title">FECHA RECLAMO</span>
+                                        <span class="dt-column-order"></span>
+                                    </th>
+
+                                    <th class="dt-orderable-asc dt-orderable-desc fixed-column" data-dt-column="2"
+                                        tabindex="0">
+                                        <span class="dt-column-title">ESTADO</span>
+                                        <span class="dt-column-order"></span>
+                                    </th>
+
+
+                                    <th class="dt-orderable-asc dt-orderable-desc fixed-column" data-dt-column="4"
+                                        tabindex="0">
+                                        <span class="dt-column-title">DETALLES</span>
+                                        <span class="dt-column-order"></span>
+                                    </th>
+
+
+                                </tr>
+                            </thead>
+
+
+                            <tbody class="fw-semibold text-gray-600">
+                                <tr *ngFor="let registro of lstRegistros  | slice:desde:hasta; let i = index">
+
+                                    <td class="fixed-column">
+                                        <span class="text-gray-600  mb-1">{{i + 1 + desde }}</span>
+
+                                    </td>
+
+
+                                    <td class="fixed-column w-150px">
+                                        <span class="text-gray-600  mb-1">
+
+                                            {{registro.cNroHoja}}
+                                        </span>
+
+                                    </td>
+
+                                    <td class="fixed-column">
+                                        <span class="text-gray-600  mb-1"> ({{ registro.cNroDocumentoReclamante}})
+                                            {{registro.cNombreReclamante}}</span>
+
+                                    </td>
+
+
+
+                                    <td class="fixed-column w-125px">
+                                        <span class="text-gray-600  mb-1"> S/ {{
+                                            registro.nMontoReclamadoBien }}</span>
+
+                                    </td>
+                                    <td class="fixed-column">
+                                        <span class="text-gray-600  mb-1">{{ registro.cDescripcionBien }}</span>
+
+                                    </td>
+
+                                    <td class="fixed-column w-150px">
+                                        <span class="text-gray-600  mb-1">{{ registro.cFechaRegistro }}</span>
+
+                                    </td>
+
+                                    <td class="fixed-column">
+
+                                        <span *ngIf="registro.nEstadoReclamacion=== 0"
+                                            class="mx-1 badge badge-light fs-8 fw-bolder">
+                                            Pendiente
+                                        </span>
+
+                                        <span *ngIf="registro.nEstadoReclamacion=== 1"
+                                            class="mx-1 badge badge-light-warning fs-8 fw-bolder">
+                                            No Atendido
+                                        </span>
+
+                                        <span *ngIf="registro.nEstadoReclamacion=== 2"
+                                            class="mx-1 badge badge-light-success fs-8 fw-bolder">
+                                            Atendido
+                                        </span>
+
+
+                                    </td>
+
+
+                                    <td class="fixed-column w-25 w-150px">
+                                        <a href="#" onclick="return false"
+                                            (click)="BotonVerDetalleReclamacion(registro)"><mat-icon>input</mat-icon></a>
+
+                                        <a href="#" onclick="return false" (click)="BotonDescargarPDF(registro)">
+                                            <mat-icon>assignment_returned</mat-icon>
+                                        </a>
+
+                                    </td>
+
+
+
+
+
+
+                                </tr>
+                            </tbody>
+                        </table>
+
+
+                        <mat-paginator [length]="lstRegistros.length" [pageSize]="pageSize"
+                            (page)="cambiarPagina($event)">
+                        </mat-paginator>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+
+
+
+
+    </div>
+
+
+</div>

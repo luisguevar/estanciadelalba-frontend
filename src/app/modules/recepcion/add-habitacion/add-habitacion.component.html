@@ -1,0 +1,217 @@
+<div class="modal  d-block" tabindex="-1" role="dialog">
+    <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Agregar Habitación </h5>
+                <!--  <span class="spinner-border spinner-border-sm align-middle ms-2"></span> -->
+            </div>
+            <div class="modal-body">
+                <div class="row">
+
+                    <div style="display: flex; justify-content: right;">
+                        <span>
+                            <h5>Disponibilidad: {{ nTotalNochesReserva }}
+                                <span *ngIf="nTotalNochesReserva != 1">noches.</span>
+                                <span *ngIf="nTotalNochesReserva === 1">noche.</span>
+                            </h5>
+                        </span>
+                    </div>
+
+                    <div class="col-12 ">
+                        <div class="card-body pt-0">
+
+
+                            <div class="row mt-3 mb-2">
+
+
+                                <div class="col-6">
+                                    <div class="form-group row">
+                                        <div class="col-12">
+                                            <input class="form-control" type="datetime-local" [(ngModel)]="dpCheckIn"
+                                                disabled placeholder="Check-in" />
+
+                                        </div>
+                                        <label class="label-datepicket col-12 col-form-label"> check-in
+                                            programado</label>
+                                    </div>
+                                </div>
+                                <div class="col-6">
+                                    <div class="form-group row">
+                                        <div class="col-12">
+                                            <input class="form-control" type="datetime-local" [(ngModel)]="dpCheckOut"
+                                                disabled placeholder="Check-out" />
+                                        </div>
+                                        <label class="label-datepicket col-12 col-form-label"> check-out
+                                            programado</label>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row mt-5">
+
+                                <div class="col-12">
+
+                                    <mat-tab-group>
+                                        <ng-container *ngFor="let nivel of lstNivelesDisponibles">
+
+                                            <mat-tab label=" {{ nivel.cNombreNivel }}">
+                                                <div id="kt_customers_table_wrapper"
+                                                    class="dt-container dt-bootstrap5 dt-empty-footer">
+                                                    <div class="table-responsive table-container mx-10">
+
+                                                        <table
+                                                            class="table align-middle table-row-dashed fs-6 gy-5 w-100"
+                                                            id="kt_customers_table">
+                                                            <colgroup>
+                                                                <col data-dt-column="0">
+                                                                <col data-dt-column="1">
+                                                                <col data-dt-column="2">
+                                                            </colgroup>
+                                                            <thead>
+                                                                <tr
+                                                                    class="text-start text-gray-500 fw-bold fs-7 text-uppercase gs-0">
+
+                                                                    <th class="dt-orderable-asc dt-orderable-desc fixed-column"
+                                                                        data-dt-column="0">
+                                                                        <span class="dt-column-title">N°
+                                                                            HABITACIÓN</span>
+                                                                        <span class="dt-column-order"></span>
+                                                                    </th>
+                                                                    <th class="dt-orderable-asc dt-orderable-desc fixed-column"
+                                                                        data-dt-column="1">
+                                                                        <span class="dt-column-title">TIPO </span>
+                                                                        <span class="dt-column-order"></span>
+                                                                    </th>
+
+                                                                    <th class="dt-orderable-asc dt-orderable-desc fixed-column"
+                                                                        data-dt-column="2">
+                                                                        <span class="dt-column-title">CAMAS</span>
+                                                                        <span class="dt-column-order"></span>
+                                                                    </th>
+
+                                                                    <th class="dt-orderable-asc dt-orderable-desc fixed-column"
+                                                                        data-dt-column="2">
+                                                                        <span class="dt-column-title">AFORO</span>
+                                                                        <span class="dt-column-order"></span>
+                                                                    </th>
+
+                                                                    <th class="dt-orderable-asc dt-orderable-desc fixed-column"
+                                                                        data-dt-column="2">
+                                                                        <span class="dt-column-title">PRECIO</span>
+                                                                        <span class="dt-column-order"></span>
+                                                                    </th>
+
+
+                                                                    <th></th>
+                                                                    <th class="dt-orderable-asc dt-orderable-desc fixed-column text-center"
+                                                                        data-dt-column="2">
+                                                                        <span class="dt-column-title">SELECCIONAR</span>
+                                                                        <span class="dt-column-order"></span>
+                                                                    </th>
+
+
+
+                                                                </tr>
+                                                            </thead>
+
+
+                                                            <tbody class="fw-semibold text-gray-600">
+                                                                <tr
+                                                                    *ngFor="let habitacion of nivel.lstHabitaciones | slice: (paginacionPorNivel[nivel.id ?? 0]?.desde ?? 0) : (paginacionPorNivel[nivel.id ?? 0]?.hasta ?? 5)">
+
+
+                                                                    <td class="fixed-column">
+                                                                        <span class="text-gray-600  mb-1">
+                                                                            {{ habitacion.nNroHabitacion }}
+                                                                        </span>
+                                                                    </td>
+
+
+                                                                    <td class="fixed-column">
+                                                                        <span class="text-gray-600  mb-1">
+                                                                            {{ habitacion.cNombreTipoHabitacion }}
+                                                                        </span>
+
+                                                                    </td>
+
+                                                                    <td class="fixed-column">
+                                                                        <span class="text-gray-600  mb-1">
+                                                                            {{ habitacion.nNumeroCamas }}
+                                                                        </span>
+
+                                                                    </td>
+
+                                                                    <td class="fixed-column">
+                                                                        <span class="text-gray-600  mb-1">
+                                                                            {{ habitacion.nNumeroPersonas }}
+                                                                        </span>
+
+                                                                    </td>
+
+
+                                                                    <td class="fixed-column">
+                                                                        <span class="text-gray-600  mb-1">
+                                                                            {{ habitacion.nPrecioTotal }}
+                                                                        </span>
+
+                                                                    </td>
+
+                                                                    <td></td>
+                                                                    <td class="fixed-column text-center">
+
+
+                                                                        <a onclick="return false" href=""
+                                                                            (click)="BotonSeleccionarHabitacion(habitacion)">
+                                                                            <mat-icon>add_circle_outline</mat-icon></a>
+                                                                    </td>
+
+
+
+
+
+
+
+
+                                                                </tr>
+                                                            </tbody>
+                                                        </table>
+
+
+                                                        <mat-paginator *ngIf="nivel.lstHabitaciones"
+                                                            [length]="nivel.lstHabitaciones.length"
+                                                            [pageSize]="paginacionPorNivel[nivel.id ?? 0].pageSize"
+                                                            (page)="cambiarPagina($event, nivel.id)">
+                                                        </mat-paginator>
+                                                    </div>
+                                                </div>
+                                            </mat-tab>
+                                        </ng-container>
+
+
+                                    </mat-tab-group>
+
+
+
+                                </div>
+
+
+
+
+
+
+                            </div>
+
+
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal"
+                    (click)="dialogRef.close(false)">Cerrar</button>
+                <!--  <button type="button" class="btn btn-primary">Guardar</button> -->
+            </div>
+        </div>
+    </div>
+</div>

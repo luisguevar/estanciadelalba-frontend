@@ -1,0 +1,128 @@
+<div class="modal  d-block" tabindex="-1" role="dialog">
+    <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+
+                <h5 class="modal-title">Detalle de Huésped <span
+                        class="spinner-border spinner-border-sm align-middle ms-2" *ngIf="isLoading$ | async"></span>
+                </h5>
+                <!-- <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <i aria-hidden="true" class="ki ki-close"></i>
+                </button> -->
+
+            </div>
+
+            <div class="modal-body" *ngIf="!(isLoading$ | async)">
+                <div class="row mb-3">
+                    <div class="col-6">
+                        <div class="form-group">
+                            <label>Nombres: <span class="text-danger">*</span></label>
+                            <input type="text" class="form-control" placeholder="Nombres" [(ngModel)]="cNombres" />
+
+                        </div>
+                    </div>
+
+                    <div class="col-6">
+                        <div class="form-group">
+                            <label>Apellidos: <span class="text-danger">*</span></label>
+                            <input type="text" class="form-control" placeholder="Apellidos" [(ngModel)]="cApellidos" />
+
+                        </div>
+                    </div>
+                </div>
+                <div class="row mb-3">
+
+                    <div class="col-3">
+                        <div class="form-group ">
+                            <label>Tipo:</label>
+                            <select class="form-control" id="tipoHabitacionSelect" [(ngModel)]="nTipoDocumento">
+                                <option disabled [value]="0">Seleccione</option>
+                                <option *ngFor="let tipo of lstTipoDocumentos" [value]="tipo.nId">{{ tipo.cNombre
+                                    }}</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="col-3">
+                        <div class="form-group">
+                            <label>Nro Documento: <span class="text-danger">*</span></label>
+                            <input type="text" class="form-control" placeholder="Nro Documento"
+                                [(ngModel)]="cNroDocumento" />
+
+                        </div>
+                    </div>
+
+
+                    <div class="col-6">
+                        <div class="form-group">
+                            <label>Correo: <span class="text-danger">*</span></label>
+                            <input type="text" class="form-control" placeholder="Correo" [(ngModel)]="cCorreo" />
+
+                        </div>
+                    </div>
+                </div>
+                <div class="row mb-3">
+                    <div class="col-6">
+                        <div class="form-group ">
+                            <label>Pais Origen:</label>
+                            <select class="form-control" id="tipoHabitacionSelect" [(ngModel)]="pais_id">
+                                <option disabled [value]="0">Seleccione</option>
+                                <option *ngFor="let tipo of paises" [value]="tipo.id">{{ tipo.cNombre
+                                    }}</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="col-6">
+                        <div class="form-group w-250px">
+                            <label>Celular contacto: <span class="text-danger">*</span></label>
+                            <input type="text" class="form-control" placeholder="Celular contacto"
+                                [(ngModel)]="cCelular" />
+
+                        </div>
+                    </div>
+                </div>
+                <br>
+                <div class="row p-2">
+                    <mat-card>
+                        <div>
+                            <mat-tab-group>
+                                <mat-tab label="Estancias">
+                                    <div *ngIf="lstEstancias && lstEstancias.length > 0">
+                                        <app-info-huesped-estancias
+                                            [lstEstancias]="lstEstancias"></app-info-huesped-estancias>
+                                    </div>
+                                    <!-- <div *ngIf="lstEstancias && lstEstancias.length == 0">
+                                        <span>NO SE ENCONTRÓ REGISTROS</span>
+                                    </div> -->
+                                </mat-tab>
+                                <mat-tab label="Reservas">
+                                    <div *ngIf="lstReservas && lstReservas.length > 0">
+                                        <app-info-huesped-reservas
+                                            [lstReservas]="lstReservas"></app-info-huesped-reservas>
+                                    </div>
+                                    <!-- <div *ngIf="lstEstancias && lstEstancias.length == 0">
+                                        <span>NO SE ENCONTRÓ REGISTROS</span>
+                                    </div> -->
+                                </mat-tab>
+                                <mat-tab label="Pagos (Titular)">
+                                    <div *ngIf="lstPagos && lstPagos.length > 0">
+                                        <app-info-huesped-pagos [lstPagos]="lstPagos"></app-info-huesped-pagos>
+                                    </div>
+                                    <!-- <div *ngIf="lstEstancias && lstEstancias.length == 0">
+                                        <span>NO SE ENCONTRÓ REGISTROS</span>
+                                    </div> -->
+                                </mat-tab>
+                            </mat-tab-group>
+                        </div>
+                    </mat-card>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal"
+                    (click)="dialogRef.close(false)">Cerrar</button>
+                <button type="button" class="btn btn-primary" (click)="BotonGuardar()">Guardar</button>
+            </div>
+        </div>
+    </div>
+</div>

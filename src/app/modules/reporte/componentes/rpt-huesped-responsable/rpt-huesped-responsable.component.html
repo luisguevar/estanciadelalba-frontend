@@ -1,0 +1,269 @@
+<div class="card p-4">
+    <!--begin::Card header-->
+
+
+    <div class="card-body pt-0">
+
+
+
+        <div class="row">
+
+            <div class="col-12 mb-5">
+
+                <div class="row">
+                    <div class="col-2">
+                        <div class="form-group">
+                            <select [(ngModel)]="filterEstado" class="form-control">
+                                <option value="0" disabled selected>Seleccionar un Estado</option>
+                                <option value="0">Todos</option>
+                                <option value="1">En Reserva</option>
+                                <option value="2">En Estancia</option>
+                                <option value="3">Culminada</option>
+                                <option value="4">Interrumpida</option>
+                                <option value="5">Reserva Cancelada</option>
+
+
+                            </select>
+
+                            <label class="label-datepicket col-12 col-form-label">Estado</label>
+
+                        </div>
+                    </div>
+
+
+
+
+                    <div class="col-2">
+                        <div class="form-group">
+                            <select [(ngModel)]="filterHabitacion" class="form-control">
+
+                                <option value="-1" disabled selected>Nro Habitación</option>
+                                <option value="0">Todos</option>
+                                <ng-container *ngFor="let hab of lstHabitaciones">
+                                    <option [value]="hab.nNroHabitacion">{{hab.nNroHabitacion}}</option>
+                                </ng-container>
+
+
+                            </select>
+
+                            <label class="label-datepicket col-12 col-form-label">Nro Habitación</label>
+
+                        </div>
+                    </div>
+
+
+
+
+                    <div class="col-3">
+                        <div class="form-group row">
+                            <div class="col-12">
+                                <input class="form-control" type="text" [(ngModel)]="filterDocumento"
+                                    placeholder="Documento Huésped" />
+                            </div>
+                            <label class="label-datepicket col-12 col-form-label">Documento Huésped</label>
+                        </div>
+                    </div>
+
+                    <div class="col-2">
+                        <div class="form-group row">
+                            <div class="col-12">
+                                <input class="form-control" type="date" [(ngModel)]="filterDesde" placeholder="Desde" />
+                            </div>
+                            <label class="label-datepicket col-12 col-form-label">Buscar Ingreso desde</label>
+                        </div>
+                    </div>
+
+                    <div class="col-2">
+                        <div class="form-group row">
+                            <div class="col-12">
+                                <input class="form-control" type="date" [(ngModel)]="filterHasta" placeholder="Hasta" />
+                            </div>
+                            <label class="label-datepicket col-12 col-form-label">Buscar Ingreso hasta</label>
+                        </div>
+                    </div>
+
+                    <div class="col-2 mt-1 w-10px">
+                        <button mat-raised-button color="primary" class="mr-2 me-2" (click)="LoadData()">
+                            <mat-icon>search</mat-icon> Listar
+                        </button>
+
+
+
+                    </div>
+
+
+
+
+
+
+                </div>
+
+            </div>
+            <br>
+            <div class="col-12 mt-2">
+                <div id="kt_customers_table_wrapper" class="dt-container dt-bootstrap5 dt-empty-footer">
+                    <div class="table-responsive table-container">
+
+                        <table class="table align-middle table-row-dashed fs-6 gy-5 w-100" id="kt_customers_table">
+                            <colgroup>
+                                <col data-dt-column="0">
+                                <col data-dt-column="1">
+                                <col data-dt-column="2">
+                                <col data-dt-column="3">
+                                <col data-dt-column="4">
+                                <col data-dt-column="5">
+                                <col data-dt-column="6">
+                                <col data-dt-column="7">
+                            </colgroup>
+                            <thead>
+
+
+
+
+                                <tr class="text-start text-gray-500 fw-bold fs-7 text-uppercase gs-0">
+
+                                    <th class="dt-orderable-asc dt-orderable-desc fixed-column" data-dt-column="0"
+                                        tabindex="0">
+                                        <span class="dt-column-title">N°</span>
+                                        <span class="dt-column-order"></span>
+                                    </th>
+
+
+                                    <th class="dt-orderable-asc dt-orderable-desc fixed-column" data-dt-column="0"
+                                        tabindex="0">
+                                        <span class="dt-column-title">HABITACIÓN</span>
+                                        <span class="dt-column-order"></span>
+                                    </th>
+
+                                    <th class="dt-orderable-asc dt-orderable-desc fixed-column" data-dt-column="1"
+                                        tabindex="0">
+                                        <span class="dt-column-title">HUÉSPED RESPONSABLE</span>
+                                        <span class="dt-column-order"></span>
+                                    </th>
+
+                                    <th class="dt-orderable-asc dt-orderable-desc fixed-column" data-dt-column="2"
+                                        tabindex="0">
+                                        <span class="dt-column-title">DOCUMENTO</span>
+                                        <span class="dt-column-order"></span>
+                                    </th>
+                                    <th class="dt-orderable-asc dt-orderable-desc fixed-column" data-dt-column="6"
+                                        tabindex="0">
+                                        <span class="dt-column-title">CELULAR</span>
+                                        <span class="dt-column-order"></span>
+                                    </th>
+
+
+                                    <th class="dt-orderable-asc dt-orderable-desc fixed-column" data-dt-column="7"
+                                        tabindex="0">
+                                        <span class="dt-column-title">CORREO</span>
+                                        <span class="dt-column-order"></span>
+                                    </th>
+
+
+                                    <th class="dt-orderable-asc dt-orderable-desc fixed-column" data-dt-column="3"
+                                        tabindex="0">
+                                        <span class="dt-column-title">FECHA INGRESO</span>
+                                        <span class="dt-column-order"></span>
+                                    </th>
+                                    <th class="dt-orderable-asc dt-orderable-desc fixed-column" data-dt-column="4"
+                                        tabindex="0">
+                                        <span class="dt-column-title">FECHA SALIDA</span>
+                                        <span class="dt-column-order"></span>
+                                    </th>
+
+
+                                    <th class="dt-orderable-asc dt-orderable-desc fixed-column" data-dt-column="6"
+                                        tabindex="0">
+                                        <span class="dt-column-title">ESTADO</span>
+                                        <span class="dt-column-order"></span>
+                                    </th>
+
+
+
+
+
+                                </tr>
+                            </thead>
+
+
+                            <tbody class="fw-semibold text-gray-600">
+                                <tr *ngFor="let registro of lstRegistros  | slice:desde:hasta; let i = index">
+
+                                    <td class="fixed-column">
+                                        <span class="text-gray-600  mb-1">{{i + 1 + desde }}</span>
+
+                                    </td>
+
+
+                                    <td class="fixed-column">
+                                        <span class="text-gray-600  mb-1">{{ registro.nNroHabitacion }}</span>
+
+                                    </td>
+
+                                    <td class="fixed-column">
+                                        <span class="text-gray-600  mb-1"> {{ registro.cHuespedResponsable }}</span>
+
+                                    </td>
+
+
+                                    <td class="fixed-column">
+                                        <span class="text-gray-600  mb-1"> {{ registro.cTipoDocumentoResponsable}}: {{
+                                            registro.cNroDocumentoResponsable}}</span>
+
+                                    </td>
+                                    <td class="fixed-column">
+                                        <span class="text-gray-600  mb-1">{{ registro.cNroCelular }}</span>
+
+                                    </td>
+                                    <td class="fixed-column">
+                                        <span class="text-gray-600  mb-1">{{ registro.cCorreo }}</span>
+
+                                    </td>
+                                    <td class="fixed-column">
+                                        <span class="text-gray-600  mb-1">{{ registro.dFechaIngreso }}</span>
+
+                                    </td>
+
+                                    <td class="fixed-column">
+                                        <span class="text-gray-600  mb-1"> {{ registro.dFechaSalida }}</span>
+
+                                    </td>
+
+
+                                    <td class="fixed-column">
+                                        <span class="text-gray-600  mb-1">{{ registro.cEstadoEstancia }}</span>
+
+                                    </td>
+
+
+
+                                </tr>
+                            </tbody>
+                        </table>
+
+
+                        <mat-paginator [length]="lstRegistros.length" [pageSize]="pageSize"
+                            (page)="cambiarPagina($event)">
+                        </mat-paginator>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+        <div class="row" *ngIf="lstRegistros.length>0">
+            <div class="col-12 mb-5" style="display: flex; justify-content: end;">
+                <button [disabled]="bLoading" (click)="BotonExportarExcel()" style="background-color: green;"
+                    mat-raised-button color="primary" class="mr-2 me-2">
+                    <mat-icon>archive</mat-icon> Excel
+                </button>
+
+
+                <button [disabled]="isLoading$ | async" (click)="BotonDescargarPDF()" style="background-color: red;"
+                    mat-raised-button color="primary" class="mr-2 me-2">
+                    <mat-icon>archive</mat-icon> PDF
+                </button>
+            </div>
+        </div>
+
+    </div>
+</div>

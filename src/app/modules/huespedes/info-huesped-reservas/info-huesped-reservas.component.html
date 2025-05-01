@@ -1,0 +1,132 @@
+<div class="p-2 mx-4">
+    <div class="row">
+
+        <div class="col-12">
+            <div id="kt_customers_table_wrapper" class="dt-container dt-bootstrap5 dt-empty-footer">
+                <div class="table-responsive table-container">
+
+                    <table class="table align-middle table-row-dashed fs-6 gy-5 w-100" id="kt_customers_table">
+                        <colgroup>
+                            <col data-dt-column="0">
+                            <col data-dt-column="1">
+                            <col data-dt-column="2">
+                            <col data-dt-column="3">
+
+                        </colgroup>
+                        <thead>
+
+
+
+
+                            <tr class="text-start text-gray-500 fw-bold fs-7 text-uppercase gs-0">
+
+                                <th class="dt-orderable-asc dt-orderable-desc fixed-column" data-dt-column="0"
+                                    tabindex="0">
+                                    <span class="dt-column-title">N°</span>
+                                    <span class="dt-column-order"></span>
+                                </th>
+
+
+                                <th class="dt-orderable-asc dt-orderable-desc fixed-column" data-dt-column="0"
+                                    tabindex="0">
+                                    <span class="dt-column-title">N° RESERVA</span>
+                                    <span class="dt-column-order"></span>
+                                </th>
+
+                                <th class="dt-orderable-asc dt-orderable-desc fixed-column" data-dt-column="0"
+                                    tabindex="0">
+                                    <span class="dt-column-title">CHECK IN PROGRAMADO</span>
+                                    <span class="dt-column-order"></span>
+                                </th>
+
+                                <th class="dt-orderable-asc dt-orderable-desc fixed-column" data-dt-column="1"
+                                    tabindex="0">
+                                    <span class="dt-column-title">CHECK OUT PROGRAMADO</span>
+                                    <span class="dt-column-order"></span>
+                                </th>
+
+                                <th class="dt-orderable-asc dt-orderable-desc fixed-column" data-dt-column="2"
+                                    tabindex="0">
+                                    <span class="dt-column-title">ESTADO</span>
+                                    <span class="dt-column-order"></span>
+                                </th>
+
+
+
+
+                            </tr>
+                        </thead>
+
+
+                        <tbody class="fw-semibold text-gray-600">
+                            <tr *ngFor="let estancia of DataReservas  | slice:desde:hasta; let i = index">
+                                <td class="fixed-column">
+                                    <span class="text-gray-600  mb-1">{{i + 1 + desde }}</span>
+
+                                </td>
+
+
+                                <td class="fixed-column">
+                                    <span class="text-gray-600  mb-1">{{ estancia.cNroReserva }}</span>
+
+                                </td>
+
+                                <td class="fixed-column">
+                                    <span class="text-gray-600  mb-1">
+                                        {{ estancia.cFechaReservaCheckIn }}
+                                    </span>
+
+                                </td>
+                                <td class="fixed-column">
+                                    <span class="text-gray-600  mb-1">
+                                        {{ estancia.cFechaReservaCheckOut }}
+                                    </span>
+
+                                </td>
+
+                                <td class="fixed-column">
+                                    <span *ngIf=" estancia.nEstado == 1"
+                                        class="badge badge-light-success fs-8 fw-bolder">
+                                        Reservado
+                                    </span>
+
+                                    <span *ngIf=" estancia.nEstado == 2"
+                                        class="badge badge-light-success fs-8 fw-bolder">
+                                        En Estancia
+                                    </span>
+
+
+                                    <span *ngIf=" estancia.nEstado == 3"
+                                        class="badge badge-light-primary  fs-8 fw-bolder">
+                                        Culminada
+                                    </span>
+
+
+                                    <span *ngIf=" estancia.nEstado == 4"
+                                        class="badge badge-light-warning  fs-8 fw-bolder">
+                                        Interrumpida
+                                    </span>
+
+
+                                    <span *ngIf=" estancia.nEstado == 5"
+                                        class="badge badge-light-danger fs-8 fw-bolder">
+                                        Cancelada
+                                    </span>
+
+
+                                </td>
+
+
+                            </tr>
+                        </tbody>
+                    </table>
+
+
+                    <mat-paginator [length]="DataReservas.length" [pageSize]="pageSize" (page)="cambiarPagina($event)">
+                    </mat-paginator>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>

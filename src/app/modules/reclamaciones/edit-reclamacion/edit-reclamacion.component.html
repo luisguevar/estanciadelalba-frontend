@@ -1,0 +1,243 @@
+<div class="modal  d-block" tabindex="-1" role="dialog">
+    <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+
+                <h5 class="modal-title">Detalle de Reclamación: {{cCorrelativo}} <span
+                        class="spinner-border spinner-border-sm align-middle ms-2" *ngIf="isLoading$ | async"></span>
+                </h5>
+
+                <span *ngIf="nEstadoReclamacion=== 0" class="mx-1 badge badge-light fs-8 fw-bolder">
+                    Pendiente
+                </span>
+
+                <span *ngIf="nEstadoReclamacion=== 1" class="mx-1 badge badge-light-warning fs-8 fw-bolder">
+                    No Atendido
+                </span>
+
+                <span *ngIf="nEstadoReclamacion=== 2" class="mx-1 badge badge-light-success fs-8 fw-bolder">
+                    Atendido
+                </span>
+
+
+            </div>
+
+
+
+
+
+            <div class="modal-body" *ngIf="!(isLoading$ | async)">
+
+                <mat-accordion>
+                    <mat-expansion-panel>
+                        <mat-expansion-panel-header>
+                            <mat-panel-title>
+                                Datos del Reclamante
+                            </mat-panel-title>
+
+                        </mat-expansion-panel-header>
+
+                        <div class="row mb-3">
+                            <div class="col-9">
+                                <div class="form-group">
+                                    <label>Nombre Reclamante </label>
+                                    <input disabled type="text" class="form-control" placeholder="Nombre Reclamante"
+                                        [(ngModel)]="cNombreReclamante" />
+
+                                </div>
+                            </div>
+
+                            <div class="col-3">
+                                <div class="form-group">
+                                    <label>Fecha Reclamo: </label>
+                                    <input disabled type="text" class="form-control" placeholder="Fecha Reclamo"
+                                        [(ngModel)]="cFechaReclamo" />
+
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row mb-3">
+                            <div class="col-8">
+                                <div class="form-group">
+                                    <label>Domicilio </label>
+                                    <input disabled type="text" class="form-control" placeholder="Domicilio"
+                                        [(ngModel)]="cDomicilioReclamante" />
+
+                                </div>
+                            </div>
+
+                            <div class="col-4">
+                                <div class="form-group">
+                                    <label>Telefono </label>
+                                    <input disabled type="text" class="form-control" placeholder="Telefono"
+                                        [(ngModel)]="cTelefonoReclamante" />
+
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row mb-3">
+                            <div class="col-3">
+                                <div class="form-group ">
+                                    <label>Documento:</label>
+                                    <select disabled class="form-control" id="tipoHabitacionSelect"
+                                        [(ngModel)]="nTipoDocumentoReclamante">
+                                        <option disabled [value]="0">Seleccione</option>
+                                        <option *ngFor="let tipo of lstTipoDocumentos" [value]="tipo.nIdDocumento">{{
+                                            tipo.cNombreDocumento
+                                            }}</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="col-3">
+                                <div class="form-group">
+                                    <label>Nro Documento </label>
+                                    <input disabled type="text" class="form-control" placeholder="Nro Documento"
+                                        [(ngModel)]="cNroDocumentoReclamante" />
+
+                                </div>
+                            </div>
+
+
+                            <div class="col-6">
+                                <div class="form-group">
+                                    <label>Correo </label>
+                                    <input disabled type="text" class="form-control" placeholder="Correo"
+                                        [(ngModel)]="cEmailReclamante" />
+
+                                </div>
+                            </div>
+
+                        </div>
+
+                    </mat-expansion-panel>
+
+                </mat-accordion>
+                <br>
+
+                <mat-accordion>
+                    <mat-expansion-panel [expanded]="true">
+                        <mat-expansion-panel-header>
+                            <mat-panel-title>
+                                Datos del Reclamo
+                            </mat-panel-title>
+
+                        </mat-expansion-panel-header>
+
+                        <div class="row mb-3">
+                            <div class="col-4">
+                                <div class="form-group ">
+                                    <label>Tipo Bien:</label>
+                                    <select disabled class="form-control" [(ngModel)]="nTipoBien">
+                                        <option disabled [value]="0">Seleccione</option>
+                                        <option *ngFor="let tipo of lstTipoBien" [value]="tipo.nIdBien">{{
+                                            tipo.cNombreBien
+                                            }}</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="col-4">
+                                <div class="form-group">
+                                    <label>Monto Reclamado </label>
+                                    <input disabled type="text" class="form-control" placeholder="Monto Reclamado"
+                                        [(ngModel)]="cMontoReclamadoBien" />
+
+                                </div>
+                            </div>
+
+
+                            <div class="col-4">
+                                <div class="form-group ">
+                                    <label>Tipo Disconformidad:</label>
+                                    <select disabled class="form-control" [(ngModel)]="nTipoDisconformidad">
+                                        <option disabled [value]="0">Seleccione</option>
+                                        <option *ngFor="let tipo of lstTipoDisconformidad"
+                                            [value]="tipo.nIdDisconformidad">
+                                            {{
+                                            tipo.cNombreDisconformidad
+                                            }}</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                        </div>
+
+                        <div class="row mb-3">
+
+                            <div class="col-12">
+                                <div class="form-group">
+                                    <label>Descripción Bien </label>
+                                    <input disabled type="text" class="form-control" placeholder="Descripción Bien"
+                                        [(ngModel)]="cDescripcionBien" />
+
+                                </div>
+                            </div>
+
+
+                        </div>
+
+                        <div class="row mb-3">
+                            <div class="col-12">
+                                <div class="form-group">
+                                    <label>Detalle </label>
+                                    <textarea disabled class="form-control" placeholder="Descripción Bien"
+                                        [(ngModel)]="cDetalleDisconformidad" rows="3"></textarea>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row mb-3">
+                            <div class="col-12">
+                                <div class="form-group">
+                                    <label>Pedido </label>
+                                    <textarea disabled class="form-control" placeholder="Descripción Bien"
+                                        [(ngModel)]="cPedidoDisconformidad" rows="3"></textarea>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row mb-3">
+                            <div class="col-12">
+                                <div class="form-group">
+                                    <label>Respuesta </label> <span class="text-danger"> *</span>
+                                    <textarea [disabled]="nEstadoReclamacion === 2" class="form-control" placeholder="Respuesta"
+                                        [(ngModel)]="cRespuestaProveedor" rows="3"></textarea>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row mb-3" *ngIf="cActualizadoPor">
+
+                            <div class="col-12">
+                                <div class="form-group">
+                                    <label>Actualizado Por </label>
+                                    <input disabled type="text" class="form-control" placeholder="Actualizado Por"
+                                        [(ngModel)]="cActualizadoPor" />
+
+                                </div>
+                            </div>
+
+
+                        </div>
+
+                    </mat-expansion-panel>
+
+                </mat-accordion>
+
+
+
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal"
+                    (click)="dialogRef.close(false)">Cerrar</button>
+                <button [disabled]="nEstadoReclamacion === 2 || (isLoading$ | async)" type="button" class="btn btn-primary" (click)="ActualizarReclamacion()">Guardar</button>
+                <button  [disabled]="(isLoading$ | async)"  *ngIf="nEstadoReclamacion === 1" type="button" class="btn btn-primary" (click)="EnviarReclamacion()">Enviar
+                    Respuesta</button>
+            </div>
+        </div>
+    </div>
+</div>

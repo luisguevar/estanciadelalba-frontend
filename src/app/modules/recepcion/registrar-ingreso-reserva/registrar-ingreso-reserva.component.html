@@ -1,0 +1,676 @@
+<div class="modal  d-block" tabindex="-1" role="dialog">
+    <div class="modal-dialog modal-dialog-centered modal-xl" role="document">
+        <div class="modal-content">
+            <div class="modal-header d-flex">
+                <h5 class="modal-title">Registro Recepción <span
+                        class="spinner-border spinner-border-sm align-middle ms-2" *ngIf="isLoading$ | async"></span>
+                </h5>
+
+
+            </div>
+            <div class="modal-body" *ngIf="!(isLoading$ | async)">
+
+
+                <mat-stepper [linear]="isLinear" #stepper>
+                    <mat-step [stepControl]="firstFormGroup">
+
+                        <ng-template matStepLabel>Registro</ng-template>
+
+                        <div class="row">
+                            <div class="col-6">
+                                <div class="form-group ">
+                                    <label class="col-form-label text-right col-lg-12 col-sm-12">Selecciona una
+                                        opción</label>
+                                    <div class="col-lg-12 col-md-12 col-sm-12">
+                                        <select class="form-control" id="kt_select2_1" name="param"
+                                            [formControl]="nTipoRegistro">
+                                            <option *ngFor="let tipo of lstTipoRegistro" [value]="tipo.nId">
+                                                {{ tipo.cNombre }}
+                                            </option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-6">
+                                <div style="display: flex; justify-content: end;">
+                                    <button mat-raised-button color="primary" (click)="BotonAgregarHabitacion()">
+                                        <mat-icon>add_circle_outline</mat-icon>
+                                        Habitación</button>
+                                </div>
+                            </div>
+
+
+                            <div class="col-12 mt-5">
+
+                                <div class="row">
+                                    <ng-container
+                                        *ngFor="let  HabitacionEstancia of lstHabitacionEstancia; let i = index">
+
+                                        <div class="col-6 mb-2">
+
+                                            <mat-accordion class="example-headers-align">
+                                                <mat-expansion-panel>
+                                                    <mat-expansion-panel-header>
+                                                        <mat-panel-title>
+                                                            N°: {{ HabitacionEstancia.nNroHabitacion }}
+                                                        </mat-panel-title>
+                                                        <mat-panel-description>
+                                                            {{ HabitacionEstancia.cNombreTipoHabitacion }}
+                                                            <mat-icon>airline_seat_individual_suite</mat-icon>
+                                                        </mat-panel-description>
+                                                    </mat-expansion-panel-header>
+
+                                                    <div id="kt_customers_table_wrapper"
+                                                        class="dt-container dt-bootstrap5 dt-empty-footer">
+                                                        <div class="table-responsive table-container">
+
+                                                            <table
+                                                                class="table align-middle table-row-dashed fs-6 gy-5 w-100"
+                                                                id="kt_customers_table">
+                                                                <colgroup>
+                                                                    <col data-dt-column="0">
+                                                                    <col data-dt-column="1">
+                                                                    <col data-dt-column="2">
+                                                                    <col data-dt-column="3">
+
+                                                                </colgroup>
+                                                                <thead>
+                                                                    <tr
+                                                                        class="text-start text-gray-500 fw-bold fs-7 text-uppercase gs-0">
+
+                                                                        <th class="dt-orderable-asc dt-orderable-desc fixed-column"
+                                                                            data-dt-column="0" tabindex="0"
+                                                                            style="width: 5%;">
+                                                                            <span class="dt-column-title">N°</span>
+                                                                            <span class="dt-column-order"></span>
+                                                                        </th>
+
+                                                                        <th class="dt-orderable-asc dt-orderable-desc fixed-column"
+                                                                            data-dt-column="0" tabindex="0">
+                                                                            <span class="dt-column-title">HUESPED</span>
+                                                                            <span class="dt-column-order"></span>
+                                                                        </th>
+
+
+                                                                        <th class="dt-orderable-asc dt-orderable-desc fixed-column"
+                                                                            data-dt-column="0" tabindex="0">
+                                                                            <span
+                                                                                class="dt-column-title">DOCUMENTO</span>
+                                                                            <span class="dt-column-order"></span>
+                                                                        </th>
+
+                                                                        <th class="dt-orderable-asc dt-orderable-desc fixed-column"
+                                                                            data-dt-column="1" tabindex="0">
+                                                                            <span class="dt-column-title">CELULAR</span>
+                                                                            <span class="dt-column-order"></span>
+                                                                        </th>
+
+                                                                        <th></th>
+                                                                        <th class="dt-orderable-asc dt-orderable-desc fixed-column text-center"
+                                                                            data-dt-column="1" tabindex="0">
+                                                                            <span class="dt-column-title"></span>
+                                                                            <span class="dt-column-order"></span>
+                                                                        </th>
+
+
+
+
+
+
+                                                                    </tr>
+                                                                </thead>
+
+
+                                                                <tbody class="">
+                                                                    <tr
+                                                                        *ngFor="let HuespedEstancia of HabitacionEstancia.lstHuespedes; let i = index">
+
+                                                                        <td class="fixed-column">
+                                                                            <span class="  mb-1" style="width: 5%;"> {{
+                                                                                i + 1
+                                                                                }}</span>
+
+                                                                        </td>
+
+
+                                                                        <td class="fixed-column">
+                                                                            <span class="  mb-1">{{
+                                                                                HuespedEstancia.cNombres }} {{
+                                                                                HuespedEstancia.cApellidos }}</span>
+
+                                                                        </td>
+
+                                                                        <td class="fixed-column">
+                                                                            <span class="  mb-1">
+
+                                                                                <span
+                                                                                    *ngIf="HuespedEstancia.nTipoDocumento === 1">DNI:
+                                                                                </span>
+                                                                                <span
+                                                                                    *ngIf="HuespedEstancia.nTipoDocumento === 2">C.E.:
+                                                                                </span>
+                                                                                {{ HuespedEstancia.cNroDocumento }}
+                                                                            </span>
+
+                                                                        </td>
+                                                                        <td class="fixed-column">
+                                                                            <span class="  mb-1">
+                                                                                {{ HuespedEstancia.cNroCelular }}
+                                                                            </span>
+
+                                                                        </td>
+                                                                        <td></td>
+                                                                        <td class="fixed-column text-center ">
+                                                                            <span class="  mb-1">
+                                                                                <a href="" onclick="return false"
+                                                                                    style="color: red; "
+                                                                                    (click)="BotonRemoverHuesped(HuespedEstancia, HabitacionEstancia)"><mat-icon>remove_circle_outline</mat-icon></a>
+                                                                            </span>
+
+                                                                        </td>
+                                                                    </tr>
+                                                                </tbody>
+
+
+
+
+                                                            </table>
+
+
+                                                            <a matTooltip="Agregar huésped" href="#"
+                                                                onclick="return false"
+                                                                (click)="BotonAgregarHuesped(HabitacionEstancia)"
+                                                                style="cursor: pointer;">
+                                                                <mat-icon>person_add</mat-icon>
+                                                            </a>
+
+
+
+
+                                                            <a matTooltip="Remover habitación" href="#"
+                                                                onclick="return false"
+                                                                (click)="BotonRemoverHabitacion(HabitacionEstancia)"
+                                                                style="cursor: pointer; color: red; margin-left: 1%;"><mat-icon>deleted</mat-icon>
+
+                                                            </a>
+
+
+
+
+                                                        </div>
+
+                                                    </div>
+
+                                                </mat-expansion-panel>
+
+
+                                            </mat-accordion>
+                                        </div>
+                                    </ng-container>
+
+
+
+                                </div>
+
+                            </div>
+                        </div>
+
+
+
+
+
+                        <!--  <mat-form-field>
+                                <mat-label>Name</mat-label>
+                                <input matInput placeholder="Last name, First name" formControlName="firstCtrl"
+                                    required>
+                            </mat-form-field>
+                            <div>
+                                <button mat-button matStepperNext>Next</button>
+                            </div> -->
+
+                    </mat-step>
+
+
+                    <mat-step [stepControl]="secondFormGroup">
+                        <form>
+                            <ng-template matStepLabel>Titular</ng-template>
+
+
+                            <!--   <mat-form-field>
+                                <mat-label>Address</mat-label>
+                                <input matInput formControlName="secondCtrl" placeholder="Ex. 1 Main St, New York, NY"
+                                    required>
+                            </mat-form-field>
+                            <div>
+                                <button mat-button matStepperPrevious>Back</button>
+                                <button mat-button matStepperNext>Next</button>
+                            </div> -->
+                        </form>
+                        <div style="display: flex; justify-content: end;">
+                            <div class="form-group" style="width: 30%;">
+                                <label style="color: grey;">Buscar por Nro Documento</label>
+                                <div class="input-group">
+                                    <input type="text" class="form-control" placeholder="Buscar por Nro Documento"
+                                        [(ngModel)]="cFilterNroDocumento" />
+                                    <div class="input-group-append">
+                                        <button class="btn btn-secondary" type="button"
+                                            (click)="BuscarHuesped()">Buscar</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-12">
+                                <div class="row mb-3">
+                                    <div class="col-6">
+                                        <div class="form-group">
+                                            <label>Nombres: <span class="text-danger">*</span></label>
+                                            <input type="text" class="form-control" placeholder="Nombres"
+                                                [(ngModel)]="cNombres" />
+
+                                        </div>
+                                    </div>
+
+                                    <div class="col-6">
+                                        <div class="form-group">
+                                            <label>Apellidos: <span class="text-danger">*</span></label>
+                                            <input type="text" class="form-control" placeholder="Apellidos"
+                                                [(ngModel)]="cApellidos" />
+
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row mb-3">
+
+                                    <div class="col-3">
+                                        <div class="form-group ">
+                                            <label>Tipo:</label>
+                                            <select class="form-control" id="tipoHabitacionSelect"
+                                                [(ngModel)]="nTipoDocumento">
+                                                <option disabled [value]="0">Seleccione</option>
+                                                <option *ngFor="let tipo of lstTipoDocumentos" [value]="tipo.nId">{{
+                                                    tipo.cNombre
+                                                    }}</option>
+                                            </select>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-3">
+                                        <div class="form-group">
+                                            <label>Nro Documento: <span class="text-danger">*</span></label>
+                                            <input type="text" class="form-control" placeholder="Nro Documento"
+                                                [(ngModel)]="cNroDocumento" />
+
+                                        </div>
+                                    </div>
+
+
+                                    <div class="col-6">
+                                        <div class="form-group">
+                                            <label>Correo: <span class="text-danger">*</span></label>
+                                            <input type="text" class="form-control" placeholder="Correo"
+                                                [(ngModel)]="cCorreo" />
+
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row mb-3">
+                                    <div class="col-6">
+                                        <div class="form-group ">
+                                            <label>Pais Origen:</label>
+                                            <select class="form-control" id="tipoHabitacionSelect"
+                                                [(ngModel)]="pais_id">
+                                                <option disabled [value]="0">Seleccione</option>
+                                                <option *ngFor="let tipo of paises" [value]="tipo.id">{{
+                                                    tipo.cNombre
+                                                    }}</option>
+                                            </select>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-6">
+                                        <div class="form-group w-250px">
+                                            <label>Celular contacto: <span class="text-danger">*</span></label>
+                                            <input type="text" class="form-control" placeholder="Celular contacto"
+                                                [(ngModel)]="cCelular" />
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </mat-step>
+
+                    <mat-step>
+                        <ng-template matStepLabel>Resumen</ng-template>
+                        <div class="row mb-3">
+
+
+                            <div class="col-6">
+                                <div class="mb-2">
+                                    <mat-accordion class="example-headers-align">
+                                        <mat-expansion-panel expanded>
+                                            <mat-expansion-panel-header>
+                                                <mat-panel-title>
+                                                    Resumen de Reserva
+                                                </mat-panel-title>
+                                                <mat-panel-description>
+                                                    <span></span>
+                                                    <mat-icon>assignment</mat-icon>
+                                                </mat-panel-description>
+                                            </mat-expansion-panel-header>
+
+
+
+                                            <div class="row mb-3 mt-3">
+                                                <div class="col-12">
+
+                                                    <table style="width: 100%;">
+
+                                                        <tr>
+                                                            <td colspan="2"> <span class="fw-semibold"> Titular: </span>
+                                                                <span *ngIf="cNombres">{{ cNombres }}</span>
+
+                                                                <span *ngIf="cApellidos"> {{ cApellidos }}</span>
+                                                                <span class="text-danger" *ngIf="!cNombres">Debe Asignar
+                                                                    un Titular</span>
+                                                            </td>
+
+                                                        </tr>
+                                                        <tr>
+                                                            <td colspan="1"> <span class="fw-semibold"
+                                                                    *ngIf="cNroDocumento"> Nro Documento:
+                                                                </span>
+
+                                                                <span *ngIf="cNroDocumento">{{ cNroDocumento }}</span>
+                                                            </td>
+
+                                                            <td colspan="1"> <span class="fw-semibold" *ngIf="cCelular">
+                                                                    Celular
+                                                                    Contacto:
+                                                                </span>
+                                                                <span *ngIf="cCelular">{{ cCelular }}</span>
+                                                            </td>
+
+                                                        </tr>
+
+
+                                                    </table>
+
+                                                </div>
+                                            </div>
+                                            <mat-divider></mat-divider>
+
+
+                                            <div class="row mt-3">
+
+
+                                                <div class="col-6">
+                                                    <div class="form-group row">
+                                                        <div class="col-12">
+                                                            <input class="form-control" type="datetime-local"
+                                                                [(ngModel)]="dpCheckIn" disabled
+                                                                placeholder="Check-in" />
+
+                                                        </div>
+                                                        <label class="label-datepicket col-12 col-form-label"> check-in
+                                                            programado</label>
+                                                    </div>
+                                                </div>
+                                                <div class="col-6">
+                                                    <div class="form-group row">
+                                                        <div class="col-12">
+                                                            <input class="form-control" type="datetime-local"
+                                                                [(ngModel)]="dpCheckOut" disabled
+                                                                placeholder="Check-out" />
+                                                        </div>
+                                                        <label class="label-datepicket col-12 col-form-label"> check-out
+                                                            programado</label>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-12">
+
+                                                    <table style="width: 100%;">
+                                                        <tr *ngFor="let item of lstHabitacionEstancia">
+                                                            <td style="width: 60%;">{{ item.cNombreTipoHabitacion }} {{
+                                                                item.nNroHabitacion }} </td>
+                                                            <td style="width: 10%;"> </td>
+                                                            <td style="width: 25%;">
+
+                                                                <div class="form-group">
+
+                                                                    <div class="input-group">
+                                                                        <div class="input-group-prepend">
+
+                                                                            <span class="input-group-text">S/. </span>
+                                                                        </div>
+                                                                        <input type="number" class="form-control"
+                                                                            [disabled]="bReadOnly"
+                                                                            [(ngModel)]="item.nPrecioEstanciaHabitacion"
+                                                                            (ngModelChange)="calcularTotal()"
+                                                                            aria-label="Text input with checkbox" />
+
+                                                                    </div>
+                                                                </div>
+                                                            </td>
+                                                        </tr>
+                                                        <br>
+                                                        <tr>
+                                                            <td colspan="2"> <span class="fw-semibold"> Total
+                                                                    {{nTotalNochesReserva }} noche(s)</span>
+                                                            </td>
+                                                            <td>
+
+
+                                                                <div class="input-group">
+                                                                    <div class="input-group-prepend">
+
+                                                                        <span class="input-group-text">S/. </span>
+                                                                    </div>
+                                                                    <input type="number" class="form-control"
+                                                                        [value]="nTotalAPagar" disabled
+                                                                        aria-label="Text input with checkbox" />
+                                                                </div>
+                                                            </td>
+                                                        </tr>
+
+                                                    </table>
+
+
+                                                </div>
+                                            </div>
+
+                                            <!-- 
+                                            Lorem ipsum dolor sit amet consectetur, adipisicing elit. Eius magnam vitae rerum
+                                            animi necessitatibus accusantium saepe temporibus nobis tempore eaque, tenetur
+                                            minima quia esse minus illo exercitationem dolore assumenda deserunt! -->
+
+                                        </mat-expansion-panel>
+
+
+                                    </mat-accordion>
+                                </div>
+
+
+                            </div>
+
+
+                            <div class="col-6">
+                                <div class="mb-2">
+                                    <mat-accordion class="example-headers-align">
+                                        <mat-expansion-panel>
+                                            <mat-expansion-panel-header>
+                                                <mat-panel-title>
+                                                    Resumen de Pagos
+                                                </mat-panel-title>
+                                                <mat-panel-description>
+                                                    <span></span>
+                                                    <mat-icon>attach_money</mat-icon>
+                                                </mat-panel-description>
+                                            </mat-expansion-panel-header>
+
+                                            <button mat-raised-button color="primary" (click)="BotonAgregarPago()">
+                                                <mat-icon>add_circle_outline</mat-icon>
+                                                Pago</button>
+
+                                            <div id="kt_customers_table_wrapper"
+                                                class="dt-container dt-bootstrap5 dt-empty-footer">
+                                                <div class="table-responsive table-container">
+
+                                                    <table class="table align-middle table-row-dashed fs-6 gy-5 w-100"
+                                                        id="kt_customers_table">
+                                                        <colgroup>
+                                                            <col data-dt-column="0">
+                                                            <col data-dt-column="1">
+                                                            <col data-dt-column="2">
+                                                            <col data-dt-column="3">
+
+                                                        </colgroup>
+                                                        <thead>
+
+
+
+
+                                                            <tr
+                                                                class="text-start text-gray-500 fw-bold fs-7 text-uppercase gs-0">
+
+                                                                <th class="dt-orderable-asc dt-orderable-desc fixed-column"
+                                                                    data-dt-column="0" tabindex="0">
+                                                                    <span class="dt-column-title">N°</span>
+                                                                    <span class="dt-column-order"></span>
+                                                                </th>
+
+                                                                <!--  <th class="dt-orderable-asc dt-orderable-desc fixed-column"
+                                                                    data-dt-column="0" tabindex="0">
+                                                                    <span class="dt-column-title">NOMBRE</span>
+                                                                    <span class="dt-column-order"></span>
+                                                                </th> -->
+
+
+                                                                <th class="dt-orderable-asc dt-orderable-desc fixed-column"
+                                                                    data-dt-column="0" tabindex="0">
+                                                                    <span class="dt-column-title">FECHA PAGO</span>
+                                                                    <span class="dt-column-order"></span>
+                                                                </th>
+
+                                                                <th class="dt-orderable-asc dt-orderable-desc fixed-column"
+                                                                    data-dt-column="1" tabindex="0">
+                                                                    <span class="dt-column-title">TIPO</span>
+                                                                    <span class="dt-column-order"></span>
+                                                                </th>
+
+                                                                <th class="dt-orderable-asc dt-orderable-desc fixed-column"
+                                                                    data-dt-column="1" tabindex="0">
+                                                                    <span class="dt-column-title">MONTO</span>
+                                                                    <span class="dt-column-order"></span>
+                                                                </th>
+
+                                                                <th></th>
+                                                                <th class="dt-orderable-asc dt-orderable-desc fixed-column"
+                                                                    data-dt-column="1" tabindex="0">
+                                                                    <span class="dt-column-title"></span>
+                                                                    <span class="dt-column-order"></span>
+                                                                </th>
+
+
+
+
+
+
+
+                                                            </tr>
+                                                        </thead>
+
+
+                                                        <tbody>
+                                                            <tr *ngFor="let pago of lstPagos; let i = index">
+
+                                                                <td class="fixed-column">
+                                                                    <span class="  mb-1"> {{ i + 1 }}</span>
+
+                                                                </td>
+
+
+                                                                <!--  <td>
+                                                                    {{ pago.cNombreTitular }}
+
+                                                                </td> -->
+
+                                                                <td class="fixed-column">
+                                                                    <span class="mb-1">
+                                                                        {{ pago.dFechaPago | date:'dd/MM/yyyy HH:mm' }}
+                                                                    </span>
+
+
+                                                                </td>
+                                                                <td class="fixed-column">
+                                                                    <span class="  mb-1">
+
+
+                                                                        <span *ngIf="pago.nTipoPago == 1">PARCIAL</span>
+                                                                        <span *ngIf="pago.nTipoPago == 2">TOTAL</span>
+                                                                    </span>
+
+                                                                </td>
+                                                                <td class="fixed-column">
+                                                                    <span class="  mb-1">
+                                                                        {{ pago.nMontoPagado }}
+                                                                    </span>
+
+                                                                </td>
+
+                                                                <td></td>
+
+                                                                <td class="fixed-column">
+                                                                    <a href="" onclick="return false"
+                                                                        style="color: red; "
+                                                                        (click)="BotonRemoverPago(pago)"><mat-icon>remove_circle_outline</mat-icon></a>
+
+                                                                    <a href="" onclick="return false"
+                                                                        (click)="BotonVerDetallePago(pago)"><mat-icon>assignment</mat-icon></a>
+                                                                </td>
+
+                                                            </tr>
+                                                        </tbody>
+                                                    </table>
+
+
+
+                                                </div>
+                                            </div>
+
+
+
+                                        </mat-expansion-panel>
+
+
+                                    </mat-accordion>
+                                </div>
+
+                            </div>
+                        </div>
+
+                    </mat-step>
+                </mat-stepper>
+
+
+            </div>
+            <div class="modal-footer">
+
+                <button type="button" class="btn btn-secondary" data-dismiss="modal"
+                    (click)="dialogRef.close(false)">Cerrar</button>
+                <button type="button" class="btn btn-primary" (click)="BotonRegistrarIngreso()"
+                    *ngIf="nTipoRegistro.value === '1'">
+                    Registrar Ingreso
+                </button>
+                <button type="button" class="btn btn-primary" (click)="BotonReservar()"
+                    *ngIf="nTipoRegistro.value ==='2'">
+                    Reservar
+                </button>
+            </div>
+        </div>
+    </div>
+</div>

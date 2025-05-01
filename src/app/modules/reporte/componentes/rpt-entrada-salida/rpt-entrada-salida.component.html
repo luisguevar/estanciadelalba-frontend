@@ -1,0 +1,251 @@
+<div class="card p-4">
+    <!--begin::Card header-->
+
+
+    <div class="card-body pt-0">
+
+
+
+        <div class="row">
+
+            <div class="col-12 mb-5">
+
+                <div class="row">
+                    <div class="col-3">
+                        <div class="form-group">
+                            <select [(ngModel)]="filterTipoMotivimiento" class="form-control">
+                                <option value="0" disabled selected>Seleccionar un Movimiento</option>
+                                <option value="3">Todos</option>
+                                <option value="1">Check-in</option>
+                                <option value="2">Check-out</option>
+
+                            </select>
+
+                            <label class="label-datepicket col-12 col-form-label">Tipo Movimiento</label>
+
+                        </div>
+                    </div>
+
+
+                    <div class="col-3">
+                        <div class="form-group row">
+                            <div class="col-12">
+                                <input class="form-control" type="text" [(ngModel)]="filterDocumento"
+                                    placeholder="Documento Huésped" />
+                            </div>
+                            <label class="label-datepicket col-12 col-form-label">Documento Huésped</label>
+                        </div>
+                    </div>
+
+                    <div class="col-2">
+                        <div class="form-group row">
+                            <div class="col-12">
+                                <input class="form-control" type="date" [(ngModel)]="filterDesde" placeholder="Desde" />
+                            </div>
+                            <label class="label-datepicket col-12 col-form-label">Buscar desde</label>
+                        </div>
+                    </div>
+
+                    <div class="col-2">
+                        <div class="form-group row">
+                            <div class="col-12">
+                                <input class="form-control" type="date" [(ngModel)]="filterHasta" placeholder="Hasta" />
+                            </div>
+                            <label class="label-datepicket col-12 col-form-label">Buscar hasta</label>
+                        </div>
+                    </div>
+
+                    <div class="col-2 mt-1">
+                        <button mat-raised-button color="primary" class="mr-2 me-2" (click)="LoadData()">
+                            <mat-icon>search</mat-icon> Listar
+                        </button>
+
+
+
+                    </div>
+
+                    <div class="col-4">
+                        <div class="form-group">
+                            <select [(ngModel)]="filterUsuarioResponsable" class="form-control">
+
+                                <option value="-1" disabled selected>Seleccionar Usuario Responsable</option>
+                                <option value="0">Todos</option>
+                                <ng-container *ngFor="let user of lstUsuarios">
+                                    <option [value]="user.id">({{user.dni}}) {{user.name}}</option>
+                                </ng-container>
+
+
+                            </select>
+
+                            <label class="label-datepicket col-12 col-form-label">Usuario Responsable</label>
+
+                        </div>
+                    </div>
+
+
+
+
+                </div>
+
+            </div>
+            <br>
+            <div class="col-12 mt-2">
+                <div id="kt_customers_table_wrapper" class="dt-container dt-bootstrap5 dt-empty-footer">
+                    <div class="table-responsive table-container">
+
+                        <table class="table align-middle table-row-dashed fs-6 gy-5 w-100" id="kt_customers_table">
+                            <colgroup>
+                                <col data-dt-column="0">
+                                <col data-dt-column="1">
+                                <col data-dt-column="2">
+                                <col data-dt-column="3">
+                                <col data-dt-column="4">
+                                <col data-dt-column="5">
+                                <col data-dt-column="6">
+                                <col data-dt-column="7">
+                            </colgroup>
+                            <thead>
+
+
+
+
+                                <tr class="text-start text-gray-500 fw-bold fs-7 text-uppercase gs-0">
+
+                                    <th class="dt-orderable-asc dt-orderable-desc fixed-column" data-dt-column="0"
+                                        tabindex="0">
+                                        <span class="dt-column-title">N°</span>
+                                        <span class="dt-column-order"></span>
+                                    </th>
+
+
+                                    <th class="dt-orderable-asc dt-orderable-desc fixed-column" data-dt-column="0"
+                                        tabindex="0">
+                                        <span class="dt-column-title">TIPO MOVIMIENTO</span>
+                                        <span class="dt-column-order"></span>
+                                    </th>
+
+                                    <th class="dt-orderable-asc dt-orderable-desc fixed-column" data-dt-column="1"
+                                        tabindex="0">
+                                        <span class="dt-column-title">FECHA</span>
+                                        <span class="dt-column-order"></span>
+                                    </th>
+
+                                    <th class="dt-orderable-asc dt-orderable-desc fixed-column" data-dt-column="2"
+                                        tabindex="0">
+                                        <span class="dt-column-title">HABITACIÓN</span>
+                                        <span class="dt-column-order"></span>
+                                    </th>
+                                    <th class="dt-orderable-asc dt-orderable-desc fixed-column" data-dt-column="3"
+                                        tabindex="0">
+                                        <span class="dt-column-title">HUÉSPED RESPONSABLE</span>
+                                        <span class="dt-column-order"></span>
+                                    </th>
+                                    <th class="dt-orderable-asc dt-orderable-desc fixed-column" data-dt-column="4"
+                                        tabindex="0">
+                                        <span class="dt-column-title">N° HUÉSPEDES</span>
+                                        <span class="dt-column-order"></span>
+                                    </th>
+
+
+                                    <th class="dt-orderable-asc dt-orderable-desc fixed-column" data-dt-column="6"
+                                        tabindex="0">
+                                        <span class="dt-column-title">MONTO PAGADO</span>
+                                        <span class="dt-column-order"></span>
+                                    </th>
+
+                                    <th class="dt-orderable-asc dt-orderable-desc fixed-column" data-dt-column="6"
+                                        tabindex="0">
+                                        <span class="dt-column-title">MONTO A PAGAR</span>
+                                        <span class="dt-column-order"></span>
+                                    </th>
+
+
+                                    <th class="dt-orderable-asc dt-orderable-desc fixed-column" data-dt-column="7"
+                                        tabindex="0">
+                                        <span class="dt-column-title">USUARIO RESPONSABLE</span>
+                                        <span class="dt-column-order"></span>
+                                    </th>
+
+
+                                </tr>
+                            </thead>
+
+
+                            <tbody class="fw-semibold text-gray-600">
+                                <tr *ngFor="let registro of lstRegistros  | slice:desde:hasta; let i = index">
+
+                                    <td class="fixed-column">
+                                        <span class="text-gray-600  mb-1">{{i + 1 + desde }}</span>
+
+                                    </td>
+
+
+                                    <td class="fixed-column">
+                                        <span class="text-gray-600  mb-1">{{ registro.cTipoMovimiento }}</span>
+
+                                    </td>
+
+                                    <td class="fixed-column">
+                                        <span class="text-gray-600  mb-1"> {{ registro.dFechaMovimiento}}</span>
+
+                                    </td>
+                                    <td class="fixed-column">
+                                        <span class="text-gray-600  mb-1">{{ registro.cNroHabitacion }}</span>
+
+                                    </td>
+                                    <td class="fixed-column">
+                                        <span class="text-gray-600  mb-1">{{ registro.cHuespedResponsable }}</span>
+
+                                    </td>
+                                    <td class="fixed-column">
+                                        <span class="text-gray-600  mb-1">{{ registro.nNroHuespedes }}</span>
+
+                                    </td>
+
+                                    <td class="fixed-column">
+                                        <span class="text-gray-600  mb-1">S/. {{ registro.nMontoPagado }}</span>
+
+                                    </td>
+
+                                    <td class="fixed-column">
+                                        <span class="text-gray-600  mb-1">S/. {{ registro.nMontoPagar }}</span>
+
+                                    </td>
+
+                                    <td class="fixed-column">
+                                        <span class="text-gray-600  mb-1">{{ registro.cUsuarioResponsable }}</span>
+
+                                    </td>
+
+
+
+                                </tr>
+                            </tbody>
+                        </table>
+
+
+                        <mat-paginator [length]="lstRegistros.length" [pageSize]="pageSize"
+                            (page)="cambiarPagina($event)">
+                        </mat-paginator>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="row" *ngIf="lstRegistros.length>0">
+            <div class="col-12 mb-5" style="display: flex; justify-content: end;">
+                <button [disabled]="bLoading" (click)="BotonExportarExcel()" style="background-color: green;"
+                    mat-raised-button color="primary" class="mr-2 me-2">
+                    <mat-icon>archive</mat-icon> Excel
+                </button>
+
+                <button [disabled]="isLoading$ | async" (click)="BotonDescargarPDF()" style="background-color: red;"
+                    mat-raised-button color="primary" class="mr-2 me-2">
+                    <mat-icon>archive</mat-icon> PDF
+                </button>
+            </div>
+        </div>
+
+    </div>
+</div>

@@ -1,0 +1,62 @@
+<div class="modal  d-block" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Check-in</h5>
+                <!-- <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <i aria-hidden="true" class="ki ki-close"></i>
+                </button> -->
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-6">
+                        <div class="form-group row">
+                            <div class="col-12">
+                                <input class="form-control" type="datetime-local" disabled [(ngModel)]="dpCheckIn"
+                                    placeholder="Check-in" />
+
+                            </div>
+                            <label class="label-datepicket col-12 col-form-label"> check-in (programado para {{
+                                FechaCheckInProgramado }} )
+                            </label>
+                        </div>
+                    </div>
+                    <div class="col-6">
+                        <div class="form-group row">
+                            <div class="col-12">
+                                <input class="form-control" type="datetime-local" disabled [(ngModel)]="dpCheckOut"
+                                    placeholder="Check-out" />
+                            </div>
+                            <label class="label-datepicket col-12 col-form-label"> check-out
+                                programado</label>
+                        </div>
+                    </div>
+
+                    <div class="col-12">
+                        <div class="form-group row">
+                            <div class="col-12">
+                                <select class="form-control" [(ngModel)]="huesped_id">
+                                    <option value="0" disabled selected>Seleccionar un huésped</option>
+                                    <ng-container *ngFor="let huesped of lstHuespedes">
+                                        <option  [value]="huesped.id"> {{huesped.cNroDocumento}} - {{huesped.cNombres}}
+                                            {{huesped.cApellidos}}
+                                        </option>
+                                    </ng-container>
+
+
+                                </select>
+                            </div>
+                            <label class="label-datepicket col-12 col-form-label">Huésped
+                                responsable</label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal"
+                    (click)="dialogRef.close(false)">Cancelar</button>
+                <button type="button" class="btn btn-primary" (click)="BotonGuardar()">Aceptar</button>
+            </div>
+        </div>
+    </div>
+</div>

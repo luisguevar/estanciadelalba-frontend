@@ -1,0 +1,320 @@
+<div class="card p-4">
+    <!--begin::Card header-->
+    <div class="card-header border-0 pt-6 p-4">
+        <!--begin::Card title-->
+        <div class="card-title">
+            <!--begin::Search-->
+            <div class="d-flex align-items-center position-relative my-1">
+                <b>LISTADO DE COMPROBANTES</b>
+                <span class="spinner-border spinner-border-sm align-middle ms-2" *ngIf="isLoading$ | async"></span>
+
+            </div>
+            <!--end::Search-->
+        </div>
+        <!--begin::Card title-->
+
+
+
+    </div>
+
+    <div class="card-body pt-0">
+
+
+        <div class="row">
+
+            <div class="col-12 mb-5">
+
+                <div class="row">
+                    <div class="col-3">
+                        <div class="form-group">
+                            <select [(ngModel)]="filterTipoMotivimiento" class="form-control">
+                                <option value="0" disabled selected>Seleccionar un Tipo</option>
+                                <option value="3">Todos</option>
+                                <option value="1">Factura</option>
+                                <option value="2">Boleta</option>
+
+                            </select>
+
+                            <label class="label-datepicket col-12 col-form-label">Tipo Comprobante</label>
+
+                        </div>
+                    </div>
+
+
+                    <div class="col-3">
+                        <div class="form-group row">
+                            <div class="col-12">
+                                <input class="form-control" type="text" [(ngModel)]="filterDocumento"
+                                    placeholder="Documento Cliente" />
+                            </div>
+                            <label class="label-datepicket col-12 col-form-label">Documento Cliente</label>
+                        </div>
+                    </div>
+
+                    <div class="col-2">
+                        <div class="form-group row">
+                            <div class="col-12">
+                                <input class="form-control" type="date" [(ngModel)]="filterDesde" placeholder="Desde" />
+                            </div>
+                            <label class="label-datepicket col-12 col-form-label">Buscar desde</label>
+                        </div>
+                    </div>
+
+                    <div class="col-2">
+                        <div class="form-group row">
+                            <div class="col-12">
+                                <input class="form-control" type="date" [(ngModel)]="filterHasta" placeholder="Hasta" />
+                            </div>
+                            <label class="label-datepicket col-12 col-form-label">Buscar hasta</label>
+                        </div>
+                    </div>
+
+                    <div class="col-2 mt-1">
+                        <button mat-raised-button color="primary" class="mr-2 me-2" (click)="LoadData()">
+                            <mat-icon>search</mat-icon> Listar
+                        </button>
+
+
+
+                    </div>
+
+                    <div class="col-4">
+                        <div class="form-group">
+                            <select [(ngModel)]="filterUsuarioResponsable" class="form-control">
+
+                                <option value="-1" disabled selected>Seleccionar Usuario Responsable</option>
+                                <option value="0">Todos</option>
+                                <ng-container *ngFor="let user of lstUsuarios">
+                                    <option [value]="user.id">({{user.dni}}) {{user.name}}</option>
+                                </ng-container>
+
+
+                            </select>
+
+                            <label class="label-datepicket col-12 col-form-label">Usuario Responsable</label>
+
+                        </div>
+                    </div>
+
+
+
+
+                </div>
+
+            </div>
+            <br>
+            <div class="col-12 mt-2">
+                <div id="kt_customers_table_wrapper" class="dt-container dt-bootstrap5 dt-empty-footer">
+                    <div class="table-responsive table-container">
+
+                        <table class="table align-middle table-row-dashed fs-6 gy-5 w-100" id="kt_customers_table">
+                            <colgroup>
+                                <col data-dt-column="0">
+                                <col data-dt-column="1">
+                                <col data-dt-column="2">
+                                <col data-dt-column="3">
+                                <col data-dt-column="4">
+                                <col data-dt-column="5">
+                                <col data-dt-column="6">
+                                <col data-dt-column="7">
+                            </colgroup>
+                            <thead>
+
+
+
+
+                                <tr class="text-start text-gray-500 fw-bold fs-7 text-uppercase gs-0">
+
+                                    <th class="dt-orderable-asc dt-orderable-desc fixed-column" data-dt-column="0"
+                                        tabindex="0">
+                                        <span class="dt-column-title">N°</span>
+                                        <span class="dt-column-order"></span>
+                                    </th>
+
+
+                                    <th class="dt-orderable-asc dt-orderable-desc fixed-column" data-dt-column="0"
+                                        tabindex="0">
+                                        <span class="dt-column-title">TIPO </span>
+                                        <span class="dt-column-order"></span>
+                                    </th>
+
+                                    <th class="dt-orderable-asc dt-orderable-desc fixed-column" data-dt-column="1"
+                                        tabindex="0">
+                                        <span class="dt-column-title">SERIE</span>
+                                        <span class="dt-column-order"></span>
+                                    </th>
+
+                                    <th class="dt-orderable-asc dt-orderable-desc fixed-column " data-dt-column="6"
+                                        tabindex="0">
+                                        <span class="dt-column-title">CLIENTE</span>
+                                        <span class="dt-column-order"></span>
+                                    </th>
+
+                                    <th class="dt-orderable-asc dt-orderable-desc fixed-column" data-dt-column="2"
+                                        tabindex="0">
+                                        <span class="dt-column-title">TOTAL</span>
+                                        <span class="dt-column-order"></span>
+                                    </th>
+                                    <th class="dt-orderable-asc dt-orderable-desc fixed-column" data-dt-column="2"
+                                        tabindex="0">
+                                        <span class="dt-column-title">SUNAT</span>
+                                        <span class="dt-column-order"></span>
+                                    </th>
+
+                                    <th class="dt-orderable-asc dt-orderable-desc fixed-column" data-dt-column="3"
+                                        tabindex="0">
+                                        <span class="dt-column-title">USUARIO RESPONSABLE</span>
+                                        <span class="dt-column-order"></span>
+                                    </th>
+                                    <th class="dt-orderable-asc dt-orderable-desc fixed-column" data-dt-column="3"
+                                        tabindex="0">
+                                        <span class="dt-column-title">FECHA CREACIÓN</span>
+                                        <span class="dt-column-order"></span>
+                                    </th>
+                                    <th class="dt-orderable-asc dt-orderable-desc fixed-column" data-dt-column="4"
+                                        tabindex="0">
+                                        <span class="dt-column-title">ENLACES</span>
+                                        <span class="dt-column-order"></span>
+                                    </th>
+
+
+
+
+
+
+
+
+                                </tr>
+                            </thead>
+
+
+                            <tbody class="fw-semibold text-gray-600">
+                                <tr *ngFor="let registro of lstRegistros  | slice:desde:hasta; let i = index">
+
+                                    <td class="fixed-column">
+                                        <span class="text-gray-600  mb-1">{{i + 1 + desde }}</span>
+
+                                    </td>
+
+
+                                    <td class="fixed-column">
+                                        <span class="text-gray-600  mb-1">
+
+                                            <span *ngIf="registro.nTipoComprobante === 1">Factura</span>
+
+                                            <span *ngIf="registro.nTipoComprobante === 2">Boleta</span>
+                                        </span>
+
+                                    </td>
+
+                                    <td class="fixed-column">
+                                        <span class="text-gray-600  mb-1"> {{ registro.cSerie}} -
+                                            {{registro.nNumero}}</span>
+
+                                    </td>
+
+
+
+                                    <td class="fixed-column">
+                                        <span class="text-gray-600  mb-1"> ({{registro.cClienteNroDocumento}} ) {{
+                                            registro.cClienteNombre }}</span>
+
+                                    </td>
+                                    <td class="fixed-column">
+                                        <span class="text-gray-600  mb-1">S/ {{ registro.cTotal }}</span>
+
+                                    </td>
+                                    <td class="fixed-column">
+                                        <div class="d-flex align-items-center gap-2">
+                                            <span *ngIf="registro.bAceptadaPorSunat"
+                                                class="badge badge-light-primary fs-8 fw-bolder mb-0">
+                                                Aceptada
+                                            </span>
+                                            <span *ngIf="!registro.bAceptadaPorSunat"
+                                                class="badge badge-light-warning fs-8 fw-bolder mb-0">
+                                                Pendiente
+                                            </span>
+
+                                            <a matTooltip="Refrescar Estado" href="#" onclick="return false"
+                                                (click)="BotonActualizarEstadoSunat(registro)"
+                                                class="d-flex align-items-center">
+                                                <mat-icon>refresh</mat-icon>
+                                            </a>
+                                        </div>
+                                    </td>
+
+
+
+
+                                    <td class="fixed-column">
+                                        <span class="text-gray-600  mb-1"> {{ registro.cUsuarioResponsable }}</span>
+
+                                    </td>
+                                    <td class="fixed-column">
+                                        <span class="text-gray-600  mb-1"> {{ registro.cFechaCreacion }}</span>
+
+                                    </td>
+
+                                    <td class="fixed-column w-25 w-150px">
+                                        <div class="d-flex">
+
+                                            <!-- PDF -->
+                                            <a *ngIf="registro.cEnlacePDF" [href]="registro.cEnlacePDF" target="_blank"
+                                                rel="noopener" style="text-decoration: none;">
+                                                <button mat-raised-button color="warn" class="mr-2 me-2">
+                                                    PDF
+                                                </button>
+                                            </a>
+
+                                            <!-- XML -->
+                                            <a *ngIf="registro.cEnlaceXML" [href]="registro.cEnlaceXML" target="_blank"
+                                                rel="noopener" style="text-decoration: none;">
+                                                <button mat-raised-button style="background-color: dodgerblue;"
+                                                    color="primary" class="mr-2 me-2">
+                                                    XML
+                                                </button>
+                                            </a>
+
+                                            <!-- CDR -->
+                                            <a *ngIf="registro.cEnlaceCDR" [href]="registro.cEnlaceCDR" target="_blank"
+                                                rel="noopener" style="text-decoration: none;">
+                                                <button mat-raised-button style="background-color: lightseagreen;"
+                                                    color="primary" class="mr-2 me-2">
+                                                    CDR
+                                                </button>
+                                            </a>
+
+                                        </div>
+
+
+
+
+                                    </td>
+
+
+
+
+
+
+                                </tr>
+                            </tbody>
+                        </table>
+
+
+                        <mat-paginator [length]="lstRegistros.length" [pageSize]="pageSize"
+                            (page)="cambiarPagina($event)">
+                        </mat-paginator>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+
+
+
+
+    </div>
+
+
+</div>

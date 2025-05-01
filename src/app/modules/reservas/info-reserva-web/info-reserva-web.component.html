@@ -1,0 +1,471 @@
+<div class="modal  d-block" tabindex="-1" role="dialog">
+    <div class="modal-dialog modal-dialog-centered modal-xl" role="document">
+        <div class="modal-content">
+            <div class="modal-header d-flex">
+                <h5 class="modal-title">Detalle de la Reserva - COD: {{ estancia.cNroReserva }} <span
+                        class="spinner-border spinner-border-sm align-middle ms-2" *ngIf="isLoading$ | async"></span>
+                </h5>
+
+
+            </div>
+            <div class="modal-body" *ngIf="!(isLoading$ | async)">
+                <div class="row mb-3">
+                    <div class="col-6">
+                        <div class="row">
+                            <div class="col-6">
+                                <div class="mb-2" style="display: flex;">
+                                    <button mat-raised-button color="primary"
+                                        (click)="BotonConfirmar(1)">Confirmar</button>
+                                    <button mat-raised-button color="warn" class="mx-2"
+                                        (click)="BotonConfirmar(5)">Rechazar</button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-12 p-5 mx-2">
+                            <div id="kt_customers_table_wrapper" class="dt-container dt-bootstrap5 dt-empty-footer">
+                                <div class="table-responsive table-container">
+
+                                    <table class="table align-middle table-row-dashed fs-6 gy-5 w-100"
+                                        id="kt_customers_table">
+                                        <colgroup>
+                                            <col data-dt-column="0">
+                                            <col data-dt-column="1">
+                                            <col data-dt-column="2">
+                                            <col data-dt-column="3">
+                                        </colgroup>
+                                        <thead>
+
+
+
+
+                                            <tr class="text-start text-gray-500 fw-bold fs-7 text-uppercase gs-0">
+
+                                                <th class="dt-orderable-asc dt-orderable-desc fixed-column"
+                                                    data-dt-column="0" tabindex="0">
+                                                    <span class="dt-column-title">N° </span>
+                                                    <span class="dt-column-order"></span>
+                                                </th>
+                                                <th class="dt-orderable-asc dt-orderable-desc fixed-column"
+                                                    data-dt-column="0" tabindex="0">
+                                                    <span class="dt-column-title">TIPO </span>
+                                                    <span class="dt-column-order"></span>
+                                                </th>
+
+                                                <th class="dt-orderable-asc dt-orderable-desc fixed-column"
+                                                    data-dt-column="0" tabindex="0">
+                                                    <span class="dt-column-title">DISPONIBILIDAD</span>
+                                                    <span class="dt-column-order"></span>
+                                                </th>
+
+                                                <th class="dt-orderable-asc dt-orderable-desc fixed-column"
+                                                    data-dt-column="0" tabindex="0">
+                                                    <span class="dt-column-title">VERIFICAR</span>
+                                                    <span class="dt-column-order"></span>
+                                                </th>
+
+
+
+
+                                            </tr>
+                                        </thead>
+
+
+                                        <tbody class="fw-semibold text-gray-600">
+                                            <tr *ngFor="let estancia of lstHabitaciones ">
+
+                                                <td class="fixed-column ">
+                                                    <span class="text-gray-600  mb-1"> {{ estancia.nNroHabitacion
+                                                        }}</span>
+
+                                                </td>
+
+                                                <td class="fixed-column ">
+                                                    <span class="text-gray-600  mb-1"> {{ estancia.cTipoHabitacion
+                                                        }}</span>
+
+                                                </td>
+
+                                                <td class="fixed-column">
+
+                                                    <span *ngIf=" estancia.cEstado == 'Pendiente'"
+                                                        class="badge badge-light fs-8 fw-bolder">
+                                                        Pendiente
+                                                    </span>
+
+                                                    <span *ngIf=" estancia.cEstado == 'Disponible'"
+                                                        class="badge badge-light-success fs-8 fw-bolder">
+                                                        Disponible
+                                                    </span>
+
+                                                    <span *ngIf=" estancia.cEstado == 'No Disponible'"
+                                                        class="badge badge-light-danger fs-8 fw-bolder">
+                                                        No Disponible
+                                                    </span>
+                                                </td>
+                                                <td class="fixed-column">
+                                                    <a href="#" onclick="return false"
+                                                        (click)="BotonVerificarDisponibilidad(estancia)">
+                                                        <mat-icon>refresh</mat-icon></a>
+                                                    <a href="#" onclick="return false"
+                                                        (click)="BotonAgregarHabitacion(estancia)">
+                                                        <mat-icon>compare_arrows</mat-icon></a>
+                                                    <!--  <mat-icon>compare_arrows</mat-icon> -->
+                                                    <!--  <a *ngIf="estancia.bAdicional" href="#" onclick="return false"
+                                                        (click)="BotonEliminar(estancia)">
+                                                        <mat-icon>delete</mat-icon></a> -->
+                                                </td>
+
+
+
+                                            </tr>
+                                        </tbody>
+                                    </table>
+
+
+
+                                </div>
+                            </div>
+                        </div>
+
+                        <!--  <div class="row">
+                            <div>
+                                <div style="display: flex; justify-content: end;">
+                                    <button mat-raised-button color="primary" (click)="BotonAgregarHabitacion()">
+                                        <mat-icon>add_circle_outline</mat-icon>
+                                        Habitación</button>
+                                </div>
+                            </div>
+                        </div> -->
+
+
+
+                    </div>
+
+                    <div class="col-6">
+                        <div class="mb-2">
+                            <mat-accordion class="example-headers-align">
+                                <mat-expansion-panel expanded>
+                                    <mat-expansion-panel-header>
+                                        <mat-panel-title>
+                                            Resumen de Reserva
+                                        </mat-panel-title>
+                                        <mat-panel-description>
+                                            <span></span>
+                                            <mat-icon>assignment</mat-icon>
+                                        </mat-panel-description>
+                                    </mat-expansion-panel-header>
+
+
+
+                                    <div class="row mb-3 mt-3">
+                                        <div class="col-12">
+
+                                            <table style="width: 100%;">
+
+                                                <tr>
+                                                    <td colspan="1"> <span class="fw-semibold"> Titular: </span>
+                                                        <span>{{ estancia.cNombres }} {{ estancia.cApellidos }}</span>
+                                                    </td>
+
+                                                    <td colspan="1"> <span class="fw-semibold"> Correo: </span>
+                                                        <span>{{ estancia.cCorreo }}</span>
+                                                    </td>
+
+                                                </tr>
+                                                <tr>
+                                                    <td colspan="1"> <span class="fw-semibold"> Nro Documento:
+                                                        </span>
+                                                        <span>{{ estancia.cNroDocumenoTitular }}</span>
+                                                    </td>
+
+                                                    <td colspan="1"> <span class="fw-semibold"> Celular Contacto:
+                                                        </span>
+                                                        <span>{{ estancia.cNroCelular }}</span>
+                                                    </td>
+
+                                                </tr>
+
+
+                                            </table>
+
+                                        </div>
+                                    </div>
+                                    <mat-divider></mat-divider>
+
+
+                                    <div class="row mt-3">
+
+
+                                        <div class="col-6">
+                                            <div class="form-group row">
+                                                <div class="col-12">
+                                                    <input class="form-control" type="datetime-local"
+                                                        [(ngModel)]="dpCheckIn" disabled placeholder="Check-in" />
+
+                                                </div>
+                                                <label class="label-datepicket col-12 col-form-label"> check-in
+                                                    programado</label>
+                                            </div>
+                                        </div>
+                                        <div class="col-6">
+                                            <div class="form-group row">
+                                                <div class="col-12">
+                                                    <input class="form-control" type="datetime-local"
+                                                        [(ngModel)]="dpCheckOut" disabled placeholder="Check-out" />
+                                                </div>
+                                                <label class="label-datepicket col-12 col-form-label"> check-out
+                                                    programado</label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-12">
+
+                                            <table style="width: 100%;">
+                                                <tr *ngFor="let item of lstHabitacionesRESERVA">
+                                                    <td style="width: 60%;">{{ item.cTipoHabitacion }} {{
+                                                        item.nNroHabitacion }} </td>
+                                                    <td style="width: 15%;">
+                                                        <span *ngIf="item.cEstado == 'Disponible'"
+                                                            style="color: green;">
+                                                            <mat-icon>check_circle</mat-icon>
+                                                        </span>
+                                                        <span *ngIf="item.cEstado == 'No Disponible'"
+                                                            style="color: red;">
+                                                            <mat-icon>error</mat-icon>
+                                                        </span>
+                                                    </td>
+
+                                                    <td style="width: 25%;">
+
+                                                        <div class="form-group">
+
+                                                            <div class="input-group">
+                                                                <div class="input-group-prepend">
+
+                                                                    <span class="input-group-text">S/. </span>
+                                                                </div>
+                                                                <input type="number" class="form-control"
+                                                                    [value]="item.nPrecioTotal" disabled
+                                                                    aria-label="Text input with checkbox" />
+                                                            </div>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                                <br>
+                                                <tr>
+                                                    <td colspan="2"> <span class="fw-semibold"> Total {{
+                                                            estancia.nTotalNochesReserva }} noche(s)</span>
+                                                    </td>
+                                                    <td>
+
+
+                                                        <div class="input-group">
+                                                            <div class="input-group-prepend">
+
+                                                                <span class="input-group-text">S/. </span>
+                                                            </div>
+                                                            <input type="number" class="form-control"
+                                                                [value]="estancia.nTotalAPagar" disabled
+                                                                aria-label="Text input with checkbox" />
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td colspan="2"> <span class="fw-semibold"> Total {{
+                                                            estancia.nTotalNochesReserva }} noche(s) confirmadas</span>
+                                                    </td>
+                                                    <td>
+
+
+                                                        <div class="input-group">
+                                                            <div class="input-group-prepend">
+
+                                                                <span class="input-group-text">S/. </span>
+                                                            </div>
+                                                            <input type="number" class="form-control"
+                                                                [value]="nTotalConfirmado" disabled
+                                                                aria-label="Text input with checkbox" />
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                            </table>
+
+
+                                        </div>
+                                    </div>
+
+                                    <!-- 
+                                    Lorem ipsum dolor sit amet consectetur, adipisicing elit. Eius magnam vitae rerum
+                                    animi necessitatibus accusantium saepe temporibus nobis tempore eaque, tenetur
+                                    minima quia esse minus illo exercitationem dolore assumenda deserunt! -->
+
+                                </mat-expansion-panel>
+
+
+                            </mat-accordion>
+                        </div>
+
+                        <div class="mb-2">
+                            <mat-accordion class="example-headers-align">
+                                <mat-expansion-panel>
+                                    <mat-expansion-panel-header>
+                                        <mat-panel-title>
+                                            Resumen de Pagos
+                                        </mat-panel-title>
+                                        <mat-panel-description>
+                                            <span></span>
+                                            <mat-icon>attach_money</mat-icon>
+                                        </mat-panel-description>
+                                    </mat-expansion-panel-header>
+
+                                    <!--  <button mat-raised-button color="primary" (click)="BotonAgregarPago()">
+                                        <mat-icon>add_circle_outline</mat-icon>
+                                        Pago</button> -->
+
+                                    <div id="kt_customers_table_wrapper"
+                                        class="dt-container dt-bootstrap5 dt-empty-footer">
+                                        <div class="table-responsive table-container">
+
+                                            <table class="table align-middle table-row-dashed fs-6 gy-5 w-100"
+                                                id="kt_customers_table">
+                                                <colgroup>
+                                                    <col data-dt-column="0">
+                                                    <col data-dt-column="1">
+                                                    <col data-dt-column="2">
+                                                    <col data-dt-column="3">
+
+                                                </colgroup>
+                                                <thead>
+
+
+
+
+                                                    <tr
+                                                        class="text-start text-gray-500 fw-bold fs-7 text-uppercase gs-0">
+
+                                                        <th class="dt-orderable-asc dt-orderable-desc fixed-column"
+                                                            data-dt-column="0" tabindex="0">
+                                                            <span class="dt-column-title">N°</span>
+                                                            <span class="dt-column-order"></span>
+                                                        </th>
+
+                                                        <!-- <th class="dt-orderable-asc dt-orderable-desc fixed-column"
+                                                            data-dt-column="0" tabindex="0">
+                                                            <span class="dt-column-title">NOMBRE</span>
+                                                            <span class="dt-column-order"></span>
+                                                        </th> -->
+
+
+                                                        <th class="dt-orderable-asc dt-orderable-desc fixed-column"
+                                                            data-dt-column="0" tabindex="0">
+                                                            <span class="dt-column-title">FECHA PAGO</span>
+                                                            <span class="dt-column-order"></span>
+                                                        </th>
+
+                                                        <th class="dt-orderable-asc dt-orderable-desc fixed-column"
+                                                            data-dt-column="1" tabindex="0">
+                                                            <span class="dt-column-title">TIPO</span>
+                                                            <span class="dt-column-order"></span>
+                                                        </th>
+
+                                                        <th class="dt-orderable-asc dt-orderable-desc fixed-column"
+                                                            data-dt-column="1" tabindex="0">
+                                                            <span class="dt-column-title">MONTO</span>
+                                                            <span class="dt-column-order"></span>
+                                                        </th>
+
+                                                        <th></th>
+                                                        <th class="dt-orderable-asc dt-orderable-desc fixed-column"
+                                                            data-dt-column="1" tabindex="0">
+                                                            <span class="dt-column-title"></span>
+                                                            <span class="dt-column-order"></span>
+                                                        </th>
+
+
+
+
+
+
+
+                                                    </tr>
+                                                </thead>
+
+
+                                                <tbody>
+                                                    <tr *ngFor="let pago of lstPagos; let i = index">
+
+                                                        <td class="fixed-column">
+                                                            <span class="  mb-1"> {{ i + 1 }}</span>
+
+                                                        </td>
+
+
+                                                        <!--   <td>
+                                                            {{ pago.cNombreTitular }}
+
+                                                        </td> -->
+
+                                                        <td class="fixed-column">
+                                                            <span class="  mb-1">
+                                                                {{ pago.cFechaPago }}
+
+                                                            </span>
+
+                                                        </td>
+                                                        <td class="fixed-column">
+                                                            <span class="  mb-1">
+
+
+                                                                <span *ngIf="pago.nTipoPago == 1">PARCIAL</span>
+                                                                <span *ngIf="pago.nTipoPago == 2">TOTAL</span>
+                                                            </span>
+
+                                                        </td>
+                                                        <td class="fixed-column">
+                                                            <span class="  mb-1">
+                                                                {{ pago.nMontoPagado }}
+                                                            </span>
+
+                                                        </td>
+
+                                                        <td></td>
+
+                                                        <td class="fixed-column">
+                                                            <!--  <a href="" onclick="return false" style="color: red; "
+                                                                (click)="BotonUpdatePago(pago)"><mat-icon>remove_circle_outline</mat-icon></a> -->
+
+                                                            <a href="" onclick="return false"
+                                                                (click)="BotonVerDetallePago(pago)"><mat-icon>assignment</mat-icon></a>
+                                                        </td>
+
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+
+
+
+                                        </div>
+                                    </div>
+
+
+
+                                </mat-expansion-panel>
+
+
+                            </mat-accordion>
+                        </div>
+                    </div>
+                </div>
+
+
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal"
+                    (click)="dialogRef.close(false)">Cerrar</button>
+                <!--    <button type="button" class="btn btn-primary" (click)="BotonGuardar()">Guardar</button> -->
+            </div>
+        </div>
+    </div>
+</div>
