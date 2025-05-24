@@ -437,6 +437,16 @@ export class SvGeneralService {
     );
   }
 
+  putEstanciaHabitacion(estanciaHabitacionNueva: any): Observable<any> {
+    this.isLoadingSubject.next(true); // Si tienes un subject de loading
+    let headers = new HttpHeaders({ 'Authorization': 'Bearer ' + this.authservice.token });
+    let URL = URL_SERVICIOS + "/recepcion/putEstanciaHabitacion";
+
+    return this.http.put(URL, estanciaHabitacionNueva, { headers: headers }).pipe(
+      finalize(() => this.isLoadingSubject.next(false)) // Si tienes un subject de loading
+    );
+  }
+
 
   GetAllUsers(): Observable<any> {
     this.isLoadingSubject.next(true);

@@ -8,7 +8,7 @@
 
 
             </div>
-            <div class="modal-body" *ngIf="!(isLoading$ | async)">
+            <div class="modal-body">
 
 
                 <mat-stepper [linear]="isLinear" #stepper>
@@ -422,8 +422,13 @@
                                                     <div class="form-group row">
                                                         <div class="col-12">
                                                             <input class="form-control" type="datetime-local"
-                                                                [(ngModel)]="dpCheckOut" disabled
-                                                                placeholder="Check-out" />
+                                                                [(ngModel)]="dpCheckOut" [min]="dpCheckIn"
+                                                                [max]="maxFecha" placeholder="Check-out programado"
+                                                                (ngModelChange)="onDpCheckOutChange($event)"
+                                                                onkeydown="return false"
+                                                                style="caret-color: transparent;" />
+
+
                                                         </div>
                                                         <label class="label-datepicket col-12 col-form-label"> check-out
                                                             programado</label>

@@ -5,7 +5,7 @@ export class HabitacionEntity {
         public id?: number,
         public nNroHabitacion?: number,
         public cNombreTipo?: string,
-        public cNombreNivel?:string,
+        public cNombreNivel?: string,
         public tipoHabitacion_id?: number,
         public nEstado?: number,
         public lstServicios?: Array<ServicioEntity>,
@@ -28,11 +28,12 @@ export class HabitacionEntity {
         public lstPreciosPorTemporada?: Array<TemporadaEntity>,
         public lstPreciosPorTemporadaDelete?: Array<TemporadaEntity>,
         public bActivo?: boolean,
-        public cImagen?:string,
-        public nColorHabitacion?:number,
+        public cImagen?: string,
+        public nColorHabitacion?: number,
         public infoEstancia?: EstanciaEntity,
-        public cMotivoBloqueo?:string,
-        public nEstadoHabitacion?:number
+        public cMotivoBloqueo?: string,
+        public nEstadoHabitacion?: number,
+        public lstHorariosOcupados?: Array<HorarioOcupadoEntity>
 
     ) { }
 }
@@ -65,7 +66,7 @@ export class TipoHabitacionEntity {
         public lstTipoCamas?: Array<TipoHabitacionCamaEntity>,
         public nTotalPersonas?: number,
         public nTotalCamas?: number,
-        public nAforo?:number
+        public nAforo?: number
     ) { }
 }
 
@@ -93,6 +94,17 @@ export class TemporadaEntity {
         public lstTiposHabitaciones?: Array<any>,
         public lstNiveles?: Array<any>,
         public nTipoAsignacion?: number,
+    ) {
+
+    }
+}
+
+
+export class HorarioOcupadoEntity {
+    constructor(
+        public id?: number,
+        public dFechaCheckIn?: string,
+        public dFechaCheckOut?: string,
     ) {
 
     }

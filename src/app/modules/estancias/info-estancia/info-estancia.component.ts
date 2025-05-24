@@ -27,7 +27,7 @@ export class InfoEstanciaComponent {
 
   dpCheckIn: string = '';
   dpCheckOut: string = '';
-
+  dpCheckOutTemporal: string = '';
   //----------------------------------------
   // para obtencion de niveles disponibles
 
@@ -49,6 +49,10 @@ export class InfoEstanciaComponent {
   lstNivelesDisponibles: NivelHabitacionEntity[] = [];
 
   bDisabled: boolean = false;
+  maxFecha: string = '';
+  bActualizar: boolean = false;
+
+  bReadOnly: boolean = false;
 
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: any,
@@ -65,6 +69,10 @@ export class InfoEstanciaComponent {
     this.dpCheckInFilter = this.data.dpCheckInFilter;
     this.dpCheckOutFilter = this.data.dpCheckOutFilter;
     this.bDisabled = this.data.bDisabled;
+
+    if (_auth.user?.rol_id != 1) {
+      this.bReadOnly = true;
+    }
   }
 
   ngOnInit(): void {
@@ -81,7 +89,7 @@ export class InfoEstanciaComponent {
   }
 
   ObtenerEstanciaPorId(id: number) {
-
+    this.bActualizar = false;
     this._service.GetEstanciaById(id).subscribe((resp: any) => {
 
       if (resp.success) {
@@ -94,8 +102,10 @@ export class InfoEstanciaComponent {
 
         if (!this.estancia.dFechaCheckOut) {
           this.dpCheckOut = this.estancia.dFechaCheckOutProgramado || '';
+          this.dpCheckOutTemporal = this.estancia.dFechaCheckOutProgramado || '';
         } else {
           this.dpCheckOut = this.estancia.dFechaCheckOut || '';
+          this.dpCheckOutTemporal = this.estancia.dFechaCheckOut || '';
         }
         this.lstHabitacionEstancia = resp.lstHabitacionEstancia || [];  // Asegúrate de que lstEstancias sea un arreglo, incluso si es vacío.
         this.firstActiveIndex = this.lstHabitacionEstancia.findIndex(item => item.nEstado === 1);
@@ -413,7 +423,7 @@ export class InfoEstanciaComponent {
 
 
   ObtenerNiveles() {
-   
+
     if (this.dpCheckInFilter && this.dpCheckOutFilter) {
       console.log('dpCheckInFilter: ', this.dpCheckInFilter);
       console.log('dpCheckOutFilter: ', this.dpCheckOutFilter);
@@ -520,52 +530,108 @@ export class InfoEstanciaComponent {
     dialogRef.afterClosed().subscribe((result: HabitacionEntity) => {
       if (result) {
         console.log('result', result);
+        this.bActualizar = true;
 
         const estanciaHabitacionNueva = new EstanciaHabitacionEntity();
+        estanciaHabitacionNueva.id = 0;
         estanciaHabitacionNueva.estancia_id = this.estancia_id;
         estanciaHabitacionNueva.habitacion_id = result.id;
         estanciaHabitacionNueva.nPrecioEstanciaHabitacion = result.nPrecioTotal;
+        estanciaHabitacionNueva.nNroHabitacion = result.nNroHabitacion;
+        estanciaHabitacionNueva.cNombreTipoHabitacion = result.cNombreTipoHabitacion;
+        estanciaHabitacionNueva.nEstado = 1;
 
-
-        this._service.postEstanciaHabitacion(estanciaHabitacionNueva).subscribe(
-          (resp: any) => {
-            if (resp.success) {
-              this.toaster.success('Agregar Habitación', 'Se guardaron los cambios.');
-              this.ObtenerEstanciaPorId(this.estancia_id);
-
-
-            } else {
-              this.toaster.error('Agregar Habitación', 'Error al guardar los cambios.');
-              this.ObtenerEstanciaPorId(this.estancia_id);
-
-            }
-          },
-          (error: any) => {
-            if (error.status === 400) {
-              this.toaster.error('Agregar Habitación', error.error.message);
-              this.ObtenerEstanciaPorId(this.estancia_id);
-
-            } else {
-              this.toaster.error('Agregar Habitación', 'Error al guardar los cambios.');
-              this.ObtenerEstanciaPorId(this.estancia_id);
-
-            }
-          }
-        );
-
-        // habitacion.habitacion_id = result.id;
-        // habitacion.nNroHabitacion = result.nNroHabitacion;
-        // habitacion.cEstado = 'Pendiente';
-        // habitacion.cTipoHabitacion = result.cNombreTipoHabitacion;
-        // habitacion.nPrecioTotal = result.nPrecioTotal;
-        // this.lstHabitacionesRESERVA.push(habitacion);
-
-        // this.nTotalConfirmado = 0;
-        // this.nTotalConfirmado = this.lstHabitacionesRESERVA
-        //   .filter(x => x.cEstado == 'Disponible')
-        //   .reduce((sum, habitacion) => sum + (habitacion.nPrecioTotal || 0), 0);
+        this.lstHabitacionEstancia.push(estanciaHabitacionNueva);
+        this.calcularTotal();
 
       }
     });
+  }
+
+  onDpCheckOutChange(nuevoValor: string) {
+
+
+    this.lstHabitacionEstancia.forEach(element => {
+
+      const id = element.habitacion_id;
+      this._service.GetBuscadorHabitacion(id || 0, this.dpCheckIn, nuevoValor).subscribe((resp: any) => {
+
+        if (resp.success) {
+          console.log('Respuesta: ', resp);
+          /*   this.nTotalNochesReserva = resp.habitacion.nTotalNoches; */
+          this.estancia.nTotalNoches = resp.habitacion.nTotalNoches;
+          element.nPrecioEstanciaHabitacion = resp.habitacion.nPrecioEstanciaHabitacion;
+          this.calcularTotal();
+
+        }
+      }, (error) => {
+        this.toaster.error('Recepción', 'No se cargó la información correctamente.')
+      });
+
+
+    });
+
+    this.bActualizar = true;
+  }
+
+  calcularTotal() {
+    this.nTotalAPagar = 0; // Reinicia el total antes de hacer el cálculo.
+    this.lstHabitacionEstancia.forEach(element => {
+      this.nTotalAPagar += element.nPrecioEstanciaHabitacion || 0;
+    });
+  }
+
+  BotonActualizar() {
+
+    const nroHabitaciones = this.lstHabitacionEstancia.length;
+
+    const estancia = new EstanciaEntity();
+    estancia.id = this.estancia.id;
+    estancia.nTotalHabitaciones = nroHabitaciones;
+    estancia.dFechaReservaCheckOut = this.dpCheckOut;
+
+    var nroHuespedes = 0;
+    this.lstHabitacionEstancia.forEach(element => {
+      if (element.lstHuespedes) {
+        nroHuespedes = element.lstHuespedes.length || 0;
+      } else {
+        nroHuespedes = 0
+      }
+
+      element.nTotalHuespedesHabitacion = nroHuespedes;
+    });
+
+    estancia.lstEstanciaHabitacion = this.lstHabitacionEstancia;
+
+
+
+    this._service.putEstanciaHabitacion(estancia).subscribe(
+      (resp: any) => {
+        if (resp.success) {
+          this.toaster.success('Agregar Habitación', 'Se guardaron los cambios.');
+          this.ObtenerEstanciaPorId(this.estancia_id);
+
+
+        } else {
+          this.toaster.error('Agregar Habitación', 'Error al guardar los cambios.');
+          this.ObtenerEstanciaPorId(this.estancia_id);
+
+        }
+      },
+      (error: any) => {
+        if (error.status === 400) {
+          this.toaster.error('Agregar Habitación', error.error.message);
+          this.ObtenerEstanciaPorId(this.estancia_id);
+
+        } else {
+          this.toaster.error('Agregar Habitación', 'Error al guardar los cambios.');
+          this.ObtenerEstanciaPorId(this.estancia_id);
+
+        }
+      }
+    );
+
+
+
   }
 }

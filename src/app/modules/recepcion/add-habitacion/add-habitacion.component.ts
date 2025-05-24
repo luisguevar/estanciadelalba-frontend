@@ -18,7 +18,7 @@ interface NivelPaginacion {
   styleUrls: ['./add-habitacion.component.scss']
 })
 export class AddHabitacionComponent {
-
+  isLoading$: any;
   lstNivelesDisponibles: NivelHabitacionEntity[] = [];
   lstHabitacionEstancia: EstanciaHabitacionEntity[] = [];
   paginacionPorNivel: { [nivelId: string]: NivelPaginacion } = {};
@@ -31,20 +31,19 @@ export class AddHabitacionComponent {
   /*  pageSize = 5;
    desde: number = 0;
    hasta: number = 5; */
-
+  lstNiveles: NivelHabitacionEntity[] = [];
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: any,
     public dialogRef: MatDialogRef<AddHabitacionComponent>,
     public toaster: ToastrService,
     public _service: SvGeneralService,
   ) {
-    this.lstNivelesDisponibles = this.data.lstNivelesDisponibles.map((nivel: NivelHabitacionEntity, index: number) => ({
+    /* this.lstNivelesDisponibles = this.data.lstNivelesDisponibles.map((nivel: NivelHabitacionEntity, index: number) => ({
       ...nivel,
       id: nivel.id || `nivel-${index}`, // Asigna un id si no existe
     }));
 
     this.habitacionesOcupadas = this.data.habitacionesOcupadas;
-    console.log('Habitaciones Disponibles: ', this.lstNivelesDisponibles);
 
     this.lstNivelesDisponibles.forEach(nivel => {
       if (nivel.lstHabitaciones && nivel.lstHabitaciones.length > 0) {
@@ -58,22 +57,29 @@ export class AddHabitacionComponent {
           }
         }
       }
-    });
+    }); */
 
 
 
     // Inicializar paginación para cada nivel
-    this.lstNivelesDisponibles.forEach((nivel) => {
-      this.paginacionPorNivel[nivel.id || 0] = {
-        desde: 0,
-        hasta: 5,
-        pageSize: 5,
-      };
-    });
-
+    /*  this.lstNivelesDisponibles.forEach((nivel) => {
+       this.paginacionPorNivel[nivel.id || 0] = {
+         desde: 0,
+         hasta: 5,
+         pageSize: 5,
+       };
+     });
+  */
     this.dpCheckIn = this.data.dpCheckIn;
     this.dpCheckOut = this.data.dpCheckOut;
     this.nTotalNochesReserva = this.data.nTotalNochesReserva;
+
+  }
+
+  ngOnInit(): void {
+    this.isLoading$ = this._service.isLoading$;
+    this.BuscarHabitaciones();
+
   }
 
   cambiarPagina(e: PageEvent, nivelId: number = 0) {
@@ -89,6 +95,45 @@ export class AddHabitacionComponent {
 
     this.dialogRef.close(habitacion);
   }
+
+  BuscarHabitaciones() {
+    this._service.GetRecepcion(this.dpCheckIn, this.dpCheckOut).subscribe((resp: any) => {
+      if (resp.success) {
+        this.lstNiveles = resp.lstNiveles;
+        this.lstNivelesDisponibles = [];
+
+        const lstFilteredNiveles: NivelHabitacionEntity[] = this.lstNiveles
+          .map((nivel: NivelHabitacionEntity) => {
+            const habitacionesDisponibles = nivel.lstHabitaciones?.filter(
+              (habitacion => (habitacion.nEstadoEstancia === 3 || habitacion.nEstadoEstancia === 4 || habitacion.nEstadoEstancia === 5 || habitacion.nEstadoEstancia === 0) && habitacion.nColorHabitacion === 5)
+            );
+
+
+            if (habitacionesDisponibles && habitacionesDisponibles.length > 0) {
+              return {
+                ...nivel,
+                lstHabitaciones: habitacionesDisponibles
+              } as NivelHabitacionEntity;
+            }
+            return null;
+          })
+          .filter((nivel): nivel is NivelHabitacionEntity => nivel !== null);
+
+
+        this.lstNivelesDisponibles = lstFilteredNiveles;
+
+        this.lstNivelesDisponibles.forEach((nivel) => {
+          this.paginacionPorNivel[nivel.id || 0] = {
+            desde: 0,
+            hasta: 5,
+            pageSize: 5,
+          };
+        });
+      }
+    });
+  }
+
+
 
 
 }

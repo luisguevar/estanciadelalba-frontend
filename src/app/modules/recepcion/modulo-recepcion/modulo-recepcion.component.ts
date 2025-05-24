@@ -38,13 +38,7 @@ export class ModuloRecepcionComponent {
   ngOnInit(): void {
     this.isLoading$ = this._service.isLoading$;
 
-    const ahoraPeru = moment().tz('America/Lima');
-
-    // Formatea para datetime-local (sin zona horaria)
-    this.dpFechaCheckIn = ahoraPeru.format('YYYY-MM-DDTHH:mm');
-
-    const mananaPeru = ahoraPeru.clone().add(24, 'hours');
-    this.dpFechaCheckOut = mananaPeru.format('YYYY-MM-DDTHH:mm');
+    this.EstablecerHoraPeru();
 
     this.LoadData();
   }
@@ -138,7 +132,7 @@ export class ModuloRecepcionComponent {
     );
 
     dialogRef.afterClosed().subscribe((result) => {
-
+      this.EstablecerHoraPeru();
       // if (result) {
       //   this.LoadData();
       //   this.cdr.detectChanges();
@@ -175,7 +169,7 @@ export class ModuloRecepcionComponent {
         this.LoadData();
         this.cdr.detectChanges();
       } */
-
+      this.EstablecerHoraPeru();
       this.LoadData();
       this.cdr.detectChanges();
 
@@ -206,7 +200,7 @@ export class ModuloRecepcionComponent {
          this.LoadData();
          this.cdr.detectChanges();
        } */
-
+      this.EstablecerHoraPeru();
       this.LoadData();
       this.cdr.detectChanges();
 
@@ -227,6 +221,15 @@ export class ModuloRecepcionComponent {
     }
   }
 
+  EstablecerHoraPeru() {
+    const ahoraPeru = moment().tz('America/Lima');
+
+    // Formatea para datetime-local (sin zona horaria)
+    this.dpFechaCheckIn = ahoraPeru.format('YYYY-MM-DDTHH:mm');
+
+    const mananaPeru = ahoraPeru.clone().add(24, 'hours');
+    this.dpFechaCheckOut = mananaPeru.format('YYYY-MM-DDTHH:mm');
+  }
 
 
 }

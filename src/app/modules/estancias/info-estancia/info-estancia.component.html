@@ -30,7 +30,7 @@
                     </span>
                 </h5>
             </div>
-            <div class="modal-body" *ngIf="!(isLoading$ | async)">
+            <div class="modal-body">
                 <div class="row mb-3">
                     <div class="mb-2" *ngIf="estancia.nEstado === 2">
 
@@ -279,8 +279,14 @@
                                         <div class="col-6">
                                             <div class="form-group row">
                                                 <div class="col-12">
+                                                    <!--  <input class="form-control" type="datetime-local"
+                                                        [(ngModel)]="dpCheckOut" disabled placeholder="Check-out" /> -->
+
                                                     <input class="form-control" type="datetime-local"
-                                                        [(ngModel)]="dpCheckOut" disabled placeholder="Check-out" />
+                                                        [(ngModel)]="dpCheckOut" [min]="dpCheckOutTemporal"
+                                                        [max]="maxFecha" placeholder="Check-out programado"
+                                                        (ngModelChange)="onDpCheckOutChange($event)"
+                                                        onkeydown="return false" style="caret-color: transparent;" />
                                                 </div>
                                                 <label *ngIf="estancia.nEstado === 2"
                                                     class="label-datepicket col-12 col-form-label"> check-out
@@ -371,7 +377,8 @@
                                         </mat-panel-description>
                                     </mat-expansion-panel-header>
 
-                                    <button mat-raised-button color="primary" (click)="BotonAgregarPago()">
+                                    <button *ngIf="!bReadOnly" mat-raised-button color="primary"
+                                        (click)="BotonAgregarPago()">
                                         <mat-icon>add_circle_outline</mat-icon>
                                         Pago</button>
 
@@ -484,7 +491,8 @@
                                                         <td></td>
 
                                                         <td class="fixed-column">
-                                                            <a href="" onclick="return false" style="color: red; "
+                                                            <a *ngIf="!bReadOnly" href="" onclick="return false"
+                                                                style="color: red; "
                                                                 (click)="BotonUpdatePago(pago)"><mat-icon>remove_circle_outline</mat-icon></a>
                                                             <a href="" onclick="return false"
                                                                 (click)="BotonVerDetallePago(pago)"><mat-icon>assignment</mat-icon></a>
@@ -515,7 +523,8 @@
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal"
                     (click)="dialogRef.close(false)">Cerrar</button>
-                <!--    <button type="button" class="btn btn-primary" (click)="BotonGuardar()">Guardar</button> -->
+                <button *ngIf="bActualizar" type="button" class="btn btn-primary"
+                    (click)="BotonActualizar()">Actualizar</button>
             </div>
         </div>
     </div>

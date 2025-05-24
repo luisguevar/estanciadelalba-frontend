@@ -9,7 +9,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatStepperModule } from '@angular/material/stepper';
 import { MatButtonModule } from '@angular/material/button';
 import { HuespedEntity } from 'src/app/models/HuespedEntity';
-import { HabitacionEntity } from 'src/app/models/TarifaHoteleraEntity';
+import { HabitacionEntity, HorarioOcupadoEntity } from 'src/app/models/TarifaHoteleraEntity';
 import { EstanciaEntity, EstanciaHabitacionEntity, EstanciaHabitacionHuespedEntity, PagoEntity } from 'src/app/models/EstanciaEntity';
 import { AddHuespedComponent } from '../add-huesped/add-huesped.component';
 import { NivelHabitacionEntity } from 'src/app/models/RecepcionEntity';
@@ -19,6 +19,7 @@ import { DetallePagoComponent } from '../../estancias/detalle-pago/detalle-pago.
 import { AddPagoRecepcionComponent } from '../add-pago-recepcion/add-pago-recepcion.component';
 import { AlertService } from '../../service/alert.service';
 import { AuthService } from '../../auth';
+import moment from 'moment';
 
 @Component({
   selector: 'app-registrar-ingreso-reserva',
@@ -77,6 +78,8 @@ export class RegistrarIngresoReservaComponent {
 
   bReadOnly: boolean = false;
 
+  maxFecha: string = '';
+  lstHorariosOcupados: HorarioOcupadoEntity[] = [];
 
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: any,
@@ -176,12 +179,32 @@ export class RegistrarIngresoReservaComponent {
         habitacion.nTotalNoches = result.nTotalNoches;
         habitacion.habitacion_id = result.habitacion_id;
         this.lstHabitacionEstancia.push(habitacion);
-
+        /* this.nTotalAPagar = 0;
         this.lstHabitacionEstancia.forEach(element => {
           this.nTotalAPagar += element.nPrecioEstanciaHabitacion || 0;
-        });
+        }); */
+        this.calcularTotal();
 
         this.nTotalNochesReserva = this.lstHabitacionEstancia[0].nTotalNoches || 0;
+
+
+        // Supongamos que lstHorariosOcupados es un array con objetos que tienen dFechaChekIn (string tipo ISO o compatible)
+        this.lstHorariosOcupados.push(...result.lstHorariosOcupados || []);
+
+        if (this.lstHorariosOcupados.length > 0) {
+          // Extraer fechas como timestamps
+          const timestamps = this.lstHorariosOcupados
+            .map(item => new Date(item.dFechaCheckIn || '').getTime())
+            .filter(time => !isNaN(time)); // filtrar fechas inválidas
+
+          if (timestamps.length > 0) {
+            const minTimestamp = Math.min(...timestamps);
+            const minDate = new Date(minTimestamp);
+
+            // Convertir al formato 'YYYY-MM-DDTHH:mm' para datetime-local
+            this.maxFecha = minDate.toISOString().slice(0, 16);
+          }
+        }
 
 
       }
@@ -394,10 +417,11 @@ export class RegistrarIngresoReservaComponent {
     estancia.nMontoPagado = nTotalPagado || 0;
     estancia.usuarioResponsable_id = this._auth.user.id || 0;
 
+    const ahoraPeru = moment().tz('America/Lima');
 
     this.alertService.showConfirmationAlert(
       "¿Está seguro?",
-      "Registrar Ingreso",
+      "Registrar Ingreso: " + ahoraPeru.format('YYYY-MM-DD HH:mm'),
       "Confirmar",
       "question"
     ).then((isConfirmed) => {
@@ -594,6 +618,31 @@ export class RegistrarIngresoReservaComponent {
       /*  if (result) {
          this.ObtenerEstanciaPorId(this.estancia_id);
        } */
+
+    });
+  }
+
+  onDpCheckOutChange(nuevoValor: string) {
+    console.log('Check-out cambió a:', nuevoValor);
+    console.log('Habitaciones: ', this.lstHabitacionEstancia);
+    // Aquí tu lógica a ejecutar cuando cambie el valor
+
+
+    this.lstHabitacionEstancia.forEach(element => {
+
+      const id = element.habitacion_id;
+      this._service.GetBuscadorHabitacion(id || 0, this.dpCheckIn, nuevoValor).subscribe((resp: any) => {
+
+        if (resp.success) {
+          console.log('Respuesta: ', resp);
+          this.nTotalNochesReserva = resp.habitacion.nTotalNoches;
+          element.nPrecioEstanciaHabitacion = resp.habitacion.nPrecioEstanciaHabitacion;
+          this.calcularTotal();
+        }
+      }, (error) => {
+        this.toaster.error('Recepción', 'No se cargó la información correctamente.')
+      });
+
 
     });
   }

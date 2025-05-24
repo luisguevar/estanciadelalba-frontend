@@ -3,7 +3,7 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title">Agregar Habitación </h5>
-                <!--  <span class="spinner-border spinner-border-sm align-middle ms-2"></span> -->
+                 <span class="spinner-border spinner-border-sm align-middle ms-2" *ngIf="isLoading$ | async"></span>
             </div>
             <div class="modal-body">
                 <div class="row">
