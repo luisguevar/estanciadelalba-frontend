@@ -1,27 +1,44 @@
-# Demo1
+# SISTEMA HOTELERO WEB PARA “ESTANCIA DEL ALBA”
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 13.x.x.
+Desarrollado por **Luis A. Guevara**
 
-## Development server
+---
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
+## 🔗 ENLACES DEL CÓDIGO FUENTE
 
-## Code scaffolding
+- **Frontend:** [https://github.com/luisguevar/estanciadelalba-frontend](https://github.com/luisguevar/estanciadelalba-frontend)
+- **Backend:** [https://github.com/luisguevar/estanciadelalba-backend](https://github.com/luisguevar/estanciadelalba-backend)
+- **Página Web:** [https://github.com/luisguevar/estanciadelalba-pagina-web](https://github.com/luisguevar/estanciadelalba-pagina-web)
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
+---
 
-## Build
+## 🚀 DESPLIEGUE
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory.
+### 🔸 Frontend
+- **Framework:** Angular CLI 16.1.0  
+- **Node:** v18.19.0  
+- **Gestor de paquetes:** npm 10.2.3  
+- **Sistema operativo:** Windows x64 (win32)
 
-## Running unit tests
+### 🔸 Backend
+- **Framework:** Laravel 10  
+- **PHP:** 8.2.26  
+- **Base de datos:** MySQL 9.1.0  
+- **Autenticación:** JWT
 
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
+### 🔸 Página Web
+- **Framework:** Laravel 10  
 
-## Running end-to-end tests
+---
 
-Run `ng e2e` to execute the end-to-end tests via a platform of your choice. To use this command, you need to first add a package that implements end-to-end testing capabilities.
+## 📚 DOCUMENTACIÓN (Con Autorización)
 
-## Further help
+[Acceder a la documentación](https://drive.google.com/drive/folders/1tbb_z8-x5PHaGEv0oFkF5k3uA55WJ3PF?usp=sharing)
 
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.io/cli) page.
+---
+
+## 👤 AUTOR
+
+**Luis A. Guevara**  
+Desarrollador Full Stack  
+GitHub: [@luisguevar](https://github.com/luisguevar)
