@@ -15,9 +15,9 @@ export class AgregarEstanciaComponent {
   isLoading$: any;
 
   lstEstancias: EstanciaEntity[] = [];
-  pageSize = 10;
+  pageSize = 5;
   desde: number = 0;
-  hasta: number = 10;
+  hasta: number = 5;
 
   filterNombres: string = '';
   filterNroHabitacion: string = '';
@@ -80,7 +80,11 @@ export class AgregarEstanciaComponent {
   }
 
   BotonSeleccionarEstancia(estancia: any) {
-
+    console.log('estancia: ', estancia);
+    console.log('estancia.lstHabitaciones: ', estancia.lstHabitaciones);
+   /*  array.forEach(element => {
+      
+    }); */
     this.dialogRef.close(estancia.lstHabitaciones);
 
   }

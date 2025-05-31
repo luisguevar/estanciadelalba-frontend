@@ -26,6 +26,7 @@ import { NgbModule, NgbModalModule, NgbDatepickerModule } from '@ng-bootstrap/ng
 import { InlineSVGModule } from 'ng-inline-svg-2';
 import { BuscarClienteComponent } from './componentes/buscar-cliente/buscar-cliente.component';
 import { AgregarEstanciaComponent } from './componentes/agregar-estancia/agregar-estancia.component';
+import { AgregarProductoComponent } from './componentes/agregar-producto/agregar-producto.component';
 
 
 @NgModule({
@@ -34,7 +35,8 @@ import { AgregarEstanciaComponent } from './componentes/agregar-estancia/agregar
     GenerarComprobanteComponent,
     ListarComprobantesComponent,
     BuscarClienteComponent,
-    AgregarEstanciaComponent
+    AgregarEstanciaComponent,
+    AgregarProductoComponent
   ],
   imports: [
     CommonModule,

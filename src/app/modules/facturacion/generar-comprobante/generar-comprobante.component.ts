@@ -6,6 +6,7 @@ import { BuscarClienteComponent } from '../componentes/buscar-cliente/buscar-cli
 import { AgregarEstanciaComponent } from '../componentes/agregar-estancia/agregar-estancia.component';
 import { AuthService } from '../../auth';
 import { AlertService } from '../../service/alert.service';
+import { AgregarProductoComponent } from '../componentes/agregar-producto/agregar-producto.component';
 
 @Component({
   selector: 'app-generar-comprobante',
@@ -25,7 +26,6 @@ export class GenerarComprobanteComponent {
   cDireccion: string = '';
   cCorreo: string = '';
   lstHabitaciones: any = [];
-
   cTotalGravada: string = '';
   cTotalIgv: string = '';
   cTotal: string = '';
@@ -217,6 +217,57 @@ export class GenerarComprobanteComponent {
   }
 
 
+  BotonBuscarProdcuto() {
+
+    const nCod = (this.lstHabitaciones?.filter((x: any) => x.cUnidadMedida === 'NIU').length || 0) + 1;
+
+
+    const dialogRef = this._dialog.open(
+      AgregarProductoComponent,
+      {
+        width: 'auto',
+        height: 'auto',
+        disableClose: true,
+        data: {
+          nCod: nCod
+        },
+      }
+    );
+
+    dialogRef.afterClosed().subscribe((result) => {
+      if (result) {
+        console.log('result: ', result);
+
+
+        // Si result es una lista de habitaciones, agregamos los elementos de la lista a lstHabitaciones
+        if (Array.isArray(result)) {
+          this.lstHabitaciones.push(...result);
+        } else {
+          // Si result es un solo elemento, lo agregamos directamente
+          this.lstHabitaciones.push(result);
+        }
+
+        console.log('lstHabitaciones: ', this.lstHabitaciones);
+
+        const nSumaSubTotal = this.lstHabitaciones.reduce((total: number, habitacion: { cSubTotal: string }) => {
+          const cSubTotal = parseFloat(habitacion.cSubTotal) || 0;
+          return total + cSubTotal;
+        }, 0);
+
+        const nGravada = nSumaSubTotal / 1.18;
+        const nIgv = nSumaSubTotal - nGravada;
+
+        this.cTotalGravada = nGravada.toFixed(2);
+        this.cTotalIgv = nIgv.toFixed(2);
+        this.cTotal = nSumaSubTotal.toFixed(2);
+
+
+
+
+        this.cdr.detectChanges();
+      }
+    });
+  }
   BotonBuscarEstancia() {
     const dialogRef = this._dialog.open(
       AgregarEstanciaComponent,
@@ -277,12 +328,25 @@ export class GenerarComprobanteComponent {
   }
 
 
+  BotonRemoverProducto(producto: any) {
+
+  }
 
   BotonRemoverHabitacion(habitacion: any) {
+    // Eliminar la habitación seleccionada
+    this.lstHabitaciones = this.lstHabitaciones.filter((x: any) => x !== habitacion);
 
-    this.lstHabitaciones = this.lstHabitaciones.filter((x: any) => x != habitacion);
-    const nSumaSubTotal = this.lstHabitaciones.reduce((total: number, habitacion: { cSubTotal: string }) => {
-      const cSubTotal = parseFloat(habitacion.cSubTotal) || 0;
+    // Si la habitación eliminada es de tipo 'NIU', reajustar los códigos
+    if (habitacion.cUnidadMedida === 'NIU') {
+      const habitacionesNIU = this.lstHabitaciones.filter((x: any) => x.cUnidadMedida === 'NIU');
+      habitacionesNIU.forEach((x: any, index: number) => {
+        x.cNroHabitacion = `P${(index + 1).toString().padStart(3, '0')}`;
+      });
+    }
+
+    // Calcular subtotal, gravada e IGV
+    const nSumaSubTotal = this.lstHabitaciones.reduce((total: number, h: { cSubTotal: string }) => {
+      const cSubTotal = parseFloat(h.cSubTotal) || 0;
       return total + cSubTotal;
     }, 0);
 
@@ -292,7 +356,6 @@ export class GenerarComprobanteComponent {
     this.cTotalGravada = nGravada.toFixed(2);
     this.cTotalIgv = nIgv.toFixed(2);
     this.cTotal = nSumaSubTotal.toFixed(2);
-
-
   }
+
 }

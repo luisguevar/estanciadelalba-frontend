@@ -377,7 +377,7 @@
                                         </mat-panel-description>
                                     </mat-expansion-panel-header>
 
-                                    <button *ngIf="!bReadOnly" mat-raised-button color="primary"
+                                    <button *ngIf="!bReadOnly || estancia.nEstado == 2 " mat-raised-button color="primary"
                                         (click)="BotonAgregarPago()">
                                         <mat-icon>add_circle_outline</mat-icon>
                                         Pago</button>

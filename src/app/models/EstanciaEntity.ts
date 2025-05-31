@@ -99,7 +99,9 @@ export class EstanciaHabitacionEntity {
         public nPrecioTotal?: number,
         public estanciaHabitacion_id?: number,
         public nEstado?: number,
-        public estancia_id?: number
+        public estancia_id?: number,
+        public nCantidad?:number,
+        public cUnidadMedida?:string,
 
     ) { }
 }

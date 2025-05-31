@@ -92,14 +92,166 @@
     <div class="card-body pt-0">
         <div class="row">
             <div class="col-12 text-end">
-                <button mat-raised-button (click)="BotonBuscarEstancia()">
-                    <mat-icon>add_circle</mat-icon> Agregar Estancia
-                </button>
+                <div class="d-inline-flex gap-2">
+                    <button mat-raised-button (click)="BotonBuscarEstancia()">
+                        <mat-icon>add_circle</mat-icon> Agregar Estancia
+                    </button>
+                    <button mat-raised-button (click)="BotonBuscarProdcuto()">
+                        <mat-icon>add_circle</mat-icon> Agregar Producto
+                    </button>
+                </div>
             </div>
         </div>
 
-        <div class="row">
-            <div class="col-12 mt-2">
+        <div class="card p-4 mt-4">
+            <div class="card-body pt-0">
+                <div class="row">
+                    <div class="col-12 mt-2">
+                        <div id="kt_customers_table_wrapper" class="dt-container dt-bootstrap5 dt-empty-footer">
+                            <div class="table-responsive table-container">
+
+                                <table class="table align-middle table-row-dashed fs-6 gy-5 w-100"
+                                    id="kt_customers_table">
+                                    <colgroup>
+                                        <col data-dt-column="0">
+                                        <col data-dt-column="1">
+                                        <col data-dt-column="2">
+                                        <col data-dt-column="3">
+                                        <col data-dt-column="4">
+                                        <col data-dt-column="5">
+                                        <col data-dt-column="6">
+                                        <col data-dt-column="7">
+                                        <col data-dt-column="8">
+                                    </colgroup>
+                                    <thead>
+
+
+
+
+                                        <tr class="text-start text-gray-500 fw-bold fs-7 text-uppercase gs-0">
+                                            <th class="dt-orderable-asc dt-orderable-desc fixed-column"
+                                                data-dt-column="0" tabindex="0">
+                                                <span class="dt-column-title">#</span>
+                                                <span class="dt-column-order"></span>
+                                            </th>
+
+                                            <th class="dt-orderable-asc dt-orderable-desc fixed-column"
+                                                data-dt-column="0" tabindex="0">
+                                                <span class="dt-column-title">DESCRIPCIÓN</span>
+                                                <span class="dt-column-order"></span>
+                                            </th>
+
+                                            <th class="dt-orderable-asc dt-orderable-desc fixed-column"
+                                                data-dt-column="0" tabindex="0">
+                                                <span class="dt-column-title">HABITACIÓN / COD</span>
+                                                <span class="dt-column-order"></span>
+                                            </th>
+                                            <th class="dt-orderable-asc dt-orderable-desc fixed-column"
+                                                data-dt-column="1" tabindex="0">
+                                                <span class="dt-column-title">FECHA ENTRADA</span>
+                                                <span class="dt-column-order"></span>
+                                            </th>
+
+                                            <th class="dt-orderable-asc dt-orderable-desc fixed-column"
+                                                data-dt-column="2" tabindex="0">
+                                                <span class="dt-column-title">FECHA SALIDA</span>
+                                                <span class="dt-column-order"></span>
+                                            </th>
+                                            <th class="dt-orderable-asc dt-orderable-desc fixed-column"
+                                                data-dt-column="3" tabindex="0">
+                                                <span class="dt-column-title">NOCHES</span>
+                                                <span class="dt-column-order"></span>
+                                            </th>
+                                            <th class="dt-orderable-asc dt-orderable-desc fixed-column"
+                                                data-dt-column="4" tabindex="0">
+                                                <span class="dt-column-title">SUB TOTAL</span>
+                                                <span class="dt-column-order"></span>
+                                            </th>
+
+                                            <th class="dt-orderable-asc dt-orderable-desc fixed-column"
+                                                data-dt-column="4" tabindex="0">
+                                                <span class="dt-column-title">REMOVER</span>
+                                                <span class="dt-column-order"></span>
+                                            </th>
+
+                                        </tr>
+                                    </thead>
+
+
+                                    <tbody class="fw-semibold text-gray-600">
+                                        <tr *ngFor="let habitacion of lstHabitaciones; let i = index ">
+
+                                            <td class="fixed-column">
+                                                <span class="text-gray-600  mb-1">{{i + 1}}
+                                                </span>
+
+                                            </td>
+
+
+                                            <td class="fixed-column">
+                                                <input type="text"
+                                                    class="w-550px text-gray-600 mb-1 border rounded px-2 py-1 w-full"
+                                                    [(ngModel)]="habitacion.cDescripcion" />
+                                                <br>
+
+                                                <span *ngIf="habitacion.cUnidadMedida === 'NIU'"> Cantidad:
+                                                </span><input *ngIf="habitacion.cUnidadMedida === 'NIU'" type="number"
+                                                    class="text-gray-600 mb-1 border rounded px-2 py-1 w-full"
+                                                    [(ngModel)]="habitacion.nCantidad" />
+                                            </td>
+
+                                            <td class="fixed-column">
+                                                <span class="text-gray-600  mb-1">{{ habitacion.cNroHabitacion }}
+                                                </span>
+
+                                            </td>
+
+                                            <td class="fixed-column">
+                                                <span class="text-gray-600  mb-1">{{ habitacion.cFechaEntrada }} </span>
+
+                                            </td>
+                                            <td class="fixed-column">
+                                                <span class="text-gray-600  mb-1">{{ habitacion.cFechaSalida }} </span>
+
+                                            </td>
+                                            <td class="fixed-column">
+                                                <span class="text-gray-600  mb-1">{{ habitacion.cNroNoches }} </span>
+
+                                            </td>
+                                            <td class="fixed-column">
+                                                S/ <input type="number"
+                                                    class="w-75 text-gray-600 mb-1 border rounded px-2 py-1 w-full"
+                                                    [(ngModel)]="habitacion.cSubTotal"
+                                                    (ngModelChange)="recalcularTotales()" />
+                                            </td>
+
+
+                                            <td class="fixed-column" *ngIf="!bCargando">
+                                                <a href="#" onclick="return false "
+                                                    (click)="BotonRemoverHabitacion(habitacion)"><mat-icon>delete</mat-icon></a>
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+
+
+
+                            </div>
+                        </div>
+                    </div>
+
+
+                </div>
+            </div>
+        </div>
+
+
+
+
+        <div style="display: flex; justify-content: end; width: 100%;">
+            <div class="col-12 w-250px">
                 <div id="kt_customers_table_wrapper" class="dt-container dt-bootstrap5 dt-empty-footer">
                     <div class="table-responsive table-container">
 
@@ -107,9 +259,7 @@
                             <colgroup>
                                 <col data-dt-column="0">
                                 <col data-dt-column="1">
-                                <col data-dt-column="2">
-                                <col data-dt-column="3">
-                                <col data-dt-column="4">
+
                             </colgroup>
                             <thead>
 
@@ -123,77 +273,55 @@
 
                                     <th class="dt-orderable-asc dt-orderable-desc fixed-column" data-dt-column="0"
                                         tabindex="0">
-                                        <span class="dt-column-title">HABITACIÓN</span>
-                                        <span class="dt-column-order"></span>
-                                    </th>
-                                    <th class="dt-orderable-asc dt-orderable-desc fixed-column" data-dt-column="1"
-                                        tabindex="0">
-                                        <span class="dt-column-title">FECHA ENTRADA</span>
+                                        <span class="dt-column-title"><b>RESUMEN</b></span>
                                         <span class="dt-column-order"></span>
                                     </th>
 
-                                    <th class="dt-orderable-asc dt-orderable-desc fixed-column" data-dt-column="2"
-                                        tabindex="0">
-                                        <span class="dt-column-title">FECHA SALIDA</span>
-                                        <span class="dt-column-order"></span>
-                                    </th>
-                                    <th class="dt-orderable-asc dt-orderable-desc fixed-column" data-dt-column="3"
-                                        tabindex="0">
-                                        <span class="dt-column-title">NOCHES</span>
-                                        <span class="dt-column-order"></span>
-                                    </th>
-                                    <th class="dt-orderable-asc dt-orderable-desc fixed-column" data-dt-column="4"
-                                        tabindex="0">
-                                        <span class="dt-column-title">SUB TOTAL</span>
-                                        <span class="dt-column-order"></span>
-                                    </th>
 
-                                    <th class="dt-orderable-asc dt-orderable-desc fixed-column" data-dt-column="4"
-                                        tabindex="0">
-                                        <span class="dt-column-title">REMOVER</span>
-                                        <span class="dt-column-order"></span>
-                                    </th>
+
 
                                 </tr>
                             </thead>
 
 
-                            <tbody class="fw-semibold text-gray-600">
-                                <tr *ngFor="let habitacion of lstHabitaciones ">
+                            <tbody class="fw-semibold text-gray-600" *ngIf="cTotal">
 
-
-
-
+                                <tr>
                                     <td class="fixed-column">
-                                        <span class="text-gray-600  mb-1">{{ habitacion.cNroHabitacion }} </span>
+                                        <span class="text-gray-600  mb-1">SUB TOTAL </span>
 
                                     </td>
 
-                                    <td class="fixed-column">
-                                        <span class="text-gray-600  mb-1">{{ habitacion.cFechaEntrada }} </span>
+                                    <td class="fixed-column ">
+                                        <span class="text-gray-600  mb-1">S/. {{cTotalGravada}} </span>
 
                                     </td>
-                                    <td class="fixed-column">
-                                        <span class="text-gray-600  mb-1">{{ habitacion.cFechaSalida }} </span>
-
-                                    </td>
-                                    <td class="fixed-column">
-                                        <span class="text-gray-600  mb-1">{{ habitacion.cNroNoches }} </span>
-
-                                    </td>
-                                    <td class="fixed-column">
-                                       S/ <input type="number" class="text-gray-600 mb-1 border rounded px-2 py-1 w-full"
-                                            [(ngModel)]="habitacion.cSubTotal" (ngModelChange)="recalcularTotales()" />
-                                    </td>
-
-
-                                    <td class="fixed-column" *ngIf="!bCargando">
-                                        <a href="#" onclick="return false "
-                                            (click)="BotonRemoverHabitacion(habitacion)"><mat-icon>delete</mat-icon></a>
-                                    </td>
-
-
                                 </tr>
+
+                                <tr>
+                                    <td class="fixed-column">
+                                        <span class="text-gray-600  mb-1">IGV </span>
+
+                                    </td>
+
+                                    <td class="fixed-column ">
+                                        <span class="text-gray-600  mb-1">S/. {{cTotalIgv}} </span>
+
+                                    </td>
+                                </tr>
+
+                                <tr>
+                                    <td class="fixed-column">
+                                        <span class="text-gray-600  mb-1"> TOTAL </span>
+
+                                    </td>
+
+                                    <td class="fixed-column ">
+                                        <span class="text-gray-600  mb-1">S/. {{cTotal}} </span>
+
+                                    </td>
+                                </tr>
+
                             </tbody>
                         </table>
 
@@ -202,90 +330,9 @@
                     </div>
                 </div>
             </div>
-
-            <div style="display: flex; justify-content: end; width: 100%;">
-                <div class="col-12 w-250px">
-                    <div id="kt_customers_table_wrapper" class="dt-container dt-bootstrap5 dt-empty-footer">
-                        <div class="table-responsive table-container">
-
-                            <table class="table align-middle table-row-dashed fs-6 gy-5 w-100" id="kt_customers_table">
-                                <colgroup>
-                                    <col data-dt-column="0">
-                                    <col data-dt-column="1">
-
-                                </colgroup>
-                                <thead>
-
-
-
-
-                                    <tr class="text-start text-gray-500 fw-bold fs-7 text-uppercase gs-0">
-
-
-
-
-                                        <th class="dt-orderable-asc dt-orderable-desc fixed-column" data-dt-column="0"
-                                            tabindex="0">
-                                            <span class="dt-column-title"><b>RESUMEN</b></span>
-                                            <span class="dt-column-order"></span>
-                                        </th>
-
-
-
-
-                                    </tr>
-                                </thead>
-
-
-                                <tbody class="fw-semibold text-gray-600" *ngIf="cTotal">
-
-                                    <tr>
-                                        <td class="fixed-column">
-                                            <span class="text-gray-600  mb-1">SUB TOTAL </span>
-
-                                        </td>
-
-                                        <td class="fixed-column ">
-                                            <span class="text-gray-600  mb-1">S/. {{cTotalGravada}} </span>
-
-                                        </td>
-                                    </tr>
-
-                                    <tr>
-                                        <td class="fixed-column">
-                                            <span class="text-gray-600  mb-1">IGV </span>
-
-                                        </td>
-
-                                        <td class="fixed-column ">
-                                            <span class="text-gray-600  mb-1">S/. {{cTotalIgv}} </span>
-
-                                        </td>
-                                    </tr>
-
-                                    <tr>
-                                        <td class="fixed-column">
-                                            <span class="text-gray-600  mb-1"> TOTAL </span>
-
-                                        </td>
-
-                                        <td class="fixed-column ">
-                                            <span class="text-gray-600  mb-1">S/. {{cTotal}} </span>
-
-                                        </td>
-                                    </tr>
-
-                                </tbody>
-                            </table>
-
-
-
-                        </div>
-                    </div>
-                </div>
-            </div>
-
         </div>
+
+
     </div>
 </div>
 
