@@ -17,6 +17,8 @@ export class ComprobanteEntity {
         public cTotal?: string,
         public cUsuarioResponsable?: string,
         public cFechaCreacion?: string,
+        public bAnulado?: boolean,
+        public bDisponibleAnulacion?: boolean
 
 
 

@@ -737,6 +737,17 @@ export class SvGeneralService {
     );
   }
 
+  PostAnularComprobante(body: any): Observable<any> {
+    this.isLoadingSubject.next(true); // Si tienes un subject de loading
+    let headers = new HttpHeaders({ 'Authorization': 'Bearer ' + this.authservice.token });
+    let URL = URL_SERVICIOS + "/facturacion/anular-comprobante";
+
+    return this.http.post(URL, body, { headers: headers }).pipe(
+      finalize(() => this.isLoadingSubject.next(false)) // Si tienes un subject de loading
+    );
+  }
+
+
 
   GetRUC(
     cNroRuc: string = ''

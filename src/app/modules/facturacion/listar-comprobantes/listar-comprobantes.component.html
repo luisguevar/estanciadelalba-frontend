@@ -177,12 +177,7 @@
                                         <span class="dt-column-order"></span>
                                     </th>
 
-
-
-
-
-
-
+                                
 
                                 </tr>
                             </thead>
@@ -226,20 +221,37 @@
                                     </td>
                                     <td class="fixed-column">
                                         <div class="d-flex align-items-center gap-2">
-                                            <span *ngIf="registro.bAceptadaPorSunat"
-                                                class="badge badge-light-primary fs-8 fw-bolder mb-0">
-                                                Aceptada
-                                            </span>
-                                            <span *ngIf="!registro.bAceptadaPorSunat"
-                                                class="badge badge-light-warning fs-8 fw-bolder mb-0">
-                                                Pendiente
-                                            </span>
+                                            <ng-container *ngIf="!registro.bAnulado">
+                                                <span *ngIf="registro.bAceptadaPorSunat"
+                                                    class="badge badge-light-primary fs-8 fw-bolder mb-0">
+                                                    Aceptada
+                                                </span>
+                                                <span *ngIf="!registro.bAceptadaPorSunat"
+                                                    class="badge badge-light-warning fs-8 fw-bolder mb-0">
+                                                    Pendiente
+                                                </span>
 
-                                            <a matTooltip="Refrescar Estado" href="#" onclick="return false"
-                                                (click)="BotonActualizarEstadoSunat(registro)"
-                                                class="d-flex align-items-center">
-                                                <mat-icon>refresh</mat-icon>
-                                            </a>
+                                                <a matTooltip="Refrescar Estado" href="#" onclick="return false"
+                                                    (click)="BotonActualizarEstadoSunat(registro)"
+                                                    class="d-flex align-items-center">
+                                                    <mat-icon>refresh</mat-icon>
+                                                </a>
+
+                                                <a *ngIf="registro.bDisponibleAnulacion" matTooltip="Anular" href="#" onclick="return false"
+                                                    (click)="BotonAnularSunat(registro)"
+                                                    class="d-flex align-items-center">
+                                                    <mat-icon style="color: red;">cancel</mat-icon>
+                                                </a>
+
+                                            </ng-container>
+
+                                            <ng-container *ngIf="registro.bAnulado">
+                                                <span class="badge badge-light-danger fs-8 fw-bolder mb-0">
+                                                    Anulada
+                                                </span>
+
+                                            </ng-container>
+
                                         </div>
                                     </td>
 
@@ -291,6 +303,7 @@
 
                                     </td>
 
+                                  
 
 
 

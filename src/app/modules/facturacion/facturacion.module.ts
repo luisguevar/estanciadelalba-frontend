@@ -27,6 +27,7 @@ import { InlineSVGModule } from 'ng-inline-svg-2';
 import { BuscarClienteComponent } from './componentes/buscar-cliente/buscar-cliente.component';
 import { AgregarEstanciaComponent } from './componentes/agregar-estancia/agregar-estancia.component';
 import { AgregarProductoComponent } from './componentes/agregar-producto/agregar-producto.component';
+import { GenerarAnulacionComponent } from './componentes/generar-anulacion/generar-anulacion.component';
 
 
 @NgModule({
@@ -36,7 +37,8 @@ import { AgregarProductoComponent } from './componentes/agregar-producto/agregar
     ListarComprobantesComponent,
     BuscarClienteComponent,
     AgregarEstanciaComponent,
-    AgregarProductoComponent
+    AgregarProductoComponent,
+    GenerarAnulacionComponent
   ],
   imports: [
     CommonModule,

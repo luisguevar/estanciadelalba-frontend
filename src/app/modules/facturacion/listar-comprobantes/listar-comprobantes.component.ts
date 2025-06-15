@@ -5,6 +5,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { AuthService } from '../../auth';
 import { ComprobanteEntity } from 'src/app/models/ComprobanteEntity';
 import { PageEvent } from '@angular/material/paginator';
+import { GenerarAnulacionComponent } from '../componentes/generar-anulacion/generar-anulacion.component';
 
 @Component({
   selector: 'app-listar-comprobantes',
@@ -110,6 +111,33 @@ export class ListarComprobantesComponent {
         this.toaster.error('Error', 'Error al Obtener comprobante.');
       }
     );
+
+  }
+
+  BotonAnularSunat(registro: ComprobanteEntity) {
+
+    const dialogRef = this._dialog.open(
+      GenerarAnulacionComponent,
+      {
+        width: 'auto ',
+        height: 'auto',
+        disableClose: true,
+        data: {
+          cClienteNombre: registro.cClienteNombre,
+          nTipoComprobante: registro.nTipoComprobante,
+          cSerie: registro.cSerie,
+          nNumero: registro.nNumero,
+          registro: registro
+        },
+      }
+    );
+
+
+    dialogRef.afterClosed().subscribe((result) => {
+      this.LoadData();
+
+
+    });
 
   }
 

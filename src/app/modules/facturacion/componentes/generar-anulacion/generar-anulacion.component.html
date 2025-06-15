@@ -1,0 +1,37 @@
+<div class="modal  d-block" tabindex="-1" role="dialog">
+    <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+
+                <h5 class="modal-title">Anular <span *ngIf="nTipoComprobante === 1">Factura</span> <span
+                        *ngIf="nTipoComprobante === 2">Boleta</span>, {{cSerie}}-{{ nNumero }}, Cliente:
+                    {{cClienteNombre}}.<span class="spinner-border spinner-border-sm align-middle ms-2"
+                        *ngIf="isLoading$ | async"></span>
+                </h5>
+
+            </div>
+
+            <div class="modal-body">
+                <div class="row mb-3">
+                    <div class="col-12">
+                        <div class="form-group">
+                            <label>Motivo: <span class="text-danger">*</span></label>
+                            <input type="text" class="form-control" placeholder="Motivo de anulación"
+                                [(ngModel)]="cMotivo" />
+
+                        </div>
+                    </div>
+
+
+                </div>
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal"
+                    (click)="dialogRef.close(false)">Volver</button>
+                <button [disabled]="(isLoading$ | async)" type="button" class="btn btn-primary"
+                    (click)="BotonGuardar()">Confirmar</button>
+            </div>
+        </div>
+    </div>
+</div>
