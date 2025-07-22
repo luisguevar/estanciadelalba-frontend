@@ -177,7 +177,7 @@
                                         <span class="dt-column-order"></span>
                                     </th>
 
-                                
+
 
                                 </tr>
                             </thead>
@@ -237,8 +237,8 @@
                                                     <mat-icon>refresh</mat-icon>
                                                 </a>
 
-                                                <a *ngIf="registro.bDisponibleAnulacion" matTooltip="Anular" href="#" onclick="return false"
-                                                    (click)="BotonAnularSunat(registro)"
+                                                <a *ngIf="registro.bDisponibleAnulacion" matTooltip="Anular" href="#"
+                                                    onclick="return false" (click)="BotonAnularSunat(registro)"
                                                     class="d-flex align-items-center">
                                                     <mat-icon style="color: red;">cancel</mat-icon>
                                                 </a>
@@ -303,7 +303,7 @@
 
                                     </td>
 
-                                  
+
 
 
 
@@ -323,7 +323,17 @@
 
         </div>
 
+        <div class="row" *ngIf="lstRegistros.length>0">
+            <div class="col-12 mb-5" style="display: flex; justify-content: end;">
+                <button [disabled]="bLoading" (click)="BotonExportarExcel()" style="background-color: green;"
+                    mat-raised-button color="primary" class="mr-2 me-2">
+                    <mat-icon>archive</mat-icon> Excel
+                </button>
 
+
+                
+            </div>
+        </div>
 
 
 

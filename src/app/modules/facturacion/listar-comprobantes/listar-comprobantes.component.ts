@@ -6,6 +6,9 @@ import { AuthService } from '../../auth';
 import { ComprobanteEntity } from 'src/app/models/ComprobanteEntity';
 import { PageEvent } from '@angular/material/paginator';
 import { GenerarAnulacionComponent } from '../componentes/generar-anulacion/generar-anulacion.component';
+import * as XLSX from 'xlsx';
+import * as FileSaver from 'file-saver';
+import moment from 'moment';
 
 @Component({
   selector: 'app-listar-comprobantes',
@@ -26,6 +29,7 @@ export class ListarComprobantesComponent {
   hasta: number = 10;
   lstUsuarios: any;
   lstRegistros: ComprobanteEntity[] = [];
+  bLoading: boolean = false;
   constructor(
     public _service: SvGeneralService,
     public toaster: ToastrService,
@@ -138,6 +142,49 @@ export class ListarComprobantesComponent {
 
 
     });
+
+  }
+
+  BotonExportarExcel() {
+    this.bLoading = true;
+    const listaExportada = this.lstRegistros.map((registro, index) => ({
+      'N°': index + 1,
+      'TIPO': registro.nTipoComprobante === 1 ? 'FACTURA' :
+        registro.nTipoComprobante === 2 ? 'BOLETA' : 'OTRO',
+      'SERIE': registro.cSerie,
+      'NÚMERO': registro.nNumero,
+      'CLIENTE': registro.cClienteNombre,
+      'NÚMERO DE DOCUMENTO': registro.cClienteNroDocumento,
+      'SUBTOTAL': registro.cTotalGravada,
+      'IGV': registro.cTotalIgv,
+      'TOTAL': registro.cTotal,
+      'ACEPTADA POR SUNAT': registro.bAceptadaPorSunat ? 'SI' : 'NO',
+      'ANULADA': registro.bAnulado ? 'SI' : 'NO',
+      'FECHA CREACIÓN': registro.cFechaCreacion,
+      'USUARIO RESPONSABLE': registro.cUsuarioResponsable
+    }));
+
+
+    const worksheet: XLSX.WorkSheet = XLSX.utils.json_to_sheet(listaExportada);
+    const workbook: XLSX.WorkBook = {
+      Sheets: { 'data': worksheet },
+      SheetNames: ['data']
+    };
+
+    const excelBuffer: any = XLSX.write(workbook, {
+      bookType: 'xlsx',
+      type: 'array'
+    });
+
+    const blob: Blob = new Blob([excelBuffer], {
+      type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8'
+    });
+
+    FileSaver.saveAs(blob, `rpt_comprobantes_${moment().format('YYYYMMDD_HHmmss')}.xlsx`);
+    this.bLoading = false;
+  }
+
+  BotonDescargarPDF() {
 
   }
 
