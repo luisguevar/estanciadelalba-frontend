@@ -13,7 +13,7 @@
                         <div class="form-group">
                             <label>Nro Habitación <span class="text-danger">*</span></label>
                             <input type="text" class="form-control" placeholder="Nro Habitación"
-                                [(ngModel)]="nNroHabitacion" [disabled]="bReadOnly" />
+                                [(ngModel)]="nNroHabitacion" [disabled]="!bPermisoEdicion || bRecepcion" />
 
                         </div>
                     </div>
@@ -22,8 +22,8 @@
                             <label for="tipoHabitacionSelect">Tipo Habitación <span class="text-danger">*</span></label>
                             <select class="form-control" id="tipoHabitacionSelect" [(ngModel)]="tipoHabitacion_id">
                                 <option disabled [value]="0">Seleccione una opción</option>
-                                <option [disabled]="bReadOnly" *ngFor="let tipo of lstTiposHabitaciones"
-                                    [value]="tipo.id">{{ tipo.cNombreTipo
+                                <option [disabled]="!bPermisoEdicion || bRecepcion"
+                                    *ngFor="let tipo of lstTiposHabitaciones" [value]="tipo.id">{{ tipo.cNombreTipo
                                     }}</option>
                             </select>
                         </div>
@@ -34,7 +34,9 @@
                             <label for="tipoHabitacionSelect">Nivel <span class="text-danger">*</span></label>
                             <select class="form-control" id="nivel_id" [(ngModel)]="nivel_id">
                                 <option disabled [value]="0">Seleccione una opción</option>
-                                <option [disabled]="bReadOnly" *ngFor="let tipo of lstNiveles" [value]="tipo.id">{{
+                                <option [disabled]="!bPermisoEdicion || bRecepcion" *ngFor="let tipo of lstNiveles"
+                                    [value]="tipo.id">
+                                    {{
                                     tipo.cNombreNivel
                                     }}</option>
                             </select>
@@ -58,14 +60,14 @@
                         <div class="form-group">
                             <label>Motivo Bloqueo <span class="text-danger">*</span></label>
                             <input type="text" class="form-control" placeholder="Motivo Bloqueo"
-                                [(ngModel)]="cMotivoBloqueo" [disabled]="bReadOnly" />
+                                [(ngModel)]="cMotivoBloqueo" [disabled]="!bPermisoEdicion" />
                         </div>
                     </div>
 
 
                 </div>
                 <br>
-                <div class="row p-2">
+                <div class="row p-2" *ngIf="!bRecepcion">
                     <mat-card>
                         <div>
                             <mat-tab-group>
@@ -136,7 +138,7 @@
                                                                         class="form-control font-monospace"
                                                                         [value]="tipo.nPrecio"
                                                                         [(ngModel)]="tipo.nPrecio"
-                                                                        [disabled]="bReadOnly" />
+                                                                        [disabled]="!bPermisoEdicion" />
 
                                                                 </td>
 
@@ -215,7 +217,7 @@
                                                                         class="form-control font-monospace"
                                                                         [value]="tipo.nPrecio"
                                                                         [(ngModel)]="tipo.nPrecio"
-                                                                        [disabled]="bReadOnly" />
+                                                                        [disabled]="!bPermisoEdicion" />
 
                                                                 </td>
 
@@ -236,7 +238,7 @@
                                 <mat-tab label="Precios por Temporada">
                                     <br>
 
-                                    <ng-container *ngIf="!bReadOnly">
+                                    <ng-container *ngIf="bPermisoEdicion">
                                         <mat-accordion>
                                             <mat-expansion-panel>
                                                 <mat-expansion-panel-header>
@@ -362,7 +364,11 @@
                                                             <span class="dt-column-order"></span>
                                                         </th>
 
-                                                        <th></th>
+                                                        <th class="dt-orderable-asc dt-orderable-desc fixed-column"
+                                                            data-dt-column="1">
+                                                            <span class="dt-column-title">ACCIONES</span>
+                                                            <span class="dt-column-order"></span>
+                                                        </th>
 
 
 
@@ -417,13 +423,20 @@
                                                                 }}</span> -->
 
                                                             <input type="number" class="form-control font-monospace"
-                                                                [value]="tipo.nPrecio" [(ngModel)]="tipo.nPrecio" />
+                                                                [value]="tipo.nPrecio" [disabled]="!bPermisoEdicion"
+                                                                [(ngModel)]="tipo.nPrecio" />
                                                         </td>
 
                                                         <td class="fixed-column">
-                                                            <a href="#" onclick="return false" style="color: red;"
-                                                                (click)="BotonEliminarTemporada(tipo)"><mat-icon>delete</mat-icon></a>
+
+                                                            <button *ngIf="bPermisoEliminacion"
+                                                                (click)="BotonEliminarTemporada(tipo)"
+                                                                class="btn btn-sm btn-light-danger">
+                                                                Eliminar
+                                                            </button>
                                                         </td>
+
+
 
                                                     </tr>
                                                 </tbody>
@@ -440,6 +453,235 @@
 
                                 </mat-tab>
 
+                                <mat-tab label="Bloqueos de Reserva">
+                                    <br>
+
+                                    <ng-container *ngIf="bPermisoEdicion">
+                                        <mat-accordion>
+                                            <mat-expansion-panel>
+                                                <mat-expansion-panel-header>
+                                                    <mat-panel-title> Agregar Bloqueo de Reserva </mat-panel-title>
+
+                                                </mat-expansion-panel-header>
+                                                <div class="row w-100">
+                                                    <div class="col-6">
+                                                        <div>
+                                                            <div class="form-group row">
+                                                                <div class="col-12">
+                                                                    <input class="form-control" type="date"
+                                                                        [(ngModel)]="cFechaInicioBR"
+                                                                        placeholder="Fecha Inicio" />
+                                                                </div>
+                                                                <label
+                                                                    class="label-datepicket col-12 col-form-label">Fecha
+                                                                    Inicio</label>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="col-6">
+                                                        <div>
+                                                            <div class="form-group row">
+                                                                <div class="col-12">
+                                                                    <input class="form-control" type="date"
+                                                                        [(ngModel)]="cFechaFinBR"
+                                                                        placeholder="Fecha Fin" />
+                                                                </div>
+                                                                <label
+                                                                    class="label-datepicket col-12 col-form-label">Fecha
+                                                                    Fin</label>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="col-12">
+                                                        <div>
+                                                            <div class="form-group row">
+                                                                <div class="col-12">
+                                                                    <input class="form-control" type="text"
+                                                                        [(ngModel)]="cMotivoBloqueoReserva"
+                                                                        placeholder="Nombre" />
+                                                                </div>
+                                                                <label
+                                                                    class="label-datepicket col-12 col-form-label">Motivo
+                                                                    Bloqueo</label>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+
+
+                                                    <div class="col-3">
+                                                        <button mat-raised-button color="primary"
+                                                            (click)="BotonAgregarBloqueo()" class="mr-2 me-1 mt-1">
+                                                            <mat-icon>add_circle_outline</mat-icon> Agregar</button>
+                                                    </div>
+
+                                                </div>
+                                            </mat-expansion-panel>
+
+                                        </mat-accordion>
+                                    </ng-container>
+
+
+                                    <br>
+                                    <div id="kt_customers_table_wrapper mt-2"
+                                        class="dt-container dt-bootstrap5 dt-empty-footer">
+                                        <div class="table-responsive table-container mx-10">
+
+                                            <table class="table align-middle table-row-dashed fs-6 gy-5 w-100"
+                                                id="kt_customers_table">
+                                                <colgroup>
+                                                    <col data-dt-column="0">
+                                                    <col data-dt-column="1">
+                                                    <col data-dt-column="2">
+                                                </colgroup>
+                                                <thead>
+                                                    <tr
+                                                        class="text-start text-gray-500 fw-bold fs-7 text-uppercase gs-0">
+
+                                                        <th class="dt-orderable-asc dt-orderable-desc fixed-column"
+                                                            data-dt-column="0">
+                                                            <span class="dt-column-title">NRO</span>
+                                                            <span class="dt-column-order"></span>
+                                                        </th>
+
+                                                        <th class="dt-orderable-asc dt-orderable-desc fixed-column"
+                                                            data-dt-column="0">
+                                                            <span class="dt-column-title">INICIO</span>
+                                                            <span class="dt-column-order"></span>
+                                                        </th>
+                                                        <th class="dt-orderable-asc dt-orderable-desc fixed-column"
+                                                            data-dt-column="1">
+                                                            <span class="dt-column-title">FIN</span>
+                                                            <span class="dt-column-order"></span>
+                                                        </th>
+
+                                                        <th class="dt-orderable-asc dt-orderable-desc fixed-column"
+                                                            data-dt-column="1">
+                                                            <span class="dt-column-title">TEMPORADA</span>
+                                                            <span class="dt-column-order"></span>
+                                                        </th>
+
+
+
+                                                        <th class="dt-orderable-asc dt-orderable-desc fixed-column"
+                                                            data-dt-column="1">
+                                                            <span class="dt-column-title">ACCIONES</span>
+                                                            <span class="dt-column-order"></span>
+                                                        </th>
+
+
+
+                                                    </tr>
+                                                </thead>
+
+
+                                                <tbody class="fw-semibold text-gray-600">
+                                                    <tr
+                                                        *ngFor="let tipo of lstBloqueoReserva | slice:desde:hasta; let i = index">
+
+                                                        <td class="fixed-column">
+                                                            <span class="text-gray-600 mb-1"
+                                                                *ngIf="tipo.nEstado == 1">{{ i + 1 }}
+
+
+
+                                                            </span>
+
+                                                            <span class="text-gray-600 mb-1" *ngIf="tipo.nEstado == 0">
+                                                                ...
+
+
+
+                                                            </span>
+                                                        </td>
+
+
+                                                        <td class="fixed-column">
+                                                            <span class="text-gray-600  mb-1">{{
+                                                                tipo.cFechaInicio
+                                                                }}</span>
+
+                                                        </td>
+
+                                                        <td class="fixed-column">
+                                                            <span class="text-gray-600  mb-1">{{
+                                                                tipo.cFechaFin
+                                                                }}</span>
+
+                                                        </td>
+
+                                                        <td class="fixed-column">
+                                                            <span class="text-gray-600  mb-1">{{
+                                                                tipo.cMotivoBloqueo
+                                                                }}</span>
+
+                                                        </td>
+
+
+                                                        <td class="fixed-column">
+
+                                                            <button *ngIf="bPermisoEliminacion"
+                                                                (click)="BotonEliminarBloqueo(tipo)"
+                                                                class="btn btn-sm btn-light-danger">
+                                                                Eliminar
+                                                            </button>
+                                                        </td>
+
+
+
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+
+                                            <mat-paginator [length]="lstBloqueoReserva.length" [pageSize]="pageSize"
+                                                (page)="cambiarPagina($event)">
+                                            </mat-paginator>
+
+                                        </div>
+                                    </div>
+
+
+
+                                </mat-tab>
+
+                                <mat-tab label="Historial de Incidencias">
+                                    <div *ngIf="listaIncidencias.length; else sinIncidencias">
+                                        <table class="table align-middle table-row-dashed fs-6 gy-5 dataTable"
+                                            id="kt_customers_table" style="width: 100%;">
+                                            <thead>
+                                                <tr class="text-start text-gray-500 fw-bold fs-7 text-uppercase gs-0">
+                                                    <th>Estado</th>
+                                                    <th>Observaciones</th>
+                                                    <th>Asignado</th>
+                                                    <th>Revisado</th>
+                                                    <th>Acciones</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody class="fw-semibold text-gray-600">
+                                                <tr *ngFor="let inc of listaIncidencias">
+                                                    <td>{{ estadoTexto(inc.nEstado) }}</td>
+                                                    <td> <span *ngIf="inc.cObservaciones">SI</span>
+                                                        <span *ngIf="!inc.cObservaciones">NO</span>
+                                                    </td>
+                                                    <td>{{ inc.created_at | date:'short' }}</td>
+                                                    <td>{{ inc.updated_at | date:'short' }}</td>
+                                                    <td>
+                                                        <button type="button" class="btn btn-sm btn-light-primary"
+                                                            (click)="verDetalleIncidencia(inc)">
+                                                            Detalle
+                                                        </button>
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                    <ng-template #sinIncidencias>
+                                        <p>No hay incidencias registradas.</p>
+                                    </ng-template>
+                                </mat-tab>
+
                             </mat-tab-group>
                         </div>
                     </mat-card>
@@ -448,8 +690,9 @@
 
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal"
-                    (click)="dialogRef.close(false)">Cerrar</button>
-                <button type="button" class="btn btn-primary" (click)="BotonGuardar()">Guardar</button>
+                    (click)="BotonCerrar()">Cerrar</button>
+                <button *ngIf="bPermisoEdicion" type="button" class="btn btn-primary"
+                    (click)="BotonGuardar()">Guardar</button>
             </div>
         </div>
     </div>

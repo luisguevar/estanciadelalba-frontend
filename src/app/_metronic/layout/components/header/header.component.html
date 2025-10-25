@@ -20,7 +20,7 @@
     </div>
     <!--end::sidebar mobile toggle-->
     <!--begin::Mobile logo-->
-    <!--   <div class="d-flex align-items-center flex-grow-1 flex-lg-grow-0">
+ <!--    <div class="d-flex align-items-center flex-grow-1 flex-lg-grow-0">
       <a routerLink="/dashboard" class="d-lg-none">
         <img alt="Logo" src="./assets/media/logos/default-small.svg" class="h-30px" />
       </a>
@@ -31,7 +31,7 @@
   <ng-container *ngIf="!appSidebarDisplay">
     <!--begin::Logo-->
     <div class="d-flex align-items-center flex-grow-1 flex-lg-grow-0 me-lg-15">
-      <a routerLink="/panel-control">
+      <a routerLink="/menu-inicio/lista-opciones">
         <ng-container *ngIf="currentLayoutType === 'dark-header'">
           <img alt="Logo" src="./assets/media/logos/default-dark.svg"
             class="h-20px h-lg-30px app-sidebar-logo-default" />
@@ -76,9 +76,9 @@
       </div>
       <!--end::Menu wrapper-->
     </ng-container>
-    <!-- <ng-container *ngIf="appHeaderDefaultContent === 'page-title' && appPageTitleDisplay">
+    <ng-container *ngIf="appHeaderDefaultContent === 'page-title' && appPageTitleDisplay">
       <app-page-title #ktPageTitle class="page-title d-flex"></app-page-title>
-    </ng-container> -->
+    </ng-container>
     <app-navbar class="app-navbar flex-shrink-0" [appHeaderDefaulMenuDisplay]="appHeaderDefaulMenuDisplay"
       [isRtl]="false"></app-navbar>
   </div>

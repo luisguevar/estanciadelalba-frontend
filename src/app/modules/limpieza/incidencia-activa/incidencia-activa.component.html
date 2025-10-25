@@ -1,0 +1,99 @@
+<div class="p-4">
+    <mat-card class="p-2">
+
+        <mat-card-header *ngIf="readonly">
+            <mat-card-subtitle>Detalle de la Incidencia</mat-card-subtitle>
+        </mat-card-header>
+
+        <div class="p-4">
+            <div class="row page-item p-1">
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label class="fw-semibold fs-6 mb-2">Estado de habilitación</label>
+                        <select class="form-select form-select-solid" [(ngModel)]="incidencia.nEstado">
+                            <option disabled [ngValue]="0">Pendiente</option>
+                            <option [disabled]="readonly" [ngValue]="1">Para Habilitación</option>
+                            <option [disabled]="readonly" [ngValue]="2">Con Incidencias</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="col-md-8">
+                    <div class="form-group">
+                        <label class="fw-semibold fs-6 mb-2">Observaciones</label>
+                        <textarea [disabled]="readonly" class="form-control" rows="3"
+                            placeholder="Ingrese observaciones..." [(ngModel)]="incidencia.cObservaciones"></textarea>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Subir imágenes -->
+            <div class="mt-4 p-1">
+                <label class="fw-semibold fs-6 mb-2">Imágenes de la incidencia</label>
+                <input *ngIf="!readonly" type="file" (change)="onImageSelected($event)" multiple accept="image/*"
+                    class="form-control form-control-sm" />
+
+                <!-- Carrusel de imágenes -->
+                <div class="image-carousel mt-3">
+                    <div class="image-item" *ngFor="let img of incidencia.imagenesExistentes; let i = index">
+                        <img [src]="img.url" alt="Imagen existente" />
+                        <div class="image-actions">
+                            <button type="button" class="btn btn-sm btn-primary"
+                                (click)="verImagen(img.url)">ver</button>
+                            <button *ngIf="!readonly" type="button" class="btn btn-sm btn-danger"
+                                (click)="removeImage(img, 'existente', i)">✕</button>
+                        </div>
+                    </div>
+
+                    <div class="image-item" *ngFor="let img of incidencia.imagenesNuevas; let i = index">
+                        <img [src]="img.preview" alt="Nueva imagen" />
+                        <div class="image-actions">
+                            <button type="button" class="btn btn-sm btn-primary"
+                                (click)="verImagen(img.preview)">ver</button>
+                            <button *ngIf="!readonly" type="button" class="btn btn-sm btn-danger"
+                                (click)="removeImage(img, 'nueva', i)">✕</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="mt-4 p-1">
+                <div *ngIf="incidencia.cUsuarioCreacion" class="form-group mb-2">
+                    <label class="fw-semibold fs-6 mb-1"> Asignado Por</label>
+                    <input type="text" class="form-control form-control-sm" [(ngModel)]="incidencia.cUsuarioCreacion"
+                        placeholder="Usuario que creó" disabled />
+                </div>
+
+                <div *ngIf="incidencia.cUsuarioModificacion" class="form-group">
+                    <label class="fw-semibold fs-6 mb-1">Revisado Por</label>
+                    <input type="text" class="form-control form-control-sm"
+                        [(ngModel)]="incidencia.cUsuarioModificacion" placeholder="Usuario que modificó" disabled />
+                </div>
+            </div>
+
+
+        </div>
+
+        <mat-card-actions class="justify-content-end">
+            <button *ngIf="readonly" type="button" class="btn btn-secondary" data-dismiss="modal"
+                (click)="dialogRef.close(false)">Cerrar</button>
+        </mat-card-actions>
+    </mat-card>
+    <!-- Modal Previsualización -->
+    <div class="modal fade show d-block" tabindex="-1" *ngIf="imagenSeleccionada"
+        style="background-color: rgba(0, 0, 0, 0.6)">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content bg-transparent border-0 shadow-none">
+                <div class="modal-body text-center">
+                    <img [src]="imagenSeleccionada" alt="Vista previa" class="img-fluid rounded shadow-lg"
+                        style="max-height: 80vh;" />
+                </div>
+                <div class="modal-footer border-0 justify-content-center">
+                    <button type="button" class="btn btn-light" (click)="cerrarVista()">Cerrar</button>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

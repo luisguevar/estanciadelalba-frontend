@@ -1,0 +1,336 @@
+<div class="modal  d-block" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Agregar Bloqueo de Reservas </h5>
+                <span class="spinner-border spinner-border-sm align-middle ms-2" *ngIf="isLoading$ | async"></span>
+            </div>
+            <div class="modal-body">
+
+                <mat-accordion>
+                    <mat-expansion-panel>
+                        <mat-expansion-panel-header>
+                            <mat-panel-title> Agregar Bloqueo de Reservas </mat-panel-title>
+
+                        </mat-expansion-panel-header>
+                        <div class="row w-100">
+                            <div class="col-6">
+                                <div>
+                                    <div class="form-group row">
+                                        <div class="col-12">
+                                            <input class="form-control" type="date" [(ngModel)]="cFechaInicio"
+                                                placeholder="Check-in" />
+                                        </div>
+                                        <label class="label-datepicket col-12 col-form-label">Inicio
+                                            de
+                                            Bloqueo</label>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-6">
+                                <div>
+                                    <div class="form-group row">
+                                        <div class="col-12">
+                                            <input class="form-control" type="date" [(ngModel)]="cFechaFin"
+                                                placeholder="Check-in" />
+                                        </div>
+                                        <label class="label-datepicket col-12 col-form-label">Fin de
+                                            Bloqueo</label>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-12">
+                                <div>
+                                    <div class="form-group row">
+                                        <div class="col-12">
+                                            <input class="form-control" type="text" [(ngModel)]="cMotivoBloqueo"
+                                                placeholder="Motivo" />
+                                        </div>
+                                        <label class="label-datepicket col-12 col-form-label">Motivo Bloqueo</label>
+                                    </div>
+                                </div>
+                            </div>
+
+
+
+
+
+                        </div>
+                    </mat-expansion-panel>
+
+                </mat-accordion>
+                <br>
+
+                <mat-card>
+                    <mat-card-content>
+                        <div class="row">
+                            <div class="col-12">
+                                <div class="form-group">
+                                    <label for="tipoHabitacionSelect">Tipo Asignación <span
+                                            class="text-danger">*</span></label>
+                                    <select class="form-control" id="lstTiposAsignacion" [(ngModel)]="nTipoAsignacion">
+                                        <option disabled [value]="0">Seleccione una opción</option>
+                                        <option *ngFor="let tipo of lstTiposAsignacion" [value]="tipo.id">{{
+                                            tipo.cNombre
+                                            }}</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                        </div>
+
+                        <div class="row" *ngIf="nTipoAsignacion == 1">
+                            <div class="col-12 p-4">
+                                <div id="kt_customers_table_wrapper" class="dt-container dt-bootstrap5 dt-empty-footer">
+
+                                    <div class="table-responsive table-container">
+
+                                        <table class="table align-middle table-row-dashed fs-6 gy-5 w-100"
+                                            id="kt_customers_table">
+                                            <colgroup>
+                                                <col data-dt-column="0">
+                                                <col data-dt-column="1">
+                                            </colgroup>
+                                            <thead>
+
+
+
+
+                                                <tr class="text-start text-gray-500 fw-bold fs-7 text-uppercase gs-0">
+
+                                                    <th class="dt-orderable-asc dt-orderable-desc fixed-column  "
+                                                        data-dt-column="0" tabindex="0">
+                                                        <span class="dt-column-title">SELECCIONAR</span>
+                                                        <span class="dt-column-order"></span>
+                                                    </th>
+
+                                                    <th class="dt-orderable-asc dt-orderable-desc fixed-column"
+                                                        data-dt-column="0" tabindex="0">
+                                                        <span class="dt-column-title">N° HAB</span>
+                                                        <span class="dt-column-order"></span>
+                                                    </th>
+                                                    <th class="dt-orderable-asc dt-orderable-desc fixed-column"
+                                                        data-dt-column="1" tabindex="0">
+                                                        <span class="dt-column-title">TIPO HABITACIÓN</span>
+                                                        <span class="dt-column-order"></span>
+                                                    </th>
+
+
+
+
+
+                                                </tr>
+                                            </thead>
+
+
+                                            <tbody class="fw-semibold text-gray-600">
+                                                <tr
+                                                    *ngFor="let habitacion of lstHabitaciones  | slice:desde:hasta; let i = index">
+
+                                                    <td class="fixed-column  ">
+                                                        <label class="checkbox mx-xxl-10">
+                                                            <input type="checkbox" [(ngModel)]="habitacion.bActivo" />
+                                                        </label>
+
+                                                    </td>
+
+                                                    <td class="fixed-column">
+
+                                                        <span class="text-gray-600  mb-1">{{
+                                                            habitacion.nNroHabitacion
+                                                            }}</span>
+
+                                                    </td>
+                                                    <td class="fixed-column">
+                                                        <span class="text-gray-600  mb-1">{{
+                                                            habitacion.cNombreTipo
+                                                            }}</span>
+
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                        <mat-paginator [length]="lstHabitaciones.length" [pageSize]="pageSize"
+                                            (page)="cambiarPagina($event)">
+                                        </mat-paginator>
+
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row" *ngIf="nTipoAsignacion == 2">
+                            <div class="col-12 p-4">
+                                <div id="kt_customers_table_wrapper" class="dt-container dt-bootstrap5 dt-empty-footer">
+
+                                    <div class="table-responsive table-container">
+
+                                        <table class="table align-middle table-row-dashed fs-6 gy-5 w-100"
+                                            id="kt_customers_table">
+                                            <colgroup>
+                                                <col data-dt-column="0">
+                                                <col data-dt-column="1">
+                                            </colgroup>
+                                            <thead>
+
+
+
+
+                                                <tr class="text-start text-gray-500 fw-bold fs-7 text-uppercase gs-0">
+
+                                                    <th class="dt-orderable-asc dt-orderable-desc fixed-column  "
+                                                        data-dt-column="0" tabindex="0">
+                                                        <span class="dt-column-title">SELECCIONAR</span>
+                                                        <span class="dt-column-order"></span>
+                                                    </th>
+
+                                                    <!-- <th class="dt-orderable-asc dt-orderable-desc fixed-column"
+                                                        data-dt-column="0" tabindex="0">
+                                                        <span class="dt-column-title">N° HAB</span>
+                                                        <span class="dt-column-order"></span>
+                                                    </th> -->
+                                                    <th class="dt-orderable-asc dt-orderable-desc fixed-column"
+                                                        data-dt-column="1" tabindex="0">
+                                                        <span class="dt-column-title">TIPO HABITACIÓN</span>
+                                                        <span class="dt-column-order"></span>
+                                                    </th>
+
+
+
+
+
+                                                </tr>
+                                            </thead>
+
+
+                                            <tbody class="fw-semibold text-gray-600">
+                                                <tr *ngFor="let habitacion of lstTiposHabitaciones ; let i = index">
+
+                                                    <td class="fixed-column  ">
+
+                                                        <label class="checkbox mx-xxl-10">
+                                                            <input type="checkbox" [(ngModel)]="habitacion.bActivo" />
+                                                        </label>
+
+                                                    </td>
+
+                                                    <!--   <td class="fixed-column">
+
+                                                        <span class="text-gray-600  mb-1">{{
+                                                            habitacion.nNroHabitacion
+                                                            }}</span>
+
+                                                    </td> -->
+                                                    <td class="fixed-column">
+                                                        <span class="text-gray-600  mb-1">{{
+                                                            habitacion.cNombreTipo
+                                                            }}</span>
+
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+
+
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row" *ngIf="nTipoAsignacion == 3">
+                            <div class="col-12 p-4">
+                                <div id="kt_customers_table_wrapper" class="dt-container dt-bootstrap5 dt-empty-footer">
+
+                                    <div class="table-responsive table-container">
+
+                                        <table class="table align-middle table-row-dashed fs-6 gy-5 w-100"
+                                            id="kt_customers_table">
+                                            <colgroup>
+                                                <col data-dt-column="0">
+                                                <col data-dt-column="1">
+                                            </colgroup>
+                                            <thead>
+
+
+
+
+                                                <tr class="text-start text-gray-500 fw-bold fs-7 text-uppercase gs-0">
+
+                                                    <th class="dt-orderable-asc dt-orderable-desc fixed-column  "
+                                                        data-dt-column="0" tabindex="0">
+                                                        <span class="dt-column-title">SELECCIONAR</span>
+                                                        <span class="dt-column-order"></span>
+                                                    </th>
+
+                                                    <!-- <th class="dt-orderable-asc dt-orderable-desc fixed-column"
+                                                        data-dt-column="0" tabindex="0">
+                                                        <span class="dt-column-title">N° HAB</span>
+                                                        <span class="dt-column-order"></span>
+                                                    </th> -->
+                                                    <th class="dt-orderable-asc dt-orderable-desc fixed-column"
+                                                        data-dt-column="1" tabindex="0">
+                                                        <span class="dt-column-title">NIVEL</span>
+                                                        <span class="dt-column-order"></span>
+                                                    </th>
+
+
+
+
+
+                                                </tr>
+                                            </thead>
+
+
+                                            <tbody class="fw-semibold text-gray-600">
+                                                <tr *ngFor="let habitacion of lstNiveles ; let i = index">
+
+                                                    <td class="fixed-column  ">
+
+                                                        <label class="checkbox mx-xxl-10">
+                                                            <input type="checkbox" [(ngModel)]="habitacion.bActivo" />
+                                                        </label>
+
+                                                    </td>
+
+                                                    <!--   <td class="fixed-column">
+
+                                                        <span class="text-gray-600  mb-1">{{
+                                                            habitacion.nNroHabitacion
+                                                            }}</span>
+
+                                                    </td> -->
+                                                    <td class="fixed-column">
+                                                        <span class="text-gray-600  mb-1">{{
+                                                            habitacion.cNombreNivel
+                                                            }}</span>
+
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+
+
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </mat-card-content>
+                </mat-card>
+
+
+
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal"
+                    (click)="dialogRef.close(false)">Cerrar</button>
+                <button type="button" class="btn btn-primary" (click)="BotonGuardar()">Guardar</button>
+            </div>
+        </div>
+    </div>
+</div>

@@ -5,6 +5,9 @@ import { ToastrService } from 'ngx-toastr';
 import { MatDialog } from '@angular/material/dialog';
 import { PageEvent } from '@angular/material/paginator';
 import { InfoEstanciaComponent } from '../info-estancia/info-estancia.component';
+import { AuthService } from '../../auth';
+import { Router } from '@angular/router';
+import { UserEntity } from 'src/app/models/UsuarioEntity';
 
 @Component({
   selector: 'app-gestionar-estancias',
@@ -24,14 +27,34 @@ export class GestionarEstanciasComponent {
   filterCheckIn: string = ''; // Para almacenar la fecha de check-in
   filterCheckOut: string = ''; // Para almacenar la fecha de check-out
 
+  bPermisoEdicion: boolean = false;
+  bPermisoEliminacion: boolean = false;
   constructor(
     public _service: SvGeneralService,
     public toaster: ToastrService,
     private _dialog: MatDialog,
     private cdr: ChangeDetectorRef,
+    private authService: AuthService,
+    private router: Router
   ) {
 
+    this.LoadPersona();
+  }
 
+  LoadPersona() {
+    const usuario = new UserEntity();
+    usuario.id = this.authService.user?.id;
+    usuario.link = "/estancias/gestionar-estancias";
+    this._service.PostPermisosPorUsuarioModulo(usuario).subscribe((resp: any) => {
+
+
+      if (resp.success) {
+        this.bPermisoEdicion = resp.bPermisoEdicion;
+        this.bPermisoEliminacion = resp.bPermisoEliminacion;
+      } else {
+        this.router.navigate(['/menu-inicio/lista-opciones']);
+      }
+    });
   }
 
   ngOnInit(): void {
@@ -71,7 +94,7 @@ export class GestionarEstanciasComponent {
 
 
   BotonVerDetalleEstancia(estancia: any) {
-  
+
     const dialogRef = this._dialog.open(
       InfoEstanciaComponent,
       {
@@ -80,7 +103,9 @@ export class GestionarEstanciasComponent {
         disableClose: true,
         data: {
           estancia: estancia,
-          bDisabled: true
+          bDisabled: true,
+          bPermisoEdicion: this.bPermisoEdicion,
+          bPermisoEliminacion: this.bPermisoEliminacion
 
         },
       }

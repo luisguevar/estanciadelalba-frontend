@@ -1,0 +1,132 @@
+import { Component, Inject } from '@angular/core';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import { ToastrService } from 'ngx-toastr';
+import { HabitacionBloqueoReservaEntity, HabitacionEntity, TemporadaEntity } from 'src/app/models/TarifaHoteleraEntity';
+import { SvGeneralService } from '../../service/sv-general.service';
+import { AlertService } from '../../service/alert.service';
+import { PageEvent } from '@angular/material/paginator';
+
+@Component({
+  selector: 'app-bloqueo-reserva-temporada',
+  templateUrl: './bloqueo-reserva-temporada.component.html',
+  styleUrls: ['./bloqueo-reserva-temporada.component.scss']
+})
+export class BloqueoReservaTemporadaComponent {
+  isLoading$: any;
+  nTipoAsignacion: number = 0;
+
+  lstTiposAsignacion: any = [
+    { id: 1, cNombre: 'Por Habitación' },
+    { id: 2, cNombre: 'Por Tipo Habitación' },
+    { id: 3, cNombre: 'Por Nivel' },
+    { id: 4, cNombre: 'Todas las Habitaciones' }
+
+  ];
+
+  lstNiveles: any = [{ id: 1, cNombreNivel: 'Tercer Nivel' }, { id: 2, cNombreNivel: 'Cuarto Nivel' }, { id: 3, cNombreNivel: 'Quinto Nivel' }];
+  lstHabitaciones: HabitacionEntity[] = [];
+  lstTiposHabitaciones: any = [];
+  pageSize = 5;
+  desde: number = 0;
+  hasta: number = 5
+
+  cFechaInicio: string;
+  cFechaFin: string;
+  cMotivoBloqueo: string;
+
+  constructor(
+    @Inject(MAT_DIALOG_DATA) public data: any,
+    public dialogRef: MatDialogRef<BloqueoReservaTemporadaComponent>,
+    public toaster: ToastrService,
+    public _service: SvGeneralService,
+    private alertService: AlertService
+  ) {
+    this.lstTiposHabitaciones = data.lstTiposHabitaciones;
+    this.lstHabitaciones = data.lstHabitaciones;
+  }
+
+  ngOnInit(): void {
+    this.isLoading$ = this._service.isLoading$;
+    this.desde = 0;
+    this.hasta = 5;
+
+
+  }
+
+
+  cambiarPagina(e: PageEvent) {
+
+    this.desde = e.pageIndex * e.pageSize;
+    this.hasta = this.desde + e.pageSize;
+  }
+
+  BotonGuardar() {
+    // Validar que todos los campos estén completos
+    if (!this.cMotivoBloqueo || !this.cFechaInicio || !this.cFechaFin) {
+      this.toaster.warning('Temporada', 'Complete todos los campos para agregar.');
+      return;
+    }
+
+    // Extraer los valores de la fecha correctamente
+    const fechaInicioParts = this.cFechaInicio.split('-').map(Number);
+    const fechaFinParts = this.cFechaFin.split('-').map(Number);
+
+    // Crear las fechas sin que sean convertidas a UTC
+    const fechaInicio = new Date(fechaInicioParts[0], fechaInicioParts[1] - 1, fechaInicioParts[2]);
+    const fechaFin = new Date(fechaFinParts[0], fechaFinParts[1] - 1, fechaFinParts[2]);
+
+    // Obtener la fecha de ayer correctamente
+    const fechaAyer = new Date();
+    fechaAyer.setDate(fechaAyer.getDate() - 1);
+    fechaAyer.setHours(0, 0, 0, 0);
+
+    // Validar que la fecha de inicio sea mayor a la fecha de ayer
+    if (fechaInicio <= fechaAyer) {
+      this.toaster.warning('Temporada', 'La fecha de inicio debe ser mayor a la fecha de hoy.');
+      return;
+    }
+
+    // Validar que la fecha de fin sea igual o mayor a la fecha de inicio
+    if (fechaFin < fechaInicio) {
+      this.toaster.warning('Temporada', 'Las fechas no son válidas.');
+      return;
+    }
+
+    const temporada = new HabitacionBloqueoReservaEntity();
+    temporada.id = 0;
+    temporada.cMotivoBloqueo = this.cMotivoBloqueo;
+    temporada.dFechaInicio = fechaInicio;
+    temporada.dFechaFin = fechaFin;
+    temporada.nEstado = 1;
+    temporada.lstHabitaciones = this.lstHabitaciones.filter((t: any) => t.bActivo);;
+    temporada.lstTiposHabitaciones = this.lstTiposHabitaciones.filter((t: any) => t.bActivo);
+    temporada.lstNiveles = this.lstNiveles.filter((t: any) => t.bActivo);;
+    temporada.nTipoAsignacion = this.nTipoAsignacion;
+
+    this.alertService.showConfirmationAlert(
+      "¿Está seguro?",
+      "Asignar Temporada",
+      "Confirmar",
+      "question"
+    ).then((isConfirmed) => {
+      if (isConfirmed) {
+        this._service.PostBloqueoReserva(temporada).subscribe(
+          (response) => {
+            // Si el registro fue exitoso
+            if (response.success) {
+              this.toaster.success('Asignar Temporada', 'Temporada asignada exitosamente.');
+              this.dialogRef.close();
+            } else {
+              this.toaster.error('Agregar Temporada', 'Error al asignar la Temporada.');
+            }
+          },
+          (error) => {
+            this.toaster.error('Agregar Temporada', 'Ocurrió un error al asignar la Temporada.');
+
+          }
+        );
+      }
+    });
+
+  }
+}

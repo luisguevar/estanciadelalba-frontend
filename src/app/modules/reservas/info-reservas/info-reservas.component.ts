@@ -46,6 +46,10 @@ export class InfoReservasComponent {
   //--------------------------------------
 
   bDisabled: boolean = false;
+
+  bPermisoEdicion: boolean = false;
+  bPermisoEliminacion: boolean = false;
+
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: any,
     public dialogRef: MatDialogRef<InfoEstanciaComponent>,
@@ -60,6 +64,10 @@ export class InfoReservasComponent {
     this.dpCheckInFilter = this.data.dpCheckInFilter;
     this.dpCheckOutFilter = this.data.dpCheckOutFilter;
     this.bDisabled = this.data.bDisabled;
+
+
+    this.bPermisoEdicion = this.data.bPermisoEdicion;
+    this.bPermisoEliminacion = this.data.bPermisoEliminacion;
   }
 
   ngOnInit(): void {

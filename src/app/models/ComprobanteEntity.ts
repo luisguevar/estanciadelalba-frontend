@@ -18,9 +18,26 @@ export class ComprobanteEntity {
         public cUsuarioResponsable?: string,
         public cFechaCreacion?: string,
         public bAnulado?: boolean,
-        public bDisponibleAnulacion?: boolean
+        public bDisponibleAnulacion?: boolean,
+        public lstDetalles?: Array<ComprobanteDetalleEntity>,
+
+        public cDireccion?: string,
+        public cCorreo?: string,
 
 
+    ) { }
+}
+
+
+export class ComprobanteDetalleEntity {
+    constructor(
+        public cSubTotal?: number,
+        public cUnidadMedida?: string,
+        public cNroHabitacion?: number,
+        public cDescripcion?: string,
+        public nCantidad?: number,
+
+        public cSubTotalOriginal?: string,
 
     ) { }
 }

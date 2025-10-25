@@ -20,7 +20,8 @@ import { ThemeModeService } from './_metronic/partials/layout/theme-mode-switche
 export class AppComponent implements OnInit {
   constructor(
     private translationService: TranslationService,
-    private modeService: ThemeModeService
+    private modeService: ThemeModeService,
+    
   ) {
     // register translations
     this.translationService.loadTranslations(

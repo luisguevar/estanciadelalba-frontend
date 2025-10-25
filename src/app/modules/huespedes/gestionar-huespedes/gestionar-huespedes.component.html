@@ -5,37 +5,22 @@
         <div class="card-title">
             <!--begin::Search-->
             <div class="d-flex align-items-center position-relative my-1">
-                
-                <b>GESTIONAR HUÉSPEDES</b>
-                <span class="spinner-border spinner-border-sm align-middle ms-2" *ngIf="isLoading$ | async"></span>
-                <!--  <div class="d-flex align-items-center position-relative my-1">
-                    <i class="ki-duotone ki-magnifier fs-3 position-absolute ms-5"><span class="path1"></span><span
-                            class="path2"></span></i> <input type="text" data-kt-customer-table-filter="search"
-                        class="form-control form-control-solid w-250px ps-12" placeholder="Search Customers">
-                </div> -->
+                <i class="ki-duotone ki-magnifier fs-3 position-absolute ms-5">
+                    <span class="path1"></span><span class="path2"></span>
+                </i>
+                <input type="text" class="form-control form-control-solid  ps-12" placeholder="Buscar huésped"
+                    [(ngModel)]="filterNombres" />
             </div>
+
             <!--end::Search-->
         </div>
-        <!--begin::Card title-->
+
+        <span class="spinner-border spinner-border-sm align-middle ms-2" *ngIf="isLoading$ | async"></span>
 
 
-        <!--begin::Card toolbar-->
-        <div class="card-toolbar">
-            <!--begin::Toolbar-->
-            <div class="d-flex justify-content-end" data-kt-customer-table-toolbar="base">
 
-                <!--   <button mat-raised-button color="accent" class="me-1" (click)="BotonNuevaHabitacion()">
-                    <mat-icon>add_circle</mat-icon>
-                    Habitación</button>
-                <button mat-raised-button color="primary" class="mr-2 me-1" (click)="BotonGestionarTipos()">
-                    <mat-icon>list</mat-icon> Tipos</button> -->
-            </div>
-            <!--end::Toolbar-->
-
-
-        </div>
-        <!--end::Card toolbar-->
     </div>
+
 
     <div class="card-body pt-0">
 
@@ -43,34 +28,7 @@
 
         <div class="row">
 
-            <div class="col-12 mb-5">
 
-                <div class="row">
-                    <div class="col-4">
-                        <div class="form-group">
-                            <!-- <label>Buscar Por Nombre: </label> -->
-                            <input type="text" class="form-control" placeholder="Buscar por nombre"
-                                [(ngModel)]="filterNombres" />
-
-                        </div>
-                        
-                    </div>
-                    <div class="col-2">
-                        <div class="form-group">
-                            <!-- <label>Buscar Por Nombre: </label> -->
-                            <input type="text" class="form-control" placeholder="Buscar por documento"
-                                [(ngModel)]="filterNroDocumento" />
-
-                        </div>
-                    </div>
-                    <div class="col-2 mt-1">
-                        <button mat-raised-button color="primary" class="mr-2 me-2" (click)="BotonListarHuespedes()">
-                            <mat-icon>search</mat-icon> Listar</button>
-                    </div>
-                </div>
-
-            </div>
-            <br>
             <div class="col-12 mt-2">
                 <div id="kt_customers_table_wrapper" class="dt-container dt-bootstrap5 dt-empty-footer">
                     <div class="table-responsive table-container">
@@ -141,7 +99,7 @@
 
                                     <th class="dt-orderable-asc dt-orderable-desc fixed-column" data-dt-column="7"
                                         tabindex="0">
-                                        <span class="dt-column-title">DETALLES</span>
+                                        <span class="dt-column-title">ACCIONES</span>
                                         <span class="dt-column-order"></span>
                                     </th>
 
@@ -195,8 +153,14 @@
                                     </td>
 
                                     <td class="fixed-column">
-                                        <a href="#" onclick="return false"
-                                            (click)="BotonVerDetalleHuesped(huesped)"><mat-icon>input</mat-icon></a>
+
+
+                                        <button class="btn btn-sm btn-light-primary"
+                                            (click)="BotonVerDetalleHuesped(huesped)">
+
+                                            <span *ngIf="bPermisoEdicion">Editar</span>
+                                            <span *ngIf="!bPermisoEdicion">Detalles</span>
+                                        </button>
                                     </td>
 
 

@@ -54,15 +54,22 @@
                             <label class="label-datepicket col-12 col-form-label">Buscar hasta</label>
                         </div>
                     </div>
-
+                    <!-- Botón Filtrar -->
                     <div class="col-2 mt-1">
-                        <button mat-raised-button color="primary" class="mr-2 me-2" (click)="LoadData()">
-                            <mat-icon>search</mat-icon> Listar
+                        <button type="button" class="btn btn-md btn-light-primary me-3 w-100 w-md-auto"
+                            (click)="LoadData()">
+                            <i class="ki-duotone ki-magnifier fs-5 me-1">
+                                <span class="path1"></span><span class="path2"></span>
+                            </i>
+                            Listar
                         </button>
 
 
-
+                        <!-- Spinner -->
+                        <span class="spinner-border spinner-border-sm align-middle ms-2"
+                            *ngIf="isLoading$ | async"></span>
                     </div>
+
 
                     <div class="col-4">
                         <div class="form-group">

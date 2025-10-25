@@ -9,6 +9,7 @@ export class UserModel extends AuthModel {
   fullname: string;
   email: string;
   pic: string;
+  menuItems:any[]=[];
   roles: number[] = [];
   occupation: string;
   companyName: string;

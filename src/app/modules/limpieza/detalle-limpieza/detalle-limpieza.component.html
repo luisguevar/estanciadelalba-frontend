@@ -1,0 +1,123 @@
+<div class="modal  d-block" tabindex="-1" role="dialog">
+    <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+
+                <h5 class="modal-title">Mantenimiento Habitación<span
+                        class="spinner-border spinner-border-sm align-middle ms-2" *ngIf="isLoading$ | async"></span>
+                </h5>
+
+
+
+
+            </div>
+
+
+
+
+
+            <div class="modal-body" *ngIf="!(isLoading$ | async)">
+                <div class="row  ">
+
+                    <div class="col-3">
+                        <div class="form-group">
+                            <label _ngcontent-ng-c1727729695=""
+                                class="required fw-semibold fs-6 mb-2">Habitación</label>
+                            <input type="text" class="form-control" placeholder="Habitación"
+                                [(ngModel)]="nNroHabitacion" disabled />
+
+                        </div>
+                    </div>
+
+                    <div class="col-5">
+                        <div class="form-group">
+                            <label _ngcontent-ng-c1727729695="" class="required fw-semibold fs-6 mb-2">Tipo
+                            </label>
+                            <input type="text" class="form-control" placeholder="Tipo
+                                Habitación" [(ngModel)]="cTipoHabitacion" disabled />
+
+                        </div>
+                    </div>
+
+                    <div class="col-4">
+                        <div class="form-group">
+                            <label _ngcontent-ng-c1727729695="" class="required fw-semibold fs-6 mb-2">Nivel
+                            </label>
+                            <input type="text" class="form-control" placeholder="Nivel
+                                Habitación" [(ngModel)]="cNivelHabitacion" disabled />
+
+                        </div>
+                    </div>
+
+
+
+                </div>
+
+                <div class="mt-5">
+                    <mat-tab-group>
+                        <!-- TAB INCIDENCIA ACTIVA -->
+                        <mat-tab *ngIf="incidenciaActiva" label="Incidencia Activa">
+                            <app-incidencia-activa [incidencia]="incidenciaActiva"
+                                (cambiosIncidencia)="incidenciaActiva = $event">
+                            </app-incidencia-activa>
+                        </mat-tab>
+
+
+
+                        <mat-tab label="Historial de Incidencias">
+                            <div *ngIf="listaIncidencias.length; else sinIncidencias">
+                                <table class="table align-middle table-row-dashed fs-6 gy-5 dataTable"
+                                    id="kt_customers_table" style="width: 100%;">
+                                    <thead>
+                                        <tr class="text-start text-gray-500 fw-bold fs-7 text-uppercase gs-0">
+                                            <th>Estado</th>
+                                            <th>Observaciones</th>
+                                            <th>Asignado</th>
+                                            <th>Revisado</th>
+                                            <th>Acciones</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody class="fw-semibold text-gray-600">
+                                        <tr *ngFor="let inc of listaIncidencias">
+                                            <td>{{ estadoTexto(inc.nEstado) }}</td>
+                                            <td> <span *ngIf="inc.cObservaciones">SI</span>
+                                                <span *ngIf="!inc.cObservaciones">NO</span>
+                                            </td>
+                                            <td>{{ inc.created_at | date:'short' }}</td>
+                                            <td>{{ inc.updated_at | date:'short' }}</td>
+                                            <td>
+                                                <button type="button" class="btn btn-sm btn-light-primary"
+                                                    (click)="verDetalleIncidencia(inc)">
+                                                    Detalle
+                                                </button>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                            <ng-template #sinIncidencias>
+                                <p>No hay incidencias registradas.</p>
+                            </ng-template>
+                        </mat-tab>
+
+
+                    </mat-tab-group>
+                </div>
+
+
+
+
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal"
+                    (click)="dialogRef.close(false)">Cerrar</button>
+                <button [disabled]="(isLoading$ | async)" type="button" class="btn btn-primary"
+                    (click)="guardarIncidencia()">
+                    Guardar
+                </button>
+
+            </div>
+        </div>
+    </div>
+</div>

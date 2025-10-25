@@ -81,6 +81,9 @@ export class RegistrarIngresoReservaComponent {
   maxFecha: string = '';
   lstHorariosOcupados: HorarioOcupadoEntity[] = [];
 
+  bPermisoEdicion: boolean = false;
+  bPermisoEliminacion: boolean = false;
+
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: any,
     public dialogRef: MatDialogRef<RegistrarIngresoReservaComponent>,
@@ -93,9 +96,6 @@ export class RegistrarIngresoReservaComponent {
     public _auth: AuthService,
 
   ) {
-    if (_auth.user?.rol_id != 1) {
-      this.bReadOnly = true;
-    }
 
     this.firstFormGroup = this._formBuilder.group({
       firstCtrl: ['', Validators.required],
@@ -112,6 +112,8 @@ export class RegistrarIngresoReservaComponent {
     this.lstNivelesDisponibles = this.data.lstNivelesDisponibles;
 
 
+    this.bPermisoEdicion = this.data.bPermisoEdicion;
+    this.bPermisoEliminacion = this.data.bPermisoEliminacion;
 
 
   }

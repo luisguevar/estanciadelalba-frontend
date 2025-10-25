@@ -17,7 +17,8 @@
                     <div class="col-6">
                         <div class="form-group">
                             <label>Nombres: <span class="text-danger">*</span></label>
-                            <input type="text" class="form-control" placeholder="Nombres" [(ngModel)]="cNombres" />
+                            <input [disabled]="!bPermisoEdicion" type="text" class="form-control" placeholder="Nombres"
+                                [(ngModel)]="cNombres" />
 
                         </div>
                     </div>
@@ -25,7 +26,8 @@
                     <div class="col-6">
                         <div class="form-group">
                             <label>Apellidos: <span class="text-danger">*</span></label>
-                            <input type="text" class="form-control" placeholder="Apellidos" [(ngModel)]="cApellidos" />
+                            <input [disabled]="!bPermisoEdicion" type="text" class="form-control"
+                                placeholder="Apellidos" [(ngModel)]="cApellidos" />
 
                         </div>
                     </div>
@@ -37,7 +39,8 @@
                             <label>Tipo:</label>
                             <select class="form-control" id="tipoHabitacionSelect" [(ngModel)]="nTipoDocumento">
                                 <option disabled [value]="0">Seleccione</option>
-                                <option *ngFor="let tipo of lstTipoDocumentos" [value]="tipo.nId">{{ tipo.cNombre
+                                <option [disabled]="!bPermisoEdicion" *ngFor="let tipo of lstTipoDocumentos"
+                                    [value]="tipo.nId">{{ tipo.cNombre
                                     }}</option>
                             </select>
                         </div>
@@ -46,8 +49,8 @@
                     <div class="col-3">
                         <div class="form-group">
                             <label>Nro Documento: <span class="text-danger">*</span></label>
-                            <input type="text" class="form-control" placeholder="Nro Documento"
-                                [(ngModel)]="cNroDocumento" />
+                            <input [disabled]="!bPermisoEdicion" type="text" class="form-control"
+                                placeholder="Nro Documento" [(ngModel)]="cNroDocumento" />
 
                         </div>
                     </div>
@@ -56,7 +59,8 @@
                     <div class="col-6">
                         <div class="form-group">
                             <label>Correo: <span class="text-danger">*</span></label>
-                            <input type="text" class="form-control" placeholder="Correo" [(ngModel)]="cCorreo" />
+                            <input [disabled]="!bPermisoEdicion" type="text" class="form-control" placeholder="Correo"
+                                [(ngModel)]="cCorreo" />
 
                         </div>
                     </div>
@@ -67,7 +71,8 @@
                             <label>Pais Origen:</label>
                             <select class="form-control" id="tipoHabitacionSelect" [(ngModel)]="pais_id">
                                 <option disabled [value]="0">Seleccione</option>
-                                <option *ngFor="let tipo of paises" [value]="tipo.id">{{ tipo.cNombre
+                                <option [disabled]="!bPermisoEdicion" *ngFor="let tipo of paises" [value]="tipo.id">{{
+                                    tipo.cNombre
                                     }}</option>
                             </select>
                         </div>
@@ -76,8 +81,8 @@
                     <div class="col-6">
                         <div class="form-group w-250px">
                             <label>Celular contacto: <span class="text-danger">*</span></label>
-                            <input type="text" class="form-control" placeholder="Celular contacto"
-                                [(ngModel)]="cCelular" />
+                            <input [disabled]="!bPermisoEdicion" type="text" class="form-control"
+                                placeholder="Celular contacto" [(ngModel)]="cCelular" />
 
                         </div>
                     </div>
@@ -121,7 +126,8 @@
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal"
                     (click)="dialogRef.close(false)">Cerrar</button>
-                <button type="button" class="btn btn-primary" (click)="BotonGuardar()">Guardar</button>
+                <button *ngIf="bPermisoEdicion" type="button" class="btn btn-primary"
+                    (click)="BotonGuardar()">Guardar</button>
             </div>
         </div>
     </div>

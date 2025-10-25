@@ -1,23 +1,9 @@
 <div class="card p-4">
-    <!--begin::Card header-->
-    <div class="card-header border-0 pt-6 p-4">
-        <!--begin::Card title-->
-        <div class="card-title">
-            <!--begin::Search-->
-            <div class="d-flex align-items-center position-relative my-1">
-                <b>LISTADO DE COMPROBANTES</b>
-                <span class="spinner-border spinner-border-sm align-middle ms-2" *ngIf="isLoading$ | async"></span>
+    <span class="spinner-border spinner-border-sm align-middle ms-2" *ngIf="isLoading$ | async"></span>
 
-            </div>
-            <!--end::Search-->
-        </div>
-        <!--begin::Card title-->
+    <br>
 
-
-
-    </div>
-
-    <div class="card-body pt-0">
+    <div class="card-body pt-4">
 
 
         <div class="row">
@@ -29,9 +15,11 @@
                         <div class="form-group">
                             <select [(ngModel)]="filterTipoMotivimiento" class="form-control">
                                 <option value="0" disabled selected>Seleccionar un Tipo</option>
-                                <option value="3">Todos</option>
+                                <option value="5">Todos</option>
                                 <option value="1">Factura</option>
                                 <option value="2">Boleta</option>
+                                <option value="3">Nota de Crédito</option>
+                               <!--  <option value="4">Nota de Débito</option> -->
 
                             </select>
 
@@ -70,13 +58,19 @@
                     </div>
 
                     <div class="col-2 mt-1">
-                        <button mat-raised-button color="primary" class="mr-2 me-2" (click)="LoadData()">
-                            <mat-icon>search</mat-icon> Listar
+                        <button type="button" class="btn btn-md btn-light-primary me-3 w-100 w-md-auto"
+                            (click)="LoadData()">
+                            <i class="ki-duotone ki-magnifier fs-5 me-1">
+                                <span class="path1"></span><span class="path2"></span>
+                            </i>
+                            Listar
                         </button>
 
 
 
                     </div>
+
+
 
                     <div class="col-4">
                         <div class="form-group">
@@ -177,6 +171,12 @@
                                         <span class="dt-column-order"></span>
                                     </th>
 
+                                    <th class="dt-orderable-asc dt-orderable-desc fixed-column" data-dt-column="4"
+                                        tabindex="0">
+                                        <span class="dt-column-title">OPCIONES</span>
+                                        <span class="dt-column-order"></span>
+                                    </th>
+
 
 
                                 </tr>
@@ -198,6 +198,10 @@
                                             <span *ngIf="registro.nTipoComprobante === 1">Factura</span>
 
                                             <span *ngIf="registro.nTipoComprobante === 2">Boleta</span>
+                                            <span *ngIf="registro.nTipoComprobante === 3">Nota de Crédito</span>
+                                            <!-- <span *ngIf="registro.nTipoComprobante === 4">Nota de Débito</span> -->
+
+
                                         </span>
 
                                     </td>
@@ -231,17 +235,8 @@
                                                     Pendiente
                                                 </span>
 
-                                                <a matTooltip="Refrescar Estado" href="#" onclick="return false"
-                                                    (click)="BotonActualizarEstadoSunat(registro)"
-                                                    class="d-flex align-items-center">
-                                                    <mat-icon>refresh</mat-icon>
-                                                </a>
 
-                                                <a *ngIf="registro.bDisponibleAnulacion" matTooltip="Anular" href="#"
-                                                    onclick="return false" (click)="BotonAnularSunat(registro)"
-                                                    class="d-flex align-items-center">
-                                                    <mat-icon style="color: red;">cancel</mat-icon>
-                                                </a>
+
 
                                             </ng-container>
 
@@ -302,12 +297,45 @@
 
 
                                     </td>
+                                    <td class="fixed-column">
+                                        <button mat-icon-button [matMenuTriggerFor]="menu"
+                                            class="hover:bg-gray-200 rounded-full p-1 transition"
+                                            aria-label="acciones comprobante">
+                                            <mat-icon class="text-blue-500">more_vert</mat-icon>
+                                        </button>
+
+                                        <mat-menu #menu="matMenu" class="custom-menu">
+                                            <button (click)="BotonActualizarEstadoSunat(registro)"
+                                                *ngIf="bPermisoEdicion" mat-menu-item class="gap-3">
+                                                <mat-icon class="text-primary">refresh</mat-icon>
+                                                <span>Actualizar</span>
+                                            </button>
+
+                                            <button *ngIf="registro.bDisponibleAnulacion"
+                                                (click)="BotonAnularSunat(registro)" mat-menu-item
+                                                class="gap-3 text-red-600">
+                                                <mat-icon class="text-danger">block</mat-icon>
+                                                <span>Anular</span>
+                                            </button>
+
+                                            <ng-container
+                                                *ngIf="(registro.nTipoComprobante === 1 || registro.nTipoComprobante === 2) && registro.lstDetalles && registro.lstDetalles.length > 0">
+                                                <mat-divider></mat-divider>
+                                                <button *ngIf="bPermisoEdicion" (click)="BotonGenerarNCredito(registro)"
+                                                    mat-menu-item class="gap-3">
+                                                    <mat-icon class="text-primary">note</mat-icon>
+                                                    <span>Emitir Nota Crédito</span>
+                                                </button>
+                                               <!--  <button *ngIf="bPermisoEdicion" mat-menu-item class="gap-3">
+                                                    <mat-icon class="text-primary">note_add</mat-icon>
+                                                    <span>Emitir Nota Débito</span>
+                                                </button> -->
+                                            </ng-container>
 
 
 
-
-
-
+                                        </mat-menu>
+                                    </td>
 
                                 </tr>
                             </tbody>
@@ -331,7 +359,7 @@
                 </button>
 
 
-                
+
             </div>
         </div>
 

@@ -23,13 +23,15 @@ export class AddHabitacionComponent {
   lstNiveles: NivelHabitacionEntity[] = [
     { id: 1, cNombreNivel: 'Tercer Nivel' },
     { id: 2, cNombreNivel: 'Cuarto Nivel' },
-    { id: 3, cNombreNivel: 'Quinto Nivel' }
+    { id: 3, cNombreNivel: 'Quinto Nivel' },
   ]
   estado_id: number = 0;
   lstEstado: any[] = [
-    
+
     { id: 0, cNombreEstado: 'Inactivo' }
   ]
+  bPermisoEdicion: boolean = false;
+  bPermisoEliminacion: boolean = false;
 
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: any,
@@ -40,6 +42,8 @@ export class AddHabitacionComponent {
   ) {
     this.lstTiposHabitaciones = data.lstTiposHabitaciones;
     this.lstHabitaciones = data.lstHabitaciones;
+    this.bPermisoEdicion = data.bPermisoEdicion;
+    this.bPermisoEliminacion = data.bPermisoEliminacion;
     if (data.lstServicios) {
       this.lstServicios = data.lstServicios.map((s: ServicioEntity) => {
         return { ...s, bActivo: false };

@@ -1,0 +1,79 @@
+<div class="modal  d-block" tabindex="-1" role="dialog">
+    <div class="modal-dialog modal-dialog-centered modal-md" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+
+                <h5 class="modal-title">Detalle del Usuario <span
+                        class="spinner-border spinner-border-sm align-middle ms-2" *ngIf="isLoading$ | async"></span>
+                </h5>
+
+
+            </div>
+
+            <div class="modal-body" *ngIf="!(isLoading$ | async)">
+                <div class="row">
+                    <div _ngcontent-ng-c1727729695="" class="fv-row mb-7"><label _ngcontent-ng-c1727729695=""
+                            class="required fw-semibold fs-6 mb-2">Nombres</label> <input type="text"
+                            class="form-control" placeholder="Nombres" [(ngModel)]="cNombres" />
+                    </div>
+
+                </div>
+
+
+                <div class="row ">
+
+                    <div class="col-8">
+                        <div class="form-group">
+                            <label _ngcontent-ng-c1727729695="" class="required fw-semibold fs-6 mb-2">Correo</label>
+                            <input type="text" class="form-control" placeholder="Correo" [(ngModel)]="cCorreo" />
+
+                        </div>
+                    </div>
+
+                    <div class="col-4">
+                        <div class="form-group">
+                            <label _ngcontent-ng-c1727729695="" class="required fw-semibold fs-6 mb-2">Documento</label>
+                            <input type="text" class="form-control" placeholder="Documento"
+                                [(ngModel)]="cNroDocumento" />
+
+                        </div>
+                    </div>
+
+
+                </div>
+
+                <div class="row py-5">
+                    <div class="col-8">
+                        <div class="form-group ">
+                            <label _ngcontent-ng-c1727729695="" class="required fw-semibold fs-6 mb-2">Rol</label>
+                            <select class="form-control" id="tipoHabitacionSelect" [(ngModel)]="rol_id">
+                                <option disabled [value]="0">Seleccione</option>
+                                <option *ngFor="let tipo of lstRoles" [value]="tipo.id">{{ tipo.cNombreRol
+                                    }}</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="col-4">
+                        <div class="form-group ">
+                            <label _ngcontent-ng-c1727729695="" class="required fw-semibold fs-6 mb-2">Estado</label>
+                            <select class="form-control" id="estado" [(ngModel)]="estado">
+                                <option disabled [value]="-1">Seleccione</option>
+                                <option *ngFor="let tipo of lstEstados" [value]="tipo.id">{{ tipo.cNombre
+                                    }}</option>
+                            </select>
+                        </div>
+                    </div>
+
+
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal"
+                    (click)="dialogRef.close(false)">Cerrar</button>
+                <button type="button" class="btn btn-primary" (click)="BotonGuardar()"
+                    *ngIf="bPermisoEdicion">Guardar</button>
+            </div>
+        </div>
+    </div>
+</div>

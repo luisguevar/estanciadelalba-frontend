@@ -28,6 +28,8 @@ import { BuscarClienteComponent } from './componentes/buscar-cliente/buscar-clie
 import { AgregarEstanciaComponent } from './componentes/agregar-estancia/agregar-estancia.component';
 import { AgregarProductoComponent } from './componentes/agregar-producto/agregar-producto.component';
 import { GenerarAnulacionComponent } from './componentes/generar-anulacion/generar-anulacion.component';
+import { MatMenuModule } from '@angular/material/menu';
+import { EmisionNotaCreditoComponent } from './componentes/emision-nota-credito/emision-nota-credito.component';
 
 
 @NgModule({
@@ -38,7 +40,8 @@ import { GenerarAnulacionComponent } from './componentes/generar-anulacion/gener
     BuscarClienteComponent,
     AgregarEstanciaComponent,
     AgregarProductoComponent,
-    GenerarAnulacionComponent
+    GenerarAnulacionComponent,
+    EmisionNotaCreditoComponent
   ],
   imports: [
     CommonModule,
@@ -59,7 +62,11 @@ import { GenerarAnulacionComponent } from './componentes/generar-anulacion/gener
     MatListModule, MatDividerModule,
     FullCalendarModule,
     MatSlideToggleModule,
-    MatTooltipModule, MatSelectModule
+    MatTooltipModule, MatSelectModule,
+    MatInputModule,
+    MatMenuModule,
+    MatIconModule,
+    MatButtonModule,
   ]
 })
 export class FacturacionModule { }

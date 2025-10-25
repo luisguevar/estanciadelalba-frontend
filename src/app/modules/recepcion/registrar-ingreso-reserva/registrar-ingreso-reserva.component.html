@@ -32,7 +32,7 @@
                                 </div>
                             </div>
 
-                            <div class="col-6">
+                            <div *ngIf="bPermisoEdicion" class="col-6">
                                 <div style="display: flex; justify-content: end;">
                                     <button mat-raised-button color="primary" (click)="BotonAgregarHabitacion()">
                                         <mat-icon>add_circle_outline</mat-icon>
@@ -178,8 +178,8 @@
                                                             </table>
 
 
-                                                            <a matTooltip="Agregar huésped" href="#"
-                                                                onclick="return false"
+                                                            <a *ngIf="bPermisoEdicion" matTooltip="Agregar huésped"
+                                                                href="#" onclick="return false"
                                                                 (click)="BotonAgregarHuesped(HabitacionEstancia)"
                                                                 style="cursor: pointer;">
                                                                 <mat-icon>person_add</mat-icon>
@@ -188,7 +188,8 @@
 
 
 
-                                                            <a matTooltip="Remover habitación" href="#"
+                                                            <a *ngIf="bPermisoEliminacion"
+                                                                matTooltip="Remover habitación" href="#"
                                                                 onclick="return false"
                                                                 (click)="BotonRemoverHabitacion(HabitacionEstancia)"
                                                                 style="cursor: pointer; color: red; margin-left: 1%;"><mat-icon>deleted</mat-icon>
@@ -247,7 +248,7 @@
                                 <button mat-button matStepperNext>Next</button>
                             </div> -->
                         </form>
-                        <div style="display: flex; justify-content: end;">
+                        <div *ngIf="bPermisoEdicion" style="display: flex; justify-content: end;">
                             <div class="form-group" style="width: 30%;">
                                 <label style="color: grey;">Buscar por Nro Documento</label>
                                 <div class="input-group">
@@ -426,6 +427,7 @@
                                                                 [max]="maxFecha" placeholder="Check-out programado"
                                                                 (ngModelChange)="onDpCheckOutChange($event)"
                                                                 onkeydown="return false"
+                                                                [disabled]="!bPermisoEdicion"
                                                                 style="caret-color: transparent;" />
 
 
@@ -453,7 +455,7 @@
                                                                             <span class="input-group-text">S/. </span>
                                                                         </div>
                                                                         <input type="number" class="form-control"
-                                                                            [disabled]="bReadOnly"
+                                                                            [disabled]="!bPermisoEdicion"
                                                                             [(ngModel)]="item.nPrecioEstanciaHabitacion"
                                                                             (ngModelChange)="calcularTotal()"
                                                                             aria-label="Text input with checkbox" />
@@ -517,7 +519,7 @@
                                                 </mat-panel-description>
                                             </mat-expansion-panel-header>
 
-                                            <button mat-raised-button color="primary" (click)="BotonAgregarPago()">
+                                            <button *ngIf="bPermisoEdicion" mat-raised-button color="primary" (click)="BotonAgregarPago()">
                                                 <mat-icon>add_circle_outline</mat-icon>
                                                 Pago</button>
 
@@ -667,14 +669,17 @@
 
                 <button type="button" class="btn btn-secondary" data-dismiss="modal"
                     (click)="dialogRef.close(false)">Cerrar</button>
-                <button type="button" class="btn btn-primary" (click)="BotonRegistrarIngreso()"
-                    *ngIf="nTipoRegistro.value === '1'">
-                    Registrar Ingreso
-                </button>
-                <button type="button" class="btn btn-primary" (click)="BotonReservar()"
-                    *ngIf="nTipoRegistro.value ==='2'">
-                    Reservar
-                </button>
+                <ng-container *ngIf="bPermisoEdicion">
+                    <button type="button" class="btn btn-primary" (click)="BotonRegistrarIngreso()"
+                        *ngIf="nTipoRegistro.value === '1'">
+                        Registrar Ingreso
+                    </button>
+                    <button type="button" class="btn btn-primary" (click)="BotonReservar()"
+                        *ngIf="nTipoRegistro.value ==='2'">
+                        Reservar
+                    </button>
+                </ng-container>
+
             </div>
         </div>
     </div>

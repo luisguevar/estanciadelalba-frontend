@@ -27,13 +27,18 @@ export class HabitacionEntity {
         public nPrecioTotal?: number,
         public lstPreciosPorTemporada?: Array<TemporadaEntity>,
         public lstPreciosPorTemporadaDelete?: Array<TemporadaEntity>,
+        public lstBloqueoReserva?: Array<HabitacionBloqueoReservaEntity>,
+        public lstBloqueoReservaDelete?: Array<HabitacionBloqueoReservaEntity>,
         public bActivo?: boolean,
         public cImagen?: string,
         public nColorHabitacion?: number,
         public infoEstancia?: EstanciaEntity,
         public cMotivoBloqueo?: string,
         public nEstadoHabitacion?: number,
-        public lstHorariosOcupados?: Array<HorarioOcupadoEntity>
+        public lstHorariosOcupados?: Array<HorarioOcupadoEntity>,
+        public bTieneIncidenciaActiva?: boolean,
+        public incidencia_activa?: any,
+        public listIncidencias?: any[]
 
     ) { }
 }
@@ -105,6 +110,26 @@ export class HorarioOcupadoEntity {
         public id?: number,
         public dFechaCheckIn?: string,
         public dFechaCheckOut?: string,
+    ) {
+
+    }
+}
+
+
+export class HabitacionBloqueoReservaEntity {
+    constructor(
+        public id?: number,
+        public habitacion_id?: number,
+        public dFechaInicio?: Date,
+        public dFechaFin?: Date,
+        public cMotivoBloqueo?: string,
+        public cFechaInicio?: string,
+        public cFechaFin?: string,
+        public nEstado?: number,
+        public lstHabitaciones?: Array<any>,
+        public lstTiposHabitaciones?: Array<any>,
+        public lstNiveles?: Array<any>,
+        public nTipoAsignacion?: number,
     ) {
 
     }

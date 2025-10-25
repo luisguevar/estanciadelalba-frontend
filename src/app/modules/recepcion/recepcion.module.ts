@@ -1,5 +1,5 @@
 import { NgModule } from '@angular/core';
-import { CommonModule, NgIf } from '@angular/common';
+import { CommonModule, DatePipe, NgIf } from '@angular/common';
 
 import { RecepcionRoutingModule } from './recepcion-routing.module';
 import { RecepcionComponent } from './recepcion.component';
@@ -20,11 +20,12 @@ import { MatTabsModule } from '@angular/material/tabs';
 import { NgbModule, NgbModalModule, NgbDatepickerModule } from '@ng-bootstrap/ng-bootstrap';
 import { InlineSVGModule } from 'ng-inline-svg-2';
 import { RegistrarIngresoReservaComponent } from './registrar-ingreso-reserva/registrar-ingreso-reserva.component';
-import {MatStepperModule} from '@angular/material/stepper';
+import { MatStepperModule } from '@angular/material/stepper';
 import { AddHuespedComponent } from './add-huesped/add-huesped.component';
 import { AddHabitacionComponent } from './add-habitacion/add-habitacion.component';
-import {MatTooltipModule} from '@angular/material/tooltip';
+import { MatTooltipModule } from '@angular/material/tooltip';
 import { AddPagoRecepcionComponent } from './add-pago-recepcion/add-pago-recepcion.component';
+import { GestionHabitacionComponent } from './gestion-habitacion/gestion-habitacion.component';
 @NgModule({
   declarations: [
     RecepcionComponent,
@@ -32,7 +33,11 @@ import { AddPagoRecepcionComponent } from './add-pago-recepcion/add-pago-recepci
     RegistrarIngresoReservaComponent,
     AddHuespedComponent,
     AddHabitacionComponent,
-    AddPagoRecepcionComponent
+    AddPagoRecepcionComponent,
+    GestionHabitacionComponent
+  ],
+  providers: [
+    DatePipe // Proporciona DatePipe aquí
   ],
   imports: [
     CommonModule,

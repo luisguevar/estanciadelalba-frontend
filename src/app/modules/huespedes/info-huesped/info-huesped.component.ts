@@ -38,7 +38,8 @@ export class InfoHuespedComponent {
   huesped_id: number = 0;
   paises: any[] = [];
 
-
+  bPermisoEdicion: boolean = false;
+  bPermisoEliminacion: boolean = false;
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: any,
     public dialogRef: MatDialogRef<InfoHuespedComponent>,
@@ -47,6 +48,8 @@ export class InfoHuespedComponent {
     private alertService: AlertService
   ) {
     this.huesped = data.huesped;
+    this.bPermisoEdicion = this.data.bPermisoEdicion;
+    this.bPermisoEliminacion = this.data.bPermisoEliminacion;
   }
 
   ngOnInit(): void {

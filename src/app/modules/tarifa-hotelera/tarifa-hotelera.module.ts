@@ -23,13 +23,15 @@ import { MAT_DATE_RANGE_SELECTION_STRATEGY, MatDatepickerModule } from '@angular
 import { MatTabsModule } from '@angular/material/tabs';
 import { MatExpansionModule } from '@angular/material/expansion';
 import { AsignarPrecioTemporadaComponent } from './asignar-precio-temporada/asignar-precio-temporada.component';
+import { BloqueoReservaTemporadaComponent } from './bloqueo-reserva-temporada/bloqueo-reserva-temporada.component';
 @NgModule({
   declarations: [
     GestionarTarifaHoteleraComponent,
     AddHabitacionComponent,
     EditHabitacionComponent,
     GestionarTiposHabitacionComponent,
-    AsignarPrecioTemporadaComponent
+    AsignarPrecioTemporadaComponent,
+    BloqueoReservaTemporadaComponent
   ],
   providers: [
     DatePipe // Proporciona DatePipe aquí

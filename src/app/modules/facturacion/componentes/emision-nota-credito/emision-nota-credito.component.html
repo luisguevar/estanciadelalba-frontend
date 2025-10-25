@@ -1,0 +1,94 @@
+<div class="modal  d-block" tabindex="-1" role="dialog">
+    <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+
+                <h5 class="modal-title">Emisión Nota Crédito - <span *ngIf="nTipoComprobanteOrigen === 1">Factura</span>
+                    <span *ngIf="nTipoComprobanteOrigen === 2">Boleta</span>, {{cSerie}}-{{ nNumero }}, Cliente:
+                    {{cClienteNombre}}.<span class="spinner-border spinner-border-sm align-middle ms-2"
+                        *ngIf="isLoading$ | async"></span>
+                </h5>
+
+            </div>
+
+            <div class="modal-body">
+                <!-- FILA 1 -->
+                <div class="row mb-3">
+                    <div class="col-12">
+                        <label class="fw-semibold fs-6 mb-2">DETALLE</label>
+                        <select class="form-control" [(ngModel)]="tipo_de_nota_de_credito">
+                            <option value="1">ANULACIÓN DE LA OPERACIÓN</option>
+                            <option value="2">ANULACIÓN POR ERROR EN EL RUC</option>
+                            <option value="3">CORRECCIÓN POR ERROR EN LA DESCRIPCIÓN</option>
+                            <option value="4">DESCUENTO GLOBAL</option>
+                            <option value="5">DESCUENTO POR ÍTEM</option>
+                            <option value="6">DEVOLUCIÓN TOTAL</option>
+                            <option value="7">DEVOLUCIÓN POR ÍTEM</option>
+                            <option value="8">BONIFICACIÓN</option>
+                            <option value="9">DISMINUCIÓN EN EL VALOR</option>
+                            <option value="10">OTROS CONCEPTOS</option>
+                            <option value="11">AJUSTES AFECTOS AL IVAP</option>
+                            <option value="12">AJUSTES DE OPERACIONES DE EXPORTACIÓN</option>
+                            <option value="13">AJUSTES - MONTOS Y/O FECHAS DE PAGO</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- TABLA DETALLE -->
+                <table class="table table-bordered">
+                    <thead>
+                        <tr>
+                            <th>Descripción</th>
+                            <th>Hab</th>
+                            <th>Cant</th>
+                            <th>SubTotal</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let item of lstDetalles; let i = index">
+                            <td>{{item.cDescripcion}}</td>
+                            <td>{{item.cNroHabitacion}}</td>
+                            <td>{{item.nCantidad}}</td>
+                            <td>
+                                <input type="number" class="form-control form-control-sm" [(ngModel)]="item.cSubTotal"
+                                    (ngModelChange)="recalcularTotales()" [max]="item.cSubTotalOriginal | number">
+                            </td>
+
+                            <td>
+                                <button class="btn btn-sm btn-danger" (click)="eliminarDetalle(i)">
+                                    Quitar
+                                </button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+
+
+                <div class="row mt-3">
+                    <div class="col-4">
+                        <label class="fw-semibold fs-6">Subtotal (Gravada):</label>
+                        <div>S/. {{cTotalGravada}}</div>
+                    </div>
+                    <div class="col-4">
+                        <label class="fw-semibold fs-6">IGV (18%):</label>
+                        <div>S/. {{cTotalIgv}}</div>
+                    </div>
+                    <div class="col-4">
+                        <label class="fw-semibold fs-6">Total:</label>
+                        <div class="fw-bold">S/. {{cTotal}}</div>
+                    </div>
+                </div>
+
+
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal"
+                    (click)="dialogRef.close(false)">Volver</button>
+                <button *ngIf="!bCargando" [disabled]="(isLoading$ | async)" type="button" class="btn btn-primary"
+                    (click)="BotonGuardar()">Confirmar</button>
+            </div>
+        </div>
+    </div>
+</div>

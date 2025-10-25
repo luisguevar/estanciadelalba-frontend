@@ -1,23 +1,9 @@
 <div class="card p-4">
-    <!--begin::Card header-->
-    <div class="card-header border-0 pt-6 p-4">
-        <!--begin::Card title-->
-        <div class="card-title">
-            <!--begin::Search-->
-            <div class="d-flex align-items-center position-relative my-1">
-                <b>GENERACIÓN DE COMPROBANTES</b>
-                <span class="spinner-border spinner-border-sm align-middle ms-2" *ngIf="isLoading$ | async"></span>
+    <span class="spinner-border spinner-border-sm align-middle ms-2" *ngIf="isLoading$ | async"></span>
 
-            </div>
-            <!--end::Search-->
-        </div>
-        <!--begin::Card title-->
+    <br>
 
-
-
-    </div>
-
-    <div class="card-body pt-0">
+    <div class="card-body pt-4">
 
 
 
@@ -52,8 +38,9 @@
                     <input [(ngModel)]="cCliente" disabled type="text" class="form-control"
                         placeholder="Seleccione un cliente" aria-label="" aria-describedby="basic-addon1">
                     <div class="input-group-prepend">
-                        <button mat-raised-button color="primary" class="h-100 btn btn-outline-secondary"
-                            (click)="BotonBuscarCliente()" type="button"><mat-icon>search</mat-icon></button>
+                        <button *ngIf="bPermisoEdicion" mat-raised-button color="primary"
+                            class="h-100 btn btn-outline-secondary" (click)="BotonBuscarCliente()"
+                            type="button"><mat-icon>search</mat-icon></button>
                     </div>
                     <label class="label-datepicket col-12 col-form-label">Cliente</label>
                 </div>
@@ -93,10 +80,10 @@
         <div class="row">
             <div class="col-12 text-end">
                 <div class="d-inline-flex gap-2">
-                    <button mat-raised-button (click)="BotonBuscarEstancia()">
+                    <button *ngIf="bPermisoEdicion" mat-raised-button (click)="BotonBuscarEstancia()">
                         <mat-icon>add_circle</mat-icon> Agregar Estancia
                     </button>
-                    <button mat-raised-button (click)="BotonBuscarProdcuto()">
+                    <button *ngIf="bPermisoEdicion" mat-raised-button (click)="BotonBuscarProdcuto()">
                         <mat-icon>add_circle</mat-icon> Agregar Producto
                     </button>
                 </div>
@@ -339,8 +326,8 @@
 
 
 <div class="d-flex justify-content-end" style="margin-top: 1%;" *ngIf="cTotal && !bCargando">
-    <button [disabled]="(isLoading$ | async)" mat-raised-button color="primary" style="background-color: #1b84ff;"
-        class="me-1" (click)="BotonContinuar()">
+    <button *ngIf="bPermisoEdicion" [disabled]="(isLoading$ | async)" mat-raised-button color="primary"
+        style="background-color: #1b84ff;" class="me-1" (click)="BotonContinuar()">
         <mat-icon>save</mat-icon>
         Guardar</button>
 </div>

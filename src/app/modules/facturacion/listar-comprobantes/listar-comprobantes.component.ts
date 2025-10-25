@@ -9,7 +9,12 @@ import { GenerarAnulacionComponent } from '../componentes/generar-anulacion/gene
 import * as XLSX from 'xlsx';
 import * as FileSaver from 'file-saver';
 import moment from 'moment';
-
+import { Router } from '@angular/router';
+import { UserEntity } from 'src/app/models/UsuarioEntity';
+import { MatIconModule } from '@angular/material/icon';
+import { MatMenuModule } from '@angular/material/menu';
+import { MatButtonModule } from '@angular/material/button';
+import { EmisionNotaCreditoComponent } from '../componentes/emision-nota-credito/emision-nota-credito.component';
 @Component({
   selector: 'app-listar-comprobantes',
   templateUrl: './listar-comprobantes.component.html',
@@ -19,7 +24,7 @@ export class ListarComprobantesComponent {
   isLoading$: any;
 
   filterUsuarioResponsable: number = 0;
-  filterTipoMotivimiento: number = 3;
+  filterTipoMotivimiento: number = 5;
   filterDocumento: string;
   filterDesde: string;
   filterHasta: string;
@@ -30,16 +35,41 @@ export class ListarComprobantesComponent {
   lstUsuarios: any;
   lstRegistros: ComprobanteEntity[] = [];
   bLoading: boolean = false;
+
+  bPermisoEdicion: boolean = false;
+  bPermisoEliminacion: boolean = false;
+
   constructor(
     public _service: SvGeneralService,
     public toaster: ToastrService,
     private _dialog: MatDialog,
     private cdr: ChangeDetectorRef,
-    public _auth: AuthService
+    public _auth: AuthService,
+    private authService: AuthService,
+    private router: Router
   ) {
 
-
+    this.LoadPersona();
   }
+
+
+
+  LoadPersona() {
+    const usuario = new UserEntity();
+    usuario.id = this.authService.user?.id;
+    usuario.link = "/facturacion/listar-comprobantes";
+    this._service.PostPermisosPorUsuarioModulo(usuario).subscribe((resp: any) => {
+
+
+      if (resp.success) {
+        this.bPermisoEdicion = resp.bPermisoEdicion;
+        this.bPermisoEliminacion = resp.bPermisoEliminacion;
+      } else {
+        this.router.navigate(['/menu-inicio/lista-opciones']);
+      }
+    });
+  }
+
 
   ngOnInit(): void {
     this.isLoading$ = this._service.isLoading$;
@@ -86,7 +116,8 @@ export class ListarComprobantesComponent {
   }
 
   BotonActualizarEstadoSunat(registro: ComprobanteEntity) {
-
+    /*  this.toaster.warning('Comprobantes', 'No se puede actualizar el estado en el ambiente de test.');
+     return; */
     const body = {
       id: registro.id,
       tipo_de_comprobante: registro.nTipoComprobante,
@@ -143,6 +174,31 @@ export class ListarComprobantesComponent {
 
     });
 
+  }
+
+  BotonGenerarNCredito(registro: ComprobanteEntity) {
+    const dialogRef = this._dialog.open(
+      EmisionNotaCreditoComponent,
+      {
+        width: 'auto ',
+        height: 'auto',
+        disableClose: true,
+        data: {
+          cClienteNombre: registro.cClienteNombre,
+          nTipoComprobante: registro.nTipoComprobante,
+          cSerie: registro.cSerie,
+          nNumero: registro.nNumero,
+          registro: registro
+        },
+      }
+    );
+
+
+    dialogRef.afterClosed().subscribe((result) => {
+      this.LoadData();
+
+
+    });
   }
 
   BotonExportarExcel() {

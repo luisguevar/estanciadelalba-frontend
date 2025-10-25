@@ -5,6 +5,9 @@ import { MatDialog } from '@angular/material/dialog';
 import { PageEvent } from '@angular/material/paginator';
 import { HuespedEntity } from 'src/app/models/HuespedEntity';
 import { InfoHuespedComponent } from '../info-huesped/info-huesped.component';
+import { UserEntity } from 'src/app/models/UsuarioEntity';
+import { AuthService } from '../../auth';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-gestionar-huespedes',
@@ -22,15 +25,18 @@ export class GestionarHuespedesComponent {
 
   filterNombres: string = '';
   filterNroDocumento: string = '';
-
+  bPermisoEdicion: boolean = false;
+  bPermisoEliminacion: boolean = false;
   constructor(
     public _service: SvGeneralService,
     public toaster: ToastrService,
     private _dialog: MatDialog,
     private cdr: ChangeDetectorRef,
+    private authService: AuthService,
+    private router: Router
   ) {
 
-
+    this.LoadPersona();
   }
 
   ngOnInit(): void {
@@ -46,7 +52,7 @@ export class GestionarHuespedesComponent {
     };
 
     this._service.GetHuespedes(params).subscribe((resp: any) => {
-     
+
       if (resp.success) {
         this.lstHuespedes = resp.data;
         this.desde = 0;
@@ -73,6 +79,8 @@ export class GestionarHuespedesComponent {
         disableClose: true,
         data: {
           huesped: huesped,
+          bPermisoEdicion: this.bPermisoEdicion,
+          bPermisoEliminacion: this.bPermisoEliminacion
         },
       }
     );
@@ -85,8 +93,24 @@ export class GestionarHuespedesComponent {
 
   }
 
+
+  LoadPersona() {
+    const usuario = new UserEntity();
+    usuario.id = this.authService.user?.id;
+    usuario.link = "/huespedes/gestionar-huespedes";
+    this._service.PostPermisosPorUsuarioModulo(usuario).subscribe((resp: any) => {
+
+
+      if (resp.success) {
+        this.bPermisoEdicion = resp.bPermisoEdicion;
+        this.bPermisoEliminacion = resp.bPermisoEliminacion;
+      } else {
+        this.router.navigate(['/menu-inicio/lista-opciones']);
+      }
+    });
+  }
   cambiarPagina(e: PageEvent) {
-  
+
     this.desde = e.pageIndex * e.pageSize;
     this.hasta = this.desde + e.pageSize;
   }

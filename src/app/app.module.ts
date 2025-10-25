@@ -22,6 +22,8 @@ import {  LOCALE_ID } from '@angular/core';
 import es from '@angular/common/locales/es';
 import { registerLocaleData } from '@angular/common';
 import { GestionarCambioHabitacionComponent } from './modules/cambio-habitacion/gestionar-cambio-habitacion/gestionar-cambio-habitacion.component';
+import { MenuInicioComponent } from './modules/menu-inicio/menu-inicio.component';
+
 
 registerLocaleData(es);
 // #fake-end#
@@ -36,7 +38,7 @@ function appInitializer(authService: AuthService) {
 }
 
 @NgModule({
-  declarations: [AppComponent, TarifaHoteleraComponent],
+  declarations: [AppComponent, TarifaHoteleraComponent, MenuInicioComponent],
   imports: [
     BrowserModule,
     BrowserAnimationsModule,

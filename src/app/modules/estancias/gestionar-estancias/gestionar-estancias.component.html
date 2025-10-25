@@ -1,42 +1,8 @@
 <div class="card p-4">
-    <!--begin::Card header-->
-    <div class="card-header border-0 pt-6 p-4">
-        <!--begin::Card title-->
-        <div class="card-title">
-            <!--begin::Search-->
-            <div class="d-flex align-items-center position-relative my-1">
-                <b>GESTIONAR ESTANCIAS</b>
-                <span class="spinner-border spinner-border-sm align-middle ms-2" *ngIf="isLoading$ | async"></span>
-                <!--  <div class="d-flex align-items-center position-relative my-1">
-                    <i class="ki-duotone ki-magnifier fs-3 position-absolute ms-5"><span class="path1"></span><span
-                            class="path2"></span></i> <input type="text" data-kt-customer-table-filter="search"
-                        class="form-control form-control-solid w-250px ps-12" placeholder="Search Customers">
-                </div> -->
-            </div>
-            <!--end::Search-->
-        </div>
-        <!--begin::Card title-->
+    <span class="spinner-border spinner-border-sm align-middle ms-2" *ngIf="isLoading$ | async"></span>
 
-
-        <!--begin::Card toolbar-->
-        <div class="card-toolbar">
-            <!--begin::Toolbar-->
-            <div class="d-flex justify-content-end" data-kt-customer-table-toolbar="base">
-
-                <!--   <button mat-raised-button color="accent" class="me-1" (click)="BotonNuevaHabitacion()">
-                    <mat-icon>add_circle</mat-icon>
-                    Habitación</button>
-                <button mat-raised-button color="primary" class="mr-2 me-1" (click)="BotonGestionarTipos()">
-                    <mat-icon>list</mat-icon> Tipos</button> -->
-            </div>
-            <!--end::Toolbar-->
-
-
-        </div>
-        <!--end::Card toolbar-->
-    </div>
-
-    <div class="card-body pt-0">
+    <br>
+    <div class="card-body pt-4">
 
 
 
@@ -82,9 +48,22 @@
                         </div>
                     </div>
 
+
+
+                    <!-- Botón Filtrar -->
                     <div class="col-2 mt-1">
-                        <button mat-raised-button color="primary" class="mr-2 me-2" (click)="BotonListarHuespedes()">
-                            <mat-icon>search</mat-icon> Listar</button>
+                        <button type="button" class="btn btn-md btn-light-primary me-3 w-100 w-md-auto"
+                            (click)="BotonListarHuespedes()">
+                            <i class="ki-duotone ki-magnifier fs-5 me-1">
+                                <span class="path1"></span><span class="path2"></span>
+                            </i>
+                            Listar
+                        </button>
+
+
+                        <!-- Spinner -->
+                        <span class="spinner-border spinner-border-sm align-middle ms-2"
+                            *ngIf="isLoading$ | async"></span>
                     </div>
                 </div>
 
@@ -162,7 +141,7 @@
 
                                     <th class="dt-orderable-asc dt-orderable-desc fixed-column" data-dt-column="7"
                                         tabindex="0">
-                                        <span class="dt-column-title">DETALLES</span>
+                                        <span class="dt-column-title">ACCIONES</span>
                                         <span class="dt-column-order"></span>
                                     </th>
 
@@ -200,10 +179,12 @@
 
                                     </td>
                                     <td class="fixed-column">
-                                        <span class="text-gray-600  mb-1" *ngIf="estancia.nEstado != 2">{{ estancia.cFechaCheckOut }}</span>
+                                        <span class="text-gray-600  mb-1" *ngIf="estancia.nEstado != 2">{{
+                                            estancia.cFechaCheckOut }}</span>
 
-                                        <span class="text-gray-600  mb-1" *ngIf="estancia.nEstado === 2">{{ estancia.cFechaCheckOutProgramado }}</span>
-                                        
+                                        <span class="text-gray-600  mb-1" *ngIf="estancia.nEstado === 2">{{
+                                            estancia.cFechaCheckOutProgramado }}</span>
+
 
                                     </td>
                                     <td class="fixed-column">
@@ -243,9 +224,16 @@
 
                                     </td>
 
+
                                     <td class="fixed-column">
-                                        <a href="#" onclick="return false"
-                                            (click)="BotonVerDetalleEstancia(estancia)"><mat-icon>input</mat-icon></a>
+
+
+                                        <button class="btn btn-sm btn-light-primary"
+                                            (click)="BotonVerDetalleEstancia(estancia)">
+
+                                            <span *ngIf="bPermisoEdicion">Editar</span>
+                                            <span *ngIf="!bPermisoEdicion">Detalles</span>
+                                        </button>
                                     </td>
 
 

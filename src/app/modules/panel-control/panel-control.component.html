@@ -1,98 +1,48 @@
-<div class="card p-4">
-    <!--begin::Card header-->
+<div class="card pt-4">
+
     <div class="card-header border-0 pt-6 p-4">
-        <!--begin::Card title-->
-        <div class="card-title">
-            <!--begin::Search-->
+        <div class="row align-items-end ">
+            <!-- Desde -->
+            <div class="col-md-4 col-sm-6">
+                <label class="form-label fs-6 fw-semibold mb-2">Desde:</label>
+                <input type="datetime-local" class="form-control form-control-md form-control-solid"
+                    [(ngModel)]="dpFechaIni">
+            </div>
 
+            <!-- Hasta -->
+            <div class="col-md-4 col-sm-6">
+                <label class="form-label fs-6 fw-semibold mb-2">Hasta:</label>
+                <input type="datetime-local" class="form-control form-control-md form-control-solid"
+                    [(ngModel)]="dpFechaFin">
+            </div>
 
-            <div class="d-flex align-items-center position-relative my-1">
+            <!-- Botón Filtrar -->
+            <div class="col-md-4 col-sm-12 d-flex align-items-end">
+                <button type="button" class="btn btn-md btn-light-primary me-3 w-100 w-md-auto"
+                    (click)="BotonListarPanel()">
+                    
+                    <i class="ki-duotone ki-magnifier fs-5 me-1">
+                        <span class="path1"></span><span class="path2"></span>
+                    </i>
+                    Listar
+                </button>
+                
 
-
-                <b>PANEL DE CONTROL</b>
+                <!-- Spinner -->
                 <span class="spinner-border spinner-border-sm align-middle ms-2" *ngIf="isLoading$ | async"></span>
-                <!--  <span class="spinner-border spinner-border-sm align-middle ms-2"></span> -->
-                <!--  <div class="d-flex align-items-center position-relative my-1">
-                    <i class="ki-duotone ki-magnifier fs-3 position-absolute ms-5"><span class="path1"></span><span
-                            class="path2"></span></i> <input type="text" data-kt-customer-table-filter="search"
-                        class="form-control form-control-solid w-250px ps-12" placeholder="Search Customers">
-                </div> -->
             </div>
-            <!--end::Search-->
         </div>
-        <!--begin::Card title-->
-
-
-        <!--begin::Card toolbar-->
-        <div class="card-toolbar">
-            <!--begin::Toolbar-->
-            <div class="d-flex justify-content-end" data-kt-customer-table-toolbar="base">
-
-                <!--The content below is only a placeholder and can be replaced.-->
-
-
-
-                <!--   <button mat-raised-button color="accent" class="me-1" (click)="BotonNuevaHabitacion()">
-                    <mat-icon>add_circle</mat-icon>
-                    Habitación</button>
-                <button mat-raised-button color="primary" class="mr-2 me-1" (click)="BotonGestionarTipos()">
-                    <mat-icon>list</mat-icon> Tipos</button> -->
-            </div>
-            <!--end::Toolbar-->
-
-
-        </div>
-        <!--end::Card toolbar-->
     </div>
 
-    <div class="card-body pt-0">
+
+    <div class="card-body pt-4">
 
 
         <div class="row">
 
             <div class="col-12 mb-5">
 
-                <div class="row">
 
-
-
-
-                    <div class="col-2">
-                        <div class="form-group row">
-                            <div class="col-12">
-                                <input class="form-control" type="datetime-local" placeholder="Check-in"
-                                    [(ngModel)]="dpFechaIni" />
-                            </div>
-                            <label class="label-datepicket col-12 col-form-label">Buscar por fecha de inicio</label>
-                        </div>
-                    </div>
-
-                    <div class="col-2">
-                        <div class="form-group row">
-                            <div class="col-12">
-                                <input class="form-control" type="datetime-local" placeholder="Check-out"
-                                    [(ngModel)]="dpFechaFin" />
-                            </div>
-                            <label class="label-datepicket col-12 col-form-label">Buscar por fecha de fin</label>
-                        </div>
-                    </div>
-
-
-
-                    <div class="col-3 mt-1">
-
-                        <button mat-raised-button color="primary" class="mr-2 me-2" (click)="BotonListarPanel()">
-                            <mat-icon>refresh</mat-icon> Actualizar</button>
-                        <!--  <button mat-raised-button color="accent" class="mr-2 me-2">
-                            <mat-icon>add_circle</mat-icon> Reserva</button> -->
-
-
-                    </div>
-                    <!--  <div class="col-1 mt-1 ">
-
-
-                    </div> -->
-                </div>
 
             </div>
         </div>
@@ -147,8 +97,3 @@
 
     </div>
 </div>
-<!-- <div class="d-flex justify-content-end" style="margin-top: 1%;">
-    <button mat-raised-button color="primary" style="background-color: #1b84ff;" class="me-1" (click)="BotonGuardar()">
-        <mat-icon>save</mat-icon>
-        Guardar</button>
-</div> -->

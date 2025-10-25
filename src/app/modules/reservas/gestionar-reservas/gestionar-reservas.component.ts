@@ -13,6 +13,9 @@ import listPlugin from '@fullcalendar/list';
 import esLocale from '@fullcalendar/core/locales/es'; // Importar el idioma español
 import bootstrap5Plugin from '@fullcalendar/bootstrap5';
 import { InfoReservaWebComponent } from '../info-reserva-web/info-reserva-web.component';
+import { AuthService } from '../../auth';
+import { Router } from '@angular/router';
+import { UserEntity } from 'src/app/models/UsuarioEntity';
 
 @Component({
   selector: 'app-gestionar-reservas',
@@ -61,14 +64,18 @@ export class GestionarReservasComponent {
   };
   lstCalendarData: any;
 
+  bPermisoEdicion: boolean = false;
+  bPermisoEliminacion: boolean = false;
 
   constructor(
     public _service: SvGeneralService,
     public toaster: ToastrService,
     private _dialog: MatDialog,
     private cdr: ChangeDetectorRef,
+    private authService: AuthService,
+    private router: Router
   ) {
-
+    this.LoadPersona();
 
   }
 
@@ -79,6 +86,22 @@ export class GestionarReservasComponent {
 
   }
 
+
+  LoadPersona() {
+    const usuario = new UserEntity();
+    usuario.id = this.authService.user?.id;
+    usuario.link = "/reservas/gestionar-reservas";
+    this._service.PostPermisosPorUsuarioModulo(usuario).subscribe((resp: any) => {
+
+
+      if (resp.success) {
+        this.bPermisoEdicion = resp.bPermisoEdicion;
+        this.bPermisoEliminacion = resp.bPermisoEliminacion;
+      } else {
+        this.router.navigate(['/menu-inicio/lista-opciones']);
+      }
+    });
+  }
   BotonListarHuespedes() {
     this.LoadData(this.filterNombres, this.filterNroHabitacion, this.filterCheckIn, this.filterCheckOut, this.filterNroReserva);
   }

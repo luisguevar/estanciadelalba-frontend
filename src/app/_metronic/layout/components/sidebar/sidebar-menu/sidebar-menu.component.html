@@ -5,34 +5,83 @@
   <!--begin::Menu-->
   <div class="menu menu-column menu-rounded menu-sub-indention fw-semibold fs-6" id="#kt_app_sidebar_menu"
     data-kt-menu="true" data-kt-menu-expand="false">
-    <!-- Dashboard -->
-    <!--  <div class="menu-item">
-      <a class="menu-link without-sub" routerLink="/dashboard" routerLinkActive="active">
+
+    <div class="menu-item">
+      <div class="menu-content pt-8 pb-2">
+        <span class="menu-section text-muted text-uppercase fs-8 ls-1">{{user?.full_name}}</span>
+
+      </div>
+
+      <span *ngIf="user?.rol_id === 1" class="mx-4 badge badge-danger fs-8 fw-bolder ">
+        Administrador
+      </span>
+
+      <span *ngIf="user?.rol_id === 2" class="mx-4 badge badge-primary fs-8 fw-bolder ">
+        Recepción
+      </span>
+
+    </div>
+
+    <div class="menu-item">
+      <a class="menu-link without-sub" routerLink="/menu-inicio/lista-opciones" routerLinkActive="active">
         <span class="menu-icon">
           <app-keenicon name="element-11" class="fs-2"></app-keenicon>
         </span>
-        <span class="menu-title" translate="MENU.DASHBOARD"></span>
+        <span class="menu-title" translate="Inicio"></span>
       </a>
-    </div> -->
+    </div>
 
-    <!-- Layout builder -->
-    <!--  <div class="menu-item">
-      <a class="menu-link without-sub" routerLink="/builder" routerLinkActive="active">
-        <span class="menu-icon">
-          <app-keenicon name="switch" class="fs-2"></app-keenicon>
-        </span>
-        <span class="menu-title">Layout Builder</span>
-      </a>
-    </div> -->
-    <!-- Separator -->
-    <!-- <div class="menu-item">
+    <span class="spinner-border spinner-border-sm align-middle ms-2" *ngIf="isLoading$ | async"></span>
+
+    <div class="menu-item">
       <div class="menu-content pt-8 pb-2">
-        <span class="menu-section text-muted text-uppercase fs-8 ls-1">Crafted</span>
+        <span class="menu-section text-muted text-uppercase fs-8 ls-1">Módulos</span>
       </div>
-    </div> -->
+    </div>
 
-    <!-- Pages -->
-    <!--  <div class="menu-item menu-accordion" data-kt-menu-trigger="click" routerLinkActive="here show">
+    <div *ngFor="let menu of menuItems" class="menu-item menu-accordion" [routerLinkActiveOptions]="{ exact: false }"
+      data-kt-menu-trigger="click" routerLinkActive="here show">
+
+      <span class="menu-link">
+        <span class="menu-icon">
+          <app-keenicon [name]="menu.icon" class="fs-2"></app-keenicon>
+        </span>
+        <span class="menu-title" [attr.data-link]="menu.link">{{ menu.title }}</span>
+        <span class="menu-arrow"></span>
+      </span>
+
+      <div *ngIf="menu.items?.length" class="menu-sub menu-sub-accordion" routerLinkActive="menu-active-bg">
+
+        <div class="menu-item" *ngFor="let sub of menu.items">
+          <a class="menu-link without-sub" routerLinkActive="active" [routerLink]="sub.link">
+            <span class="menu-bullet">
+              <span class="bullet bullet-dot"></span>
+            </span>
+            <span class="menu-title">{{ sub.title }}</span>
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <div class="menu-item">
+      <div class="menu-content pt-8 pb-2">
+        <span class="menu-section text-muted text-uppercase fs-8 ls-1">Configuración</span>
+      </div>
+    </div>
+
+
+    <div class="menu-item">
+      <a class="menu-link without-sub" (click)="logout()" routerLinkActive="active">
+        <span class="menu-icon">
+          <app-keenicon name="entrance-right" class="fs-2"></app-keenicon>
+        </span>
+        <span class="menu-title">Cerrar Sesión</span>
+      </a>
+    </div>
+    <!-- Separator -->
+    <!--  
+
+      <div class="menu-item menu-accordion" data-kt-menu-trigger="click" routerLinkActive="here show">
       <span class="menu-link">
         <span class="menu-icon">
           <app-keenicon name="element-plus" class="fs-2"></app-keenicon>
@@ -124,10 +173,10 @@
           </div>
         </div>
       </div>
-    </div> -->
-
+    </div>
+ -->
     <!-- Accounts -->
-    <!-- <div class="menu-item menu-accordion" data-kt-menu-trigger="click" routerLinkActive="here show">
+    <!--   <div class="menu-item menu-accordion" data-kt-menu-trigger="click" routerLinkActive="here show">
       <span class="menu-link">
         <span class="menu-icon">
           <app-keenicon name="profile-circle" class="fs-2"></app-keenicon>
@@ -308,227 +357,8 @@
       </div>
     </div> -->
 
-    <!-- Customers -->
 
 
-    <!--   <div class="menu-item px-5">
-      <a (click)="logout()" class="menu-link px-5 cursor-pointer"> Sign Out </a>
-    </div> -->
-
-    <div class="menu-item">
-      <div class="menu-content pt-8 pb-2">
-        <span class="menu-section text-muted text-uppercase fs-8 ls-1">{{user?.full_name}}</span>
-
-      </div>
-
-      <span *ngIf="user?.rol_id === 1" class="mx-4 badge badge-danger fs-8 fw-bolder ">
-        Administrador
-      </span>
-
-      <span *ngIf="user?.rol_id === 2" class="mx-4 badge badge-primary fs-8 fw-bolder ">
-        Recepción
-      </span>
-      <!--   <div class="menu-content pb-2" style="    margin-top: -10px;">
-        <span class="menu-section text-muted text-uppercase fs-8 ls-1">74757790@adm.com</span>
-
-      </div> -->
-    </div>
-
-
-
-    <div class="menu-item">
-      <div class="menu-content pt-8 pb-2">
-        <span class="menu-section text-muted text-uppercase fs-8 ls-1">RECEPCIÓN</span>
-      </div>
-    </div>
-
-    <div class="menu-item">
-      <a class="menu-link without-sub" routerLink="/panel-control" routerLinkActive="active">
-        <span class="menu-icon">
-          <app-keenicon name="element-11" class="fs-2"></app-keenicon>
-        </span>
-        <span class="menu-title">Panel de Control</span>
-      </a>
-    </div>
-
-    <div class="menu-item">
-      <a class="menu-link without-sub" routerLink="/recepcion/modulo-recepcion" routerLinkActive="active">
-        <span class="menu-icon">
-          <app-keenicon name="lots-shopping" class="fs-2"></app-keenicon>
-        </span>
-        <span class="menu-title">Módulo de Recepción</span>
-      </a>
-    </div>
-
-
-
-
-
-    <!-- Separator -->
-    <div class="menu-item">
-      <div class="menu-content pt-8 pb-2">
-        <span class="menu-section text-muted text-uppercase fs-8 ls-1">ADMINISTRACIÓN</span>
-      </div>
-    </div>
-
-
-
-    <div class="menu-item">
-      <a class="menu-link without-sub" routerLink="/tarifa-hotelera/gestionar-tarifa-hotelera"
-        routerLinkActive="active">
-        <span class="menu-icon">
-          <app-keenicon name="tag" class="fs-2"></app-keenicon>
-        </span>
-        <span class="menu-title">Tarifa Hotelera</span>
-      </a>
-    </div>
-
-    <div class="menu-item">
-      <a class="menu-link without-sub" routerLink="/huespedes/gestionar-huespedes" routerLinkActive="active">
-        <span class="menu-icon">
-          <app-keenicon name="people" class="fs-2"></app-keenicon>
-        </span>
-        <span class="menu-title">Huéspedes</span>
-      </a>
-    </div>
-
-    <div class="menu-item">
-      <a class="menu-link without-sub" routerLink="/estancias/gestionar-estancias" routerLinkActive="active">
-        <span class="menu-icon">
-          <app-keenicon name="home-1" class="fs-2"></app-keenicon>
-        </span>
-        <span class="menu-title">Estancias</span>
-      </a>
-    </div>
-
-    <div class="menu-item">
-      <a class="menu-link without-sub" routerLink="/reservas/gestionar-reservas" routerLinkActive="active">
-        <span class="menu-icon">
-          <app-keenicon name="calendar" class="fs-2"></app-keenicon>
-        </span>
-        <span class="menu-title">Reservas</span>
-      </a>
-    </div>
-
-    <div class="menu-item">
-      <a class="menu-link without-sub" routerLink="/reportes/gestionar-reportes" routerLinkActive="active">
-        <span class="menu-icon">
-          <app-keenicon name="tablet-text-up" class="fs-2"></app-keenicon>
-        </span>
-        <span class="menu-title">Reportes</span>
-      </a>
-    </div>
-    <!-- Separator -->
-    <!--  <div class="menu-item">
-      <div class="menu-content pt-8 pb-2">
-        <span class="menu-section text-muted text-uppercase fs-8 ls-1">Página Web</span>
-      </div>
-    </div>
-    <div class="menu-item">
-      <a class="menu-link without-sub" routerLink="/pagina-web/gestionar-habitaciones" routerLinkActive="active">
-        <span class="menu-icon">
-          <app-keenicon name="calendar" class="fs-2"></app-keenicon>
-        </span>
-        <span class="menu-title">Habitaciones</span>
-      </a>
-    </div> -->
-
-    <!-- Separator -->
-    <div class="menu-item">
-      <div class="menu-content pt-8 pb-2">
-        <span class="menu-section text-muted text-uppercase fs-8 ls-1">Comprobantes</span>
-      </div>
-    </div>
-
-
-    <div class="menu-item menu-accordion" data-kt-menu-trigger="click" routerLinkActive="here show">
-      <span class="menu-link">
-        <span class="menu-icon">
-          <app-keenicon name="cheque" class="fs-2"></app-keenicon>
-        </span>
-        <span class="menu-title" data-link="/facturacion">Boletas y Facturas
-        </span>
-        <span class="menu-arrow"></span>
-      </span>
-      <div class="menu-sub menu-sub-accordion" routerLinkActive="menu-active-bg">
-        <div class="menu-item">
-          <a class="menu-link without-sub" routerLinkActive="active" routerLink="/facturacion/listar-comprobantes">
-            <span class="menu-bullet">
-              <span class="bullet bullet-dot"></span>
-            </span>
-            <span class="menu-title">Listado
-            </span>
-          </a>
-        </div>
-        <div class="menu-item">
-          <a class="menu-link without-sub" routerLinkActive="active" routerLink="/facturacion/generar-comprobantes">
-            <span class="menu-bullet">
-              <span class="bullet bullet-dot"></span>
-            </span>
-            <span class="menu-title">Generación
-            </span>
-          </a>
-        </div>
-
-      </div>
-    </div>
-
-
-    <!-- Separator -->
-    <div class="menu-item">
-      <div class="menu-content pt-8 pb-2">
-        <span class="menu-section text-muted text-uppercase fs-8 ls-1">PÁGINA WEB</span>
-      </div>
-    </div>
-
-
-
-    <div class="menu-item">
-      <a class="menu-link without-sub" routerLink="/reclamaciones/gestionar-reclamaciones"
-        routerLinkActive="active">
-        <span class="menu-icon">
-          <app-keenicon name="tag" class="fs-2"></app-keenicon>
-        </span>
-        <span class="menu-title">Libro Reclamaciones</span>
-      </a>
-    </div>
-
-    <!-- Separator -->
-    <div class="menu-item">
-      <div class="menu-content pt-8 pb-2">
-        <span class="menu-section text-muted text-uppercase fs-8 ls-1">Configuración</span>
-      </div>
-    </div>
-
-
-    <div class="menu-item">
-      <a class="menu-link without-sub" (click)="logout()" routerLinkActive="active">
-        <span class="menu-icon">
-          <app-keenicon name="entrance-right" class="fs-2"></app-keenicon>
-        </span>
-        <span class="menu-title">Cerrar Sesión</span>
-      </a>
-    </div>
-
-
-
-
-
-    <!-- Separator -->
-    <!--  <div class="menu-item">
-      <div class="menu-content pt-8 pb-2">
-        <span class="menu-section text-muted text-uppercase fs-8 ls-1">Sistema</span>
-      </div>
-    </div>
-
-    <div class="menu-item">
-      <a class="menu-link without-sub" routerLink="/usuarios" routerLinkActive="active">
-        <span class="menu-icon">
-          <app-keenicon name="profile-user" class="fs-2"></app-keenicon>
-        </span>
-        <span class="menu-title">Usuarios</span>
-      </a>
-    </div> -->
 
 
   </div>

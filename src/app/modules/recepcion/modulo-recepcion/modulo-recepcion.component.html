@@ -1,99 +1,50 @@
 <div class="card p-4">
-    <!--begin::Card header-->
-    <div class="card-header border-0 pt-6 p-4">
-        <!--begin::Card title-->
-        <div class="card-title">
-            <!--begin::Search-->
-            <div class="d-flex align-items-center position-relative my-1">
-                <b>MÓDULO DE RECEPCIÓN </b>
-
-                <span class="spinner-border spinner-border-sm align-middle ms-2" *ngIf="isLoading$ | async"></span>
-                <!--  <div class="d-flex align-items-center position-relative my-1">
-                    <i class="ki-duotone ki-magnifier fs-3 position-absolute ms-5"><span class="path1"></span><span
-                            class="path2"></span></i> <input type="text" data-kt-customer-table-filter="search"
-                        class="form-control form-control-solid w-250px ps-12" placeholder="Search Customers">
-                </div> -->
-            </div>
-
-            <!--end::Search-->
-        </div>
-        <!--begin::Card title-->
-
-
-        <!--begin::Card toolbar-->
-        <div class="card-toolbar">
-            <!--begin::Toolbar-->
-            <div class="d-flex justify-content-end" data-kt-customer-table-toolbar="base">
-
-                <!--   <button mat-raised-button color="accent" class="me-1" (click)="BotonNuevaHabitacion()">
-                    <mat-icon>add_circle</mat-icon>
-                    Habitación</button>
-                <button mat-raised-button color="primary" class="mr-2 me-1" (click)="BotonGestionarTipos()">
-                    <mat-icon>list</mat-icon> Tipos</button> -->
-
-                <!--  <a href=""><mat-icon>refresh</mat-icon></a> -->
-            </div>
-            <!--end::Toolbar-->
-
-
-        </div>
-        <!--end::Card toolbar-->
-    </div>
 
 
 
 
 
-    <div class="card-body pt-0">
+    <div class="card-body pt-4">
 
-        <div class="row">
-
-            <div class="col-12 mb-5">
-
-                <div class="row">
-
-
-
-
-                    <div class="col-2">
-                        <div class="form-group row">
-                            <div class="col-12">
-                                <input class="form-control" type="datetime-local" placeholder="Check-in"
-                                    [(ngModel)]="dpFechaCheckIn" [max]="dpFechaCheckOut" />
-                            </div>
-                            <label class="label-datepicket col-12 col-form-label">Buscar por fecha de check-in</label>
-                        </div>
+        <div class="row mb-4">
+            <div class="col-8">
+                <div class="row align-items-end g-3">
+                    <!-- Fecha Check-in -->
+                    <div class="col-md-4 col-sm-6">
+                        <label class="form-label fs-6 fw-semibold mb-2">Fecha Check-in</label>
+                        <input class="form-control form-control-md form-control-solid" type="datetime-local"
+                            [(ngModel)]="dpFechaCheckIn" [max]="dpFechaCheckOut" />
                     </div>
 
-                    <div class="col-2">
-                        <div class="form-group row">
-                            <div class="col-12">
-                                <input class="form-control" type="datetime-local" placeholder="Check-out"
-                                    [(ngModel)]="dpFechaCheckOut" [min]="dpFechaCheckIn" />
-                            </div>
-                            <label class="label-datepicket col-12 col-form-label">Buscar por fecha de check-out</label>
-                        </div>
+                    <!-- Fecha Check-out -->
+                    <div class="col-md-4 col-sm-6">
+                        <label class="form-label fs-6 fw-semibold mb-2">Fecha Check-out</label>
+                        <input class="form-control form-control-md form-control-solid" type="datetime-local"
+                            [(ngModel)]="dpFechaCheckOut" [min]="dpFechaCheckIn" />
                     </div>
 
+                  
+
+                    <!-- Botón Filtrar -->
+                    <div class="col-2 mt-1">
+                        <button type="button" class="btn btn-md btn-light-primary me-3 w-100 w-md-auto"
+                            (click)="LoadData()">
+                            <i class="ki-duotone ki-magnifier fs-5 me-1">
+                                <span class="path1"></span><span class="path2"></span>
+                            </i>
+                            Listar
+                        </button>
 
 
-                    <div class="col-3 mt-1">
-
-                        <button mat-raised-button color="primary" class="mr-2 me-2" (click)="LoadData()">
-                            <mat-icon>search</mat-icon> Listar</button>
-                        <!--  <button mat-raised-button color="accent" class="mr-2 me-2">
-                            <mat-icon>add_circle</mat-icon> Reserva</button> -->
-
-
+                        <!-- Spinner -->
+                        <span class="spinner-border spinner-border-sm align-middle ms-2"
+                            *ngIf="isLoading$ | async"></span>
                     </div>
-                    <!--  <div class="col-1 mt-1 ">
 
-
-                    </div> -->
                 </div>
-
             </div>
         </div>
+
 
         <mat-tab-group mat-stretch-tabs="false" mat-align-tabs="start">
             <ng-container *ngFor="let nivel of lstNiveles">
@@ -101,7 +52,8 @@
 
                     <div class="p-4 mt-5">
                         <div class="row">
-                            <div class="col-xl-3 col-lg-6 col-md-6 col-sm-12  mb-2" *ngFor="let habitacion of nivel.lstHabitaciones">
+                            <div class="col-xl-3 col-lg-6 col-md-6 col-sm-12  mb-2"
+                                *ngFor="let habitacion of nivel.lstHabitaciones">
 
 
 

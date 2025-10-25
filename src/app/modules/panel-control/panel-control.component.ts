@@ -10,6 +10,9 @@ import { EstanciaEntity, PagoEntity, resumenCheckInEntity, resumenCheckOutEntity
 import { sparklineData, chartData1, chartData2, chartData3, chartData4, chartData5, chartData6 } from './data';
 import { ApexAxisChartSeries, ApexChart, ApexXAxis, ApexYAxis, ApexStroke, ApexFill, ApexTooltip } from 'ng-apexcharts';
 import * as moment from 'moment-timezone';
+import { UserEntity } from 'src/app/models/UsuarioEntity';
+import { AuthService } from '../auth';
+import { Router } from '@angular/router';
 
 
 @Component({
@@ -50,18 +53,39 @@ export class PanelControlComponent implements OnInit {
 
   dpFechaIni: string = '';
   dpFechaFin: string = '';
-
+  bPermisoEdicion: boolean = false;
+  bPermisoEliminacion: boolean = false;
   constructor(
     public _service: SvGeneralService,
     public toaster: ToastrService,
     private _dialog: MatDialog,
     private cdr: ChangeDetectorRef,
+
+    private authService: AuthService,
+    private router: Router
   ) {
 
-
+    this.LoadPersona();
 
 
   }
+
+  LoadPersona() {
+    const usuario = new UserEntity();
+    usuario.id = this.authService.user?.id;
+    usuario.link = "/panel-control";
+    this._service.PostPermisosPorUsuarioModulo(usuario).subscribe((resp: any) => {
+
+
+      if (resp.success) {
+        this.bPermisoEdicion = resp.bPermisoEdicion;
+        this.bPermisoEliminacion = resp.bPermisoEliminacion;
+      } else {
+        this.router.navigate(['/menu-inicio/lista-opciones']);
+      }
+    });
+  }
+
   ngOnInit(): void {
     this.isLoading$ = this._service.isLoading$;
 
@@ -142,5 +166,20 @@ export class PanelControlComponent implements OnInit {
 
   }
 
+  resetFiltro() {
+    const ahoraPeru = moment().tz('America/Lima');
+
+    // Fecha de inicio: un mes antes
+    this.dpFechaIni = ahoraPeru.clone().subtract(1, 'month').format('YYYY-MM-DDTHH:mm');
+
+    // Fecha de fin: hoy
+    this.dpFechaFin = ahoraPeru.format('YYYY-MM-DDTHH:mm');
+
+    this.BotonListarPanel();
+  }
+
+  aplicarFiltro() {
+
+  }
 
 }

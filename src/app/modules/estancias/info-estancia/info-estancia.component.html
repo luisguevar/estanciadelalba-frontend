@@ -34,12 +34,13 @@
                 <div class="row mb-3">
                     <div class="mb-2" *ngIf="estancia.nEstado === 2">
 
-                        <button mat-raised-button color="accent" (click)="BotonAgregarHabitacion()">
+                        <button *ngIf="bPermisoEdicion" mat-raised-button color="accent"
+                            (click)="BotonAgregarHabitacion()">
                             <mat-icon>add_circle</mat-icon> Habitación</button>
-                        <button mat-raised-button color="primary" class="mx-2"
+                        <button *ngIf="bPermisoEdicion" mat-raised-button color="primary" class="mx-2"
                             (click)="BotonCheckOut()">Check-out</button>
                         <!-- <button mat-raised-button color="accent">Cancelar Rese</button> -->
-                        <button mat-raised-button color="warn" class="mx-2"
+                        <button *ngIf="bPermisoEdicion" mat-raised-button color="warn" class="mx-2"
                             (click)="BotonInterrumpirReserva()">Interrumpir</button>
                     </div>
 
@@ -154,7 +155,8 @@
                                                         <td class="fixed-column text-center "
                                                             [class.disabled]="!HabitacionEstancia.nEstado">
                                                             <span class="  mb-1">
-                                                                <a href="" onclick="return false" style="color: red; "
+                                                                <a *ngIf="bPermisoEliminacion" href=""
+                                                                    onclick="return false" style="color: red; "
                                                                     (click)="BotonRemoverHuesped(HuespedEstancia, HabitacionEstancia)"><mat-icon>remove_circle_outline</mat-icon></a>
                                                             </span>
 
@@ -170,7 +172,7 @@
                                             </ng-container>
 
                                             <ng-container *ngIf="HabitacionEstancia.nEstado">
-                                                <a href="#" onclick="return false"
+                                                <a *ngIf="bPermisoEdicion" href="#" onclick="return false"
                                                     (click)="BotonAgregarHuesped(HabitacionEstancia)"
                                                     style="cursor: pointer;">
                                                     <span matTooltip="Agregar Huésped">
@@ -179,7 +181,7 @@
                                                 </a>
 
                                                 <ng-container *ngIf="!bDisabled">
-                                                    <a href="#" onclick="return false"
+                                                    <a *ngIf="bPermisoEdicion" href="#" onclick="return false"
                                                         (click)="BotonCambioHabitacion(HabitacionEstancia)"
                                                         style="cursor: pointer; margin-left: 2%;">
                                                         <span matTooltip="Cambiar Habitación">
@@ -282,9 +284,10 @@
                                                     <!--  <input class="form-control" type="datetime-local"
                                                         [(ngModel)]="dpCheckOut" disabled placeholder="Check-out" /> -->
 
-                                                    <input class="form-control" type="datetime-local"
-                                                        [(ngModel)]="dpCheckOut" [min]="dpCheckOutTemporal"
-                                                        [max]="maxFecha" placeholder="Check-out programado"
+                                                    <input [disabled]="!bPermisoEdicion" class="form-control"
+                                                        type="datetime-local" [(ngModel)]="dpCheckOut"
+                                                        [min]="dpCheckOutTemporal" [max]="maxFecha"
+                                                        placeholder="Check-out programado"
                                                         (ngModelChange)="onDpCheckOutChange($event)"
                                                         onkeydown="return false" style="caret-color: transparent;" />
                                                 </div>
@@ -377,10 +380,13 @@
                                         </mat-panel-description>
                                     </mat-expansion-panel-header>
 
-                                    <button *ngIf="!bReadOnly || estancia.nEstado == 2 " mat-raised-button color="primary"
-                                        (click)="BotonAgregarPago()">
-                                        <mat-icon>add_circle_outline</mat-icon>
-                                        Pago</button>
+                                    <ng-container *ngIf="bPermisoEdicion">
+                                        <button *ngIf="estancia.nEstado == 2 " mat-raised-button color="primary"
+                                            (click)="BotonAgregarPago()">
+                                            <mat-icon>add_circle_outline</mat-icon>
+                                            Pago</button>
+                                    </ng-container>
+
 
                                     <div id="kt_customers_table_wrapper"
                                         class="dt-container dt-bootstrap5 dt-empty-footer">
@@ -491,7 +497,7 @@
                                                         <td></td>
 
                                                         <td class="fixed-column">
-                                                            <a *ngIf="!bReadOnly" href="" onclick="return false"
+                                                            <a *ngIf="bPermisoEdicion" href="" onclick="return false"
                                                                 style="color: red; "
                                                                 (click)="BotonUpdatePago(pago)"><mat-icon>remove_circle_outline</mat-icon></a>
                                                             <a href="" onclick="return false"

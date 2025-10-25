@@ -7,6 +7,7 @@ import { HabitacionEntity } from 'src/app/models/TarifaHoteleraEntity';
 import { HuespedEntity } from 'src/app/models/HuespedEntity';
 import { EstanciaEntity, PagoEntity } from 'src/app/models/EstanciaEntity';
 import { ReclamacionEntity } from 'src/app/models/ReclamacionEntity';
+import { RolEntity, UserEntity } from 'src/app/models/UsuarioEntity';
 
 @Injectable({
   providedIn: 'root'
@@ -38,15 +39,100 @@ export class SvGeneralService {
   }
 
 
-  GetUsuarios() {
+  GetUsuarios(fechaInicio?: string, fechaFin?: string) {
     this.isLoadingSubject.next(true);
     let headers = new HttpHeaders({ 'Authorization': 'Bearer ' + this.authservice.token });
+
+    let params: any = {};
+    if (fechaInicio) params.fechaInicio = fechaInicio;
+    if (fechaFin) params.fechaFin = fechaFin;
+
     let URL = URL_SERVICIOS + "/usuarios/admin/all";
-    /* console.log(URL); */
-    return this.http.get(URL, { headers: headers }).pipe(
+
+    return this.http.get(URL, { headers: headers, params }).pipe(
       finalize(() => this.isLoadingSubject.next(false))
     );
   }
+  GetHabitacionesLimpieza(filtros: any) {
+    this.isLoadingSubject.next(true);
+    const headers = new HttpHeaders({ 'Authorization': 'Bearer ' + this.authservice.token });
+
+    const params: any = {};
+    if (filtros.estado) params.estado = filtros.estado;
+    if (filtros.tipo) params.tipo = filtros.tipo;
+    if (filtros.nivel) params.nivel = filtros.nivel;
+
+    const URL = `${URL_SERVICIOS}/limpieza/admin/all`;
+
+
+    return this.http.get(URL, { headers: headers, params }).pipe(
+      finalize(() => this.isLoadingSubject.next(false))
+    );
+  }
+
+  GetHabitacionLimpiezaById(id: number): Observable<any> {
+    this.isLoadingSubject.next(true);
+    const headers = new HttpHeaders({ 'Authorization': 'Bearer ' + this.authservice.token });
+    const URL = `${URL_SERVICIOS}/limpieza/admin/habitacion/${id}`;
+
+    return this.http.get(URL, { headers }).pipe(
+      finalize(() => this.isLoadingSubject.next(false))
+    );
+  }
+
+  PutHabitacionLimpieza(formData: FormData): Observable<any> {
+    this.isLoadingSubject.next(true);
+
+    const headers = new HttpHeaders({
+      'Authorization': 'Bearer ' + this.authservice.token,
+    });
+
+    const URL = URL_SERVICIOS + "/limpieza/admin/update";
+
+    return this.http.post(URL, formData, { headers }).pipe(
+      finalize(() => this.isLoadingSubject.next(false))
+    );
+  }
+
+
+
+
+  PostUsuarioRegister(usuario: UserEntity): Observable<any> {
+    this.isLoadingSubject.next(true);
+    let headers = new HttpHeaders({ 'Authorization': 'Bearer ' + this.authservice.token });
+    let URL = URL_SERVICIOS + "/auth/register";
+    return this.http.post(URL, usuario, { headers: headers }).pipe(
+      finalize(() => this.isLoadingSubject.next(false))
+    );
+
+  }
+  PostUsuarioUpdate(usuario: UserEntity): Observable<any> {
+    this.isLoadingSubject.next(true);
+    let headers = new HttpHeaders({ 'Authorization': 'Bearer ' + this.authservice.token });
+    let URL = URL_SERVICIOS + "/auth/update";
+    return this.http.post(URL, usuario, { headers: headers }).pipe(
+      finalize(() => this.isLoadingSubject.next(false))
+    );
+  }
+
+
+
+  GetRoles(fechaInicio?: string, fechaFin?: string) {
+    this.isLoadingSubject.next(true);
+    let headers = new HttpHeaders({ 'Authorization': 'Bearer ' + this.authservice.token });
+
+    let params: any = {};
+    if (fechaInicio) params.fechaInicio = fechaInicio;
+    if (fechaFin) params.fechaFin = fechaFin;
+
+    let URL = URL_SERVICIOS + "/roles/admin/all";
+
+    return this.http.get(URL, { headers: headers, params }).pipe(
+      finalize(() => this.isLoadingSubject.next(false))
+    );
+  }
+
+
 
   GetTarifaHotelera(cFechaInicioSemana: string) {
     this.isLoadingSubject.next(true);
@@ -385,6 +471,17 @@ export class SvGeneralService {
       finalize(() => this.isLoadingSubject.next(false)) // Si tienes un subject de loading
     );
   }
+
+  PostBloqueoReserva(bloqueo: any): Observable<any> {
+    this.isLoadingSubject.next(true); // Si tienes un subject de loading
+    let headers = new HttpHeaders({ 'Authorization': 'Bearer ' + this.authservice.token });
+    let URL = URL_SERVICIOS + "/habitacion/postBloqueoReserva";
+
+    return this.http.post(URL, bloqueo, { headers: headers }).pipe(
+      finalize(() => this.isLoadingSubject.next(false)) // Si tienes un subject de loading
+    );
+  }
+
 
   PostHabitacionWeb(habitacion: any): Observable<any> {
     this.isLoadingSubject.next(true); // Si tienes un subject de loading
@@ -795,6 +892,52 @@ export class SvGeneralService {
     }
 
     return this.http.get(URL, { headers: headers, params: httpParams }).pipe(
+      finalize(() => this.isLoadingSubject.next(false))
+    );
+  }
+
+  GetRolById(id: number): Observable<any> {
+    this.isLoadingSubject.next(true);
+    let headers = new HttpHeaders({ 'Authorization': 'Bearer ' + this.authservice.token });
+    let URL = `${URL_SERVICIOS}/roles/admin/show?id=${id}`;
+    return this.http.get(URL, { headers: headers }).pipe(
+      finalize(() => this.isLoadingSubject.next(false))
+    );
+  }
+
+  UpdateRol(huespedData: RolEntity): Observable<any> {
+    this.isLoadingSubject.next(true);
+    let headers = new HttpHeaders({ 'Authorization': 'Bearer ' + this.authservice.token });
+    let URL = `${URL_SERVICIOS}/roles/admin/update`;
+    return this.http.put(URL, huespedData, { headers: headers }).pipe(
+      finalize(() => this.isLoadingSubject.next(false))
+    );
+  }
+
+  PostRol(huespedData: RolEntity): Observable<any> {
+    this.isLoadingSubject.next(true);
+    let headers = new HttpHeaders({ 'Authorization': 'Bearer ' + this.authservice.token });
+    let URL = `${URL_SERVICIOS}/roles/admin/register`;
+    return this.http.post(URL, huespedData, { headers: headers }).pipe(
+      finalize(() => this.isLoadingSubject.next(false))
+    );
+  }
+
+
+  GetMenuItemsIdRol(id: number): Observable<any> {
+    this.isLoadingSubject.next(true);
+    let headers = new HttpHeaders({ 'Authorization': 'Bearer ' + this.authservice.token });
+    let URL = `${URL_SERVICIOS}/roles/admin/GetMenuItems?id=${id}`;
+    return this.http.get(URL, { headers: headers }).pipe(
+      finalize(() => this.isLoadingSubject.next(false))
+    );
+  }
+
+  PostPermisosPorUsuarioModulo(usuario: UserEntity): Observable<any> {
+    this.isLoadingSubject.next(true);
+    let headers = new HttpHeaders({ 'Authorization': 'Bearer ' + this.authservice.token });
+    let URL = `${URL_SERVICIOS}/roles/admin/PostPermisosPorUsuarioModulo`;
+    return this.http.post(URL, usuario, { headers: headers }).pipe(
       finalize(() => this.isLoadingSubject.next(false))
     );
   }

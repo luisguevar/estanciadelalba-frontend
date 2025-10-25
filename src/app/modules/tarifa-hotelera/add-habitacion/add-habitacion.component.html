@@ -53,7 +53,7 @@
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal"
                     (click)="dialogRef.close(false)">Cerrar</button>
-                <button type="button" class="btn btn-primary" (click)="BotonGuardar()">Guardar</button>
+                <button *ngIf="bPermisoEdicion" type="button" class="btn btn-primary" (click)="BotonGuardar()">Guardar</button>
             </div>
         </div>
     </div>

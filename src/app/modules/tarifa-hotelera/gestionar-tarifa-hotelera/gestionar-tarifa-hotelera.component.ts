@@ -13,6 +13,9 @@ import { DateAdapter, MatNativeDateModule } from '@angular/material/core';
 import { DatePipe } from '@angular/common';
 import { AsignarPrecioTemporadaComponent } from '../asignar-precio-temporada/asignar-precio-temporada.component';
 import { AuthService } from '../../auth';
+import { UserEntity } from 'src/app/models/UsuarioEntity';
+import { Router } from '@angular/router';
+import { BloqueoReservaTemporadaComponent } from '../bloqueo-reserva-temporada/bloqueo-reserva-temporada.component';
 
 @Component({
   selector: 'app-gestionar-tarifa-hotelera',
@@ -37,9 +40,14 @@ export class GestionarTarifaHoteleraComponent {
   lstTiposHabitaciones: any = [];
   cFechaInicioSemana: string;
 
+  fechaInicio: string = '';
+  fechaFin: string = '';
 
 
   bReadOnly: boolean = false;
+
+  bPermisoEdicion: boolean = false;
+  bPermisoEliminacion: boolean = false;
 
   constructor(
     public _service: SvGeneralService,
@@ -47,14 +55,13 @@ export class GestionarTarifaHoteleraComponent {
     private _dialog: MatDialog,
     private cdr: ChangeDetectorRef,
     private datePipe: DatePipe,
-    private authService: AuthService
+    private authService: AuthService,
+    private router: Router
   ) {
 
-   
+    this.LoadPersona();
 
-    if (authService.user?.rol_id != 1) {
-      this.bReadOnly = true;
-    }
+
   }
 
   ngOnInit(): void {
@@ -63,6 +70,21 @@ export class GestionarTarifaHoteleraComponent {
     this.LoadData(this.cFechaInicioSemana);
   }
 
+  LoadPersona() {
+    const usuario = new UserEntity();
+    usuario.id = this.authService.user?.id;
+    usuario.link = "/tarifa-hotelera/gestionar-tarifa-hotelera";
+    this._service.PostPermisosPorUsuarioModulo(usuario).subscribe((resp: any) => {
+
+
+      if (resp.success) {
+        this.bPermisoEdicion = resp.bPermisoEdicion;
+        this.bPermisoEliminacion = resp.bPermisoEliminacion;
+      } else {
+        this.router.navigate(['/menu-inicio/lista-opciones']);
+      }
+    });
+  }
 
   LoadData(dFechaInicioSemana: string) {
 
@@ -74,8 +96,8 @@ export class GestionarTarifaHoteleraComponent {
         this.serviciosDisponibles = resp.servicios;
         this.diasDisponibles = resp.dias;
         this.lstTiposHabitaciones = resp.tipoHabitaciones;
-        this.desde = 0;
-        this.hasta = 10;
+        /*   this.desde = 0;
+          this.hasta = 10; */
 
       }
       /*      this.lstUsuarios = resp.usuarios; */
@@ -133,6 +155,8 @@ export class GestionarTarifaHoteleraComponent {
           lstHabitaciones: this.lstHabitaciones,
           lstServicios: this.lstHabitaciones[0].lstServicios ?? [],
           lstPrecios: this.lstHabitaciones[0].lstPrecios ?? [],
+          bPermisoEdicion: this.bPermisoEdicion,
+          bPermisoEliminacion: this.bPermisoEliminacion
         },
       }
     );
@@ -174,14 +198,17 @@ export class GestionarTarifaHoteleraComponent {
           lstTiposHabitaciones: this.lstTiposHabitaciones,
           lstHabitaciones: this.lstHabitaciones,
           element: envio,
-          bReadOnly: this.bReadOnly
+          bReadOnly: this.bReadOnly,
+          bPermisoEdicion: this.bPermisoEdicion,
+          bPermisoEliminacion: this.bPermisoEliminacion
         },
       }
     );
     dialogRef.afterClosed().subscribe((result: HabitacionEntity) => {
-      this.LoadData(this.cFechaInicioSemana);
+      /* this.LoadData(this.cFechaInicioSemana); */
       if (result) {
 
+        this.LoadData(this.cFechaInicioSemana);
 
         /*  const tipoHabitacionId = parseInt(result.tipoHabitacion_id as unknown as string, 10);
          const resp: HabitacionEntity = {
@@ -266,4 +293,47 @@ export class GestionarTarifaHoteleraComponent {
 
   }
 
+
+  BotonBloqueoReserva() {
+
+
+
+    const dialogRef = this._dialog.open(
+      BloqueoReservaTemporadaComponent,
+      {
+        width: 'auto ',
+        height: 'auto',
+        disableClose: true,
+        data: {
+          lstTiposHabitaciones: this.lstTiposHabitaciones,
+          lstHabitaciones: this.lstHabitaciones,
+        },
+      }
+    );
+    dialogRef.afterClosed().subscribe((result: any) => {
+      this.LoadData(this.cFechaInicioSemana);
+      if (result) {
+
+
+
+      }
+    });
+
+
+
+  }
+
+
+  aplicarFiltro() {
+
+  }
+
+  BotonAgregarUsuario() {
+
+  }
+
+  resetFiltro() {
+    this.cFechaInicioSemana = this.datePipe.transform(new Date(), 'yyyy-MM-dd', 'UTC-5') || ''; // Ajusta 'UTC-5' a tu zona horaria
+    this.LoadData(this.cFechaInicioSemana);
+  }
 }

@@ -29,7 +29,7 @@ export class ScriptsInitComponent implements OnInit, OnDestroy {
       setTimeout(() => {
         this.pageInfo.calculateTitle();
         this.pageInfo.calculateBreadcrumbs();
-      }, 10);
+      }, 300);
     };
 
     initPageInfo();

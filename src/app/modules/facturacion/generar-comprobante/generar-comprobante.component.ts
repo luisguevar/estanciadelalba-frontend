@@ -7,6 +7,8 @@ import { AgregarEstanciaComponent } from '../componentes/agregar-estancia/agrega
 import { AuthService } from '../../auth';
 import { AlertService } from '../../service/alert.service';
 import { AgregarProductoComponent } from '../componentes/agregar-producto/agregar-producto.component';
+import { Router } from '@angular/router';
+import { UserEntity } from 'src/app/models/UsuarioEntity';
 
 @Component({
   selector: 'app-generar-comprobante',
@@ -32,6 +34,10 @@ export class GenerarComprobanteComponent {
 
   bCargando: boolean = false;
 
+  bPermisoEdicion: boolean = false;
+  bPermisoEliminacion: boolean = false;
+
+
   constructor(
     public _service: SvGeneralService,
     public toaster: ToastrService,
@@ -39,8 +45,11 @@ export class GenerarComprobanteComponent {
     private cdr: ChangeDetectorRef,
     public _auth: AuthService,
     private alertService: AlertService,
+    private authService: AuthService,
+    private router: Router
   ) {
 
+    this.LoadPersona();
 
   }
 
@@ -48,6 +57,22 @@ export class GenerarComprobanteComponent {
     this.isLoading$ = this._service.isLoading$;
 
 
+  }
+
+  LoadPersona() {
+    const usuario = new UserEntity();
+    usuario.id = this.authService.user?.id;
+    usuario.link = "/facturacion/generar-comprobantes";
+    this._service.PostPermisosPorUsuarioModulo(usuario).subscribe((resp: any) => {
+
+
+      if (resp.success) {
+        this.bPermisoEdicion = resp.bPermisoEdicion;
+        this.bPermisoEliminacion = resp.bPermisoEliminacion;
+      } else {
+        this.router.navigate(['/menu-inicio/lista-opciones']);
+      }
+    });
   }
 
   onTipoComprobanteChange() {
@@ -61,6 +86,8 @@ export class GenerarComprobanteComponent {
   }
 
   BotonContinuar() {
+
+
 
     if (this.nTipoComprobante === '0') {
       this.toaster.warning('Comprobantes', 'Debe Seleccionar un Tipo Comprobante para continuar.');

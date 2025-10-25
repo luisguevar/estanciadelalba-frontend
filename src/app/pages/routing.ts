@@ -88,6 +88,14 @@ const Routing: Routes = [
     path: 'reclamaciones',
     loadChildren: () => import('../modules/reclamaciones/reclamaciones.module').then((m) => m.ReclamacionesModule)
   },
+  {
+    path: 'menu-inicio',
+    loadChildren: () => import('../modules/menu-inicio/menu-inicio.module').then((m) => m.MenuInicioModule)
+  },
+  {
+    path: 'limpieza',
+    loadChildren: () => import('../modules/limpieza/limpieza.module').then((m) => m.LimpiezaModule)
+  },
 
   /*   {
       path: 'pagina-web',
@@ -96,7 +104,7 @@ const Routing: Routes = [
 
   {
     path: '',
-    redirectTo: '/panel-control',
+    redirectTo: '/menu-inicio/lista-opciones',
     pathMatch: 'full',
   },
   {

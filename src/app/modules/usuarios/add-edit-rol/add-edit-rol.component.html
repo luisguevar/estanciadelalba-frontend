@@ -1,0 +1,146 @@
+<div class="modal  d-block" tabindex="-1" role="dialog">
+    <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+
+                <h5 class="modal-title">Detalle del Rol <span class="spinner-border spinner-border-sm align-middle ms-2"
+                        *ngIf="isLoading$ | async"></span>
+                </h5>
+
+
+            </div>
+
+            <div class="modal-body" *ngIf="!(isLoading$ | async)">
+
+
+                <div class="row ">
+
+                    <div class="col-8">
+                        <div class="form-group">
+                            <label _ngcontent-ng-c1727729695="" class="required fw-semibold fs-6 mb-2">Rol</label>
+                            <input type="text" class="form-control" placeholder="Rol" [(ngModel)]="cNombreRol" />
+
+                        </div>
+                    </div>
+
+                    <div class="col-4">
+                        <div class="form-group ">
+                            <label _ngcontent-ng-c1727729695="" class="required fw-semibold fs-6 mb-2">Estado</label>
+                            <select class="form-control" id="nEstado" [(ngModel)]="nEstado">
+                                <option disabled [value]="-1">Seleccione</option>
+                                <option *ngFor="let tipo of lstEstados" [value]="tipo.id">{{ tipo.cNombre
+                                    }}</option>
+                            </select>
+                        </div>
+                    </div>
+
+
+                </div>
+                <div *ngIf="bEdit" class="row">
+                    <!--begin::Table-->
+                    <div id="kt_permissions_table_wrapper" class="dt-container dt-bootstrap5 dt-empty-footer">
+                        <div class="table-responsive">
+                            <table class="table align-middle table-row-dashed fs-6 gy-5 dataTable" style="width: 100%;">
+                                <thead>
+                                    <tr class="text-start text-gray-500 fw-bold fs-7 text-uppercase gs-0">
+                                        <th class="min-w-250px">Menú / Submenú</th>
+                                        <th class="text-center min-w-100px">Ver</th>
+                                        <!-- <th class="text-center min-w-100px">Crear</th> -->
+                                        <th class="text-center min-w-100px">Crear / Editar</th>
+                                        <th class="text-center min-w-100px">Eliminar</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="fw-semibold text-gray-600">
+                                    <!-- Iteramos menús -->
+                                    <ng-container *ngFor="let menu of lstMenu">
+                                        <!-- Fila encabezado del menú -->
+                                        <tr class="bg-light fw-bolder text-muted">
+                                            <td colspan="5" class="min-w-325px ps-4 rounded-start">
+                                                {{ menu.cNombreMenu }}
+                                            </td>
+                                        </tr>
+
+                                        <!-- Iteramos submenús -->
+                                        <tr *ngFor="let sub of menu.sub_menus">
+                                            <td class="ps-4 rounded-start">{{ sub.cNombreSubMenu }}</td>
+
+                                            <!-- Ver -->
+
+                                            <td class="text-center">
+                                                <div class="d-flex justify-content-center align-items-center">
+                                                    <div class="form-check form-check-solid form-switch fv-row">
+                                                        <input type="checkbox" [(ngModel)]="sub.nEstado"
+                                                            id="allowmarketing" class="form-check-input w-45px" />
+                                                        <label class="form-check-label"></label>
+                                                    </div>
+                                                </div>
+                                            </td>
+
+                                            <td class="text-center">
+                                                <div class="d-flex justify-content-center align-items-center">
+                                                    <div class="form-check form-check-solid form-switch fv-row">
+                                                        <input type="checkbox" [(ngModel)]="sub.bPermisoEdicion"
+                                                            id="allowmarketing" class="form-check-input w-45px" />
+                                                        <label class="form-check-label"></label>
+                                                    </div>
+                                                </div>
+                                            </td>
+
+                                            <td class="text-center">
+                                                <div class="d-flex justify-content-center align-items-center">
+                                                    <div class="form-check form-check-solid form-switch fv-row">
+                                                        <input type="checkbox" [(ngModel)]="sub.bPermisoEliminacion"
+                                                            id="allowmarketing" class="form-check-input w-45px" />
+                                                        <label class="form-check-label"></label>
+                                                    </div>
+                                                </div>
+                                            </td>
+
+
+                                            <!-- Crear -->
+                                            <!--  <td class="text-center">
+                                                <input type="checkbox" class="form-check-input"
+                                                    style="width: 16px; height: 16px; margin-left: 2px;"
+                                                    [(ngModel)]="sub.nCrear" [checked]="sub.nCrear === 1"
+                                                    (change)="sub.nCrear = sub.nCrear ? 1 : 0">
+                                            </td> -->
+
+                                            <!-- Editar -->
+                                            <!--  <td class="text-center">
+                                                <input type="checkbox" class="form-check-input"
+                                                    style="width: 16px; height: 16px; margin-left: 2px;"
+                                                    [(ngModel)]="sub.nEditar" [checked]="sub.nEditar === 1"
+                                                    (change)="sub.nEditar = sub.nEditar ? 1 : 0">
+                                            </td> -->
+
+                                            <!-- Eliminar -->
+                                            <!--    <td class="text-center">
+                                                <input type="checkbox" class="form-check-input"
+                                                    style="width: 16px; height: 16px; margin-left: 2px;"
+                                                    [(ngModel)]="sub.nEliminar" [checked]="sub.nEliminar === 1"
+                                                    (change)="sub.nEliminar = sub.nEliminar ? 1 : 0">
+                                            </td> -->
+                                        </tr>
+                                    </ng-container>
+                                </tbody>
+                            </table>
+
+                        </div>
+                    </div>
+                    <!--end::Table-->
+                </div>
+
+
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal"
+                    (click)="dialogRef.close(false)">Cerrar</button>
+                <button *ngIf="bEdit" type="button" class="btn btn-primary"
+                    (click)="BotonActualizar()">Actualizar</button>
+                <button *ngIf="!bEdit" type="button" class="btn btn-primary"
+                    (click)="BotonGuardar()">Guardar</button>
+            </div>
+        </div>
+    </div>
+</div>

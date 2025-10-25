@@ -1,0 +1,31 @@
+<div class="row g-4">
+    <!-- Spinner -->
+    <span class="spinner-border spinner-border-sm align-middle ms-2" *ngIf="isLoading$ | async"></span>
+    <div class="col-md-6 col-lg-4" *ngFor="let menu of menuItems">
+        <!-- Card como botón -->
+        <a [routerLink]="menu.link" class="text-decoration-none w-100">
+            <div class="card h-100 border-0 shadow-sm hover-card text-center p-4">
+
+                <!-- Icono dentro de círculo -->
+                <div class="symbol symbol-60px mb-3 mx-auto">
+                    <div
+                        class="symbol-label bg-light-primary text-primary shadow-sm rounded-circle d-flex align-items-center justify-content-center">
+                        <app-keenicon [name]="menu.icon" class="fs-2"></app-keenicon>
+                    </div>
+                </div>
+
+                <!-- Título -->
+                <h5 class="fw-bold text-dark mb-3">{{ menu.title }}</h5>
+
+                <!-- Chips de accesos rápidos -->
+                <div class="d-flex flex-wrap justify-content-center gap-2">
+                    <a *ngFor="let item of menu.items" [routerLink]="item.link"
+                        class="badge badge-light-primary fw-semibold px-3 py-2 text-hover-primary"
+                        (click)="$event.stopPropagation()">
+                        {{ item.title }}
+                    </a>
+                </div>
+            </div>
+        </a>
+    </div>
+</div>

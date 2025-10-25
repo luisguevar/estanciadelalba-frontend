@@ -54,6 +54,8 @@ export class InfoEstanciaComponent {
 
   bReadOnly: boolean = false;
 
+  bPermisoEdicion: boolean = false;
+  bPermisoEliminacion: boolean = false;
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: any,
     public dialogRef: MatDialogRef<InfoEstanciaComponent>,
@@ -70,9 +72,9 @@ export class InfoEstanciaComponent {
     this.dpCheckOutFilter = this.data.dpCheckOutFilter;
     this.bDisabled = this.data.bDisabled;
 
-    if (_auth.user?.rol_id != 1) {
-      this.bReadOnly = true;
-    }
+
+    this.bPermisoEdicion = this.data.bPermisoEdicion;
+    this.bPermisoEliminacion = this.data.bPermisoEliminacion;
   }
 
   ngOnInit(): void {

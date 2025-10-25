@@ -9,6 +9,9 @@ import { EstanciaEntity } from 'src/app/models/EstanciaEntity';
 import { InfoEstanciaComponent } from '../../estancias/info-estancia/info-estancia.component';
 import { RegistrarIngresoReservaComponent } from '../registrar-ingreso-reserva/registrar-ingreso-reserva.component';
 import * as moment from 'moment-timezone';
+import { AuthService } from '../../auth';
+import { Router } from '@angular/router';
+import { UserEntity } from 'src/app/models/UsuarioEntity';
 
 @Component({
   selector: 'app-modulo-recepcion',
@@ -26,12 +29,17 @@ export class ModuloRecepcionComponent {
 
   lstNivelesDisponibles: NivelHabitacionEntity[] = [];
 
+  bPermisoEdicion: boolean = false;
+  bPermisoEliminacion: boolean = false;
   constructor(
     public _service: SvGeneralService,
     public toaster: ToastrService,
     private _dialog: MatDialog,
     private cdr: ChangeDetectorRef,
+    private authService: AuthService,
+    private router: Router
   ) {
+    this.LoadPersona();
 
   }
 
@@ -41,6 +49,22 @@ export class ModuloRecepcionComponent {
     this.EstablecerHoraPeru();
 
     this.LoadData();
+  }
+
+  LoadPersona() {
+    const usuario = new UserEntity();
+    usuario.id = this.authService.user?.id;
+    usuario.link = "/recepcion/modulo-recepcion";
+    this._service.PostPermisosPorUsuarioModulo(usuario).subscribe((resp: any) => {
+
+
+      if (resp.success) {
+        this.bPermisoEdicion = resp.bPermisoEdicion;
+        this.bPermisoEliminacion = resp.bPermisoEliminacion;
+      } else {
+        this.router.navigate(['/menu-inicio/lista-opciones']);
+      }
+    });
   }
 
 
@@ -127,6 +151,8 @@ export class ModuloRecepcionComponent {
           estancia: estancia,
           dpCheckInFilter: this.dpFechaCheckIn,
           dpCheckOutFilter: this.dpFechaCheckOut,
+          bPermisoEdicion: this.bPermisoEdicion,
+          bPermisoEliminacion: this.bPermisoEliminacion
         },
       }
     );
@@ -159,6 +185,8 @@ export class ModuloRecepcionComponent {
 
           dpCheckInFilter: this.dpFechaCheckIn,
           dpCheckOutFilter: this.dpFechaCheckOut,
+          bPermisoEdicion: this.bPermisoEdicion,
+          bPermisoEliminacion: this.bPermisoEliminacion
         },
       }
     );
@@ -190,6 +218,8 @@ export class ModuloRecepcionComponent {
           dpFechaCheckInEnv: this.dpFechaCheckIn,
           dpFechaCheckOutEnv: this.dpFechaCheckOut,
           lstNivelesDisponibles: this.lstNivelesDisponibles,
+          bPermisoEdicion: this.bPermisoEdicion,
+          bPermisoEliminacion: this.bPermisoEliminacion
         },
       }
     );

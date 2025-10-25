@@ -1,12 +1,13 @@
 import { Component, Inject } from '@angular/core';
-import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { ToastrService } from 'ngx-toastr';
 import { NivelHabitacionEntity } from 'src/app/models/RecepcionEntity';
-import { DiaEntity, HabitacionEntity, TemporadaEntity, TipoHabitacionEntity } from 'src/app/models/TarifaHoteleraEntity';
+import { DiaEntity, HabitacionBloqueoReservaEntity, HabitacionEntity, TemporadaEntity, TipoHabitacionEntity } from 'src/app/models/TarifaHoteleraEntity';
 import { SvGeneralService } from '../../service/sv-general.service';
 import { PageEvent } from '@angular/material/paginator';
 import { AlertService } from '../../service/alert.service';
 import { FormControl } from '@angular/forms';
+import { IncidenciaActivaComponent } from '../../limpieza/incidencia-activa/incidencia-activa.component';
 
 @Component({
   selector: 'app-edit-habitacion',
@@ -23,7 +24,8 @@ export class EditHabitacionComponent {
   lstNiveles: NivelHabitacionEntity[] = [
     { id: 1, cNombreNivel: 'Tercer Nivel' },
     { id: 2, cNombreNivel: 'Cuarto Nivel' },
-    { id: 3, cNombreNivel: 'Quinto Nivel' }
+    { id: 3, cNombreNivel: 'Quinto Nivel' },
+    { id: 4, cNombreNivel: 'Carnavales' }
   ]
 
   lstEstado: any[] = [
@@ -36,8 +38,9 @@ export class EditHabitacionComponent {
   lstPrecioLJ: DiaEntity[] = [];
   lstPrecioVD: DiaEntity[] = [];
   lstPreciosPorTemporada: TemporadaEntity[] = [];
+  lstBloqueoReserva: HabitacionBloqueoReservaEntity[] = [];
   lstTemproadaEnv: TemporadaEntity[] = [];
-
+  lstBloqueoEnv: HabitacionBloqueoReservaEntity[] = [];
   pageSize = 3;
   desde: number = 0;
   hasta: number = 3;
@@ -49,18 +52,32 @@ export class EditHabitacionComponent {
   cMotivoBloqueo: string = '';
   bReadOnly: boolean = false;
   cboEstado: FormControl = new FormControl('0');
+  bPermisoEdicion: boolean = false;
+  bPermisoEliminacion: boolean = false;
+  listaIncidencias: any[] = [];
+
+  cMotivoBloqueoReserva: string;
+  cFechaInicioBR: string;
+  cFechaFinBR: string;
+  bRecepcion: boolean = false;
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: any,
     public dialogRef: MatDialogRef<EditHabitacionComponent>,
     public toaster: ToastrService,
     public _service: SvGeneralService,
-    private alertService: AlertService
+    private alertService: AlertService,
+    private dialog: MatDialog
   ) {
     if (this.data.element) {
 
       this.habitacion = this.data.element;
       if (this.habitacion.id) {
+        this.bPermisoEdicion = this.data.bPermisoEdicion;
+        this.bPermisoEliminacion = this.data.bPermisoEliminacion;
+        this.bRecepcion = this.data.bRecepcion;
         this.ObtenerHabitacionPorId(this.habitacion.id)
+
+
       }
 
 
@@ -85,6 +102,7 @@ export class EditHabitacionComponent {
 
   ObtenerHabitacionPorId(id: number) {
     this.lstTemproadaEnv = [];
+    this.lstBloqueoEnv = [];
     this._service.GetHabitacionById(id).subscribe((resp: any) => {
 
       if (resp.success) {
@@ -98,8 +116,10 @@ export class EditHabitacionComponent {
         this.lstPrecioLJ = resp.lstPrecios.filter((x: DiaEntity) => x.id === 1 || x.id === 2 || x.id === 3 || x.id === 4);
         this.lstPrecioVD = resp.lstPrecios.filter((x: DiaEntity) => x.id === 5 || x.id === 6 || x.id === 7);
         this.lstPreciosPorTemporada = resp.lstPreciosPorTemporada;
+        this.lstBloqueoReserva = resp.lstBloqueoReserva;
         this.desde = 0;
         this.hasta = 3;
+        this.listaIncidencias = resp.listIncidencias || [];
       }
     });
   }
@@ -162,7 +182,9 @@ export class EditHabitacionComponent {
     habitacion.nivelHabitacion_id = this.nivel_id;
     habitacion.lstPrecios = this.lstPrecios;
     habitacion.lstPreciosPorTemporada = this.lstPreciosPorTemporada || [];
+    habitacion.lstBloqueoReserva = this.lstBloqueoReserva || [];
     habitacion.lstPreciosPorTemporadaDelete = this.lstTemproadaEnv || [];
+    habitacion.lstBloqueoReservaDelete = this.lstBloqueoEnv || [];
     habitacion.nEstado = this.cboEstado.value;
     habitacion.cMotivoBloqueo = this.cMotivoBloqueo || '';
 
@@ -252,6 +274,54 @@ export class EditHabitacionComponent {
     this.nPrecio = 0;
   }
 
+
+  BotonAgregarBloqueo() {
+    // Validar que todos los campos estén completos
+    if (!this.cMotivoBloqueoReserva || !this.cFechaInicioBR || !this.cFechaFinBR) {
+      this.toaster.warning('Bloqueo de Reserva', 'Complete todos los campos para agregar.');
+      return;
+    }
+
+    // Extraer los valores de la fecha correctamente
+    const fechaInicioParts = this.cFechaInicioBR.split('-').map(Number);
+    const fechaFinParts = this.cFechaFinBR.split('-').map(Number);
+
+    // Crear las fechas sin que sean convertidas a UTC
+    const fechaInicio = new Date(fechaInicioParts[0], fechaInicioParts[1] - 1, fechaInicioParts[2]);
+    const fechaFin = new Date(fechaFinParts[0], fechaFinParts[1] - 1, fechaFinParts[2]);
+
+    // Obtener la fecha de ayer correctamente
+    const fechaAyer = new Date();
+    fechaAyer.setDate(fechaAyer.getDate() - 1);
+    fechaAyer.setHours(0, 0, 0, 0);
+
+    // Validar que la fecha de inicio sea mayor a la fecha de ayer
+    if (fechaInicio <= fechaAyer) {
+      this.toaster.warning('Bloqueo de Reserva', 'La fecha de inicio debe ser mayor a la fecha de hoy.');
+      return;
+    }
+
+    // Validar que la fecha de fin sea igual o mayor a la fecha de inicio
+    if (fechaFin < fechaInicio) {
+      this.toaster.warning('Bloqueo de Reserva', 'Las fechas no son válidas.');
+      return;
+    }
+
+    const temporada = new HabitacionBloqueoReservaEntity();
+    temporada.id = 0;
+    temporada.cMotivoBloqueo = this.cMotivoBloqueoReserva;
+    temporada.dFechaInicio = fechaInicio;
+    temporada.dFechaFin = fechaFin;
+    temporada.cFechaInicio = this.formatDate(fechaInicio);
+    temporada.cFechaFin = this.formatDate(fechaFin);
+    temporada.nEstado = 1;
+
+    this.lstBloqueoReserva.unshift(temporada);
+    this.cMotivoBloqueoReserva = '';
+    this.cFechaInicioBR = '';
+    this.cFechaFinBR = '';
+  }
+
   private formatDate(date: Date): string {
     const day = date.getDate().toString().padStart(2, '0');
     const month = (date.getMonth() + 1).toString().padStart(2, '0');
@@ -269,5 +339,58 @@ export class EditHabitacionComponent {
     this.lstPreciosPorTemporada.splice(index, 1);
 
   }
+
+
+  BotonEliminarBloqueo(bloqueo: HabitacionBloqueoReservaEntity) {
+
+    if ((bloqueo.id ?? 0) > 0) {
+      bloqueo.nEstado = 0;
+      this.lstBloqueoEnv.push(bloqueo);
+    }
+    const index = this.lstBloqueoReserva.findIndex(t => t === bloqueo);
+    this.lstBloqueoReserva.splice(index, 1);
+
+  }
+
+
+  // Convertir estado a texto
+  estadoTexto(nEstado: number) {
+    switch (nEstado) {
+      case 0: return 'Pendiente';
+      case 1: return 'Para Habilitación';
+      case 2: return 'Con Incidencias';
+      default: return 'Desconocido';
+    }
+  }
+
+  // Mostrar incidencia histórica en el hijo (sin afectar la activa)
+  incidenciaHistorialSeleccionada: any = null;
+
+  verDetalleIncidencia(inc: any) {
+    // Creamos una copia de la incidencia para no modificar la original
+    const incidenciaModal = {
+      ...inc,
+      imagenesExistentes: inc.imagenes?.map((img: any) => ({ id: img.id, url: img.url_imagen })) || [],
+      imagenesNuevas: [],
+      imagenesEliminadas: []
+    };
+
+    this.dialog.open(IncidenciaActivaComponent, {
+      width: '800px',
+      data: { incidencia: incidenciaModal, readonly: true } // pasamos readonly si quieres
+    });
+  }
+
+
+  BotonCerrar() {
+
+    if (this.habitacion) {
+      this.dialogRef.close(this.habitacion);
+    } else {
+      this.dialogRef.close(false);
+    }
+  }
+
+
 
 }

@@ -1,0 +1,204 @@
+<div class="card p-4">
+    <!--begin::Card header-->
+    <div class="card-header border-0 pt-6 p-4">
+        <!--begin::Card title-->
+        <div class="card-title">
+            <!--begin::Search-->
+            <div class="d-flex align-items-center position-relative my-1">
+                <i class="ki-duotone ki-magnifier fs-3 position-absolute ms-5">
+                    <span class="path1"></span><span class="path2"></span>
+                </i>
+                <input type="text" class="form-control form-control-solid w-250px ps-12"
+                    placeholder="Buscar habitación..." [(ngModel)]="searchText" (keyup)="buscarHabitaciones()" />
+            </div>
+            <!--end::Search-->
+        </div>
+        <!--end::Card title-->
+        <span class="spinner-border spinner-border-sm align-middle ms-2" *ngIf="isLoading$ | async"></span>
+        <!--begin::Card toolbar-->
+        <div class="card-toolbar">
+            <div class="d-flex justify-content-end">
+                <!--begin::Filter button-->
+                <button type="button" class="btn btn-light-primary me-3" data-kt-menu-trigger="click"
+                    data-kt-menu-placement="bottom-end">
+                    <i class="ki-duotone ki-filter fs-2">
+                        <span class="path1"></span><span class="path2"></span>
+                    </i>
+                    Filtrar
+                </button>
+
+                <!--begin::Filter dropdown-->
+                <div class="menu menu-sub menu-sub-dropdown w-300px w-md-325px" data-kt-menu="true"
+                    id="kt-toolbar-filter">
+                    <div class="px-7 py-5">
+                        <div class="fs-4 text-gray-900 fw-bold">
+                            Filtrar habitaciones
+                        </div>
+                    </div>
+
+                    <div class="separator border-gray-200"></div>
+
+                    <div class="px-7 py-5">
+                        <!-- Filtro tipo habitación -->
+                        <div class="mb-5">
+                            <label class="form-label fs-6 fw-semibold mb-3">Tipo de habitación:</label>
+                            <select class="form-select form-select-solid" [(ngModel)]="filtroTipo">
+                                <option value="">Todos</option>
+                                <option *ngFor="let t of lstTiposHabitacion" [value]="t.id">{{ t.nombre }}</option>
+                            </select>
+                        </div>
+
+                        <!-- Filtro nivel -->
+                        <div class="mb-5">
+                            <label class="form-label fs-6 fw-semibold mb-3">Nivel:</label>
+                            <select class="form-select form-select-solid" [(ngModel)]="filtroNivel">
+                                <option value="">Todos</option>
+                                <option *ngFor="let n of lstNiveles" [value]="n.id">{{ n.nombre }}</option>
+                            </select>
+                        </div>
+
+                        <div class="mb-5">
+                            <label class="form-label fs-6 fw-semibold mb-3">Estado:</label>
+                            <select class="form-select form-select-solid" [(ngModel)]="filtroEstado">
+                                <option value="">Todos</option>
+                                <option *ngFor="let e of lstEstados" [value]="e.id">{{ e.nombre }}</option>
+                            </select>
+                        </div>
+
+                        <!-- Botones -->
+                        <div class="d-flex justify-content-end">
+                            <button type="reset" class="btn btn-light btn-active-light-primary me-2"
+                                (click)="limpiarFiltros()">
+                                Limpiar
+                            </button>
+                            <button type="button" class="btn btn-primary" (click)="aplicarFiltros()">
+                                Aplicar
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <!--end::Filter dropdown-->
+            </div>
+        </div>
+        <!--end::Card toolbar-->
+    </div>
+    <!--end::Card header-->
+
+    <!--begin::Card body-->
+    <div class="card-body pt-0">
+        <!--begin::Table-->
+        <div id="kt_customers_table_wrapper" class="dt-container dt-bootstrap5 dt-empty-footer">
+            <div class="table-responsive">
+                <table class="table align-middle table-row-dashed fs-6 gy-5 dataTable" id="kt_customers_table">
+                    <thead>
+                        <tr class="text-start text-gray-500 fw-bold fs-7 text-uppercase gs-0">
+                            <th class="min-w-100px">N° Habitación</th>
+                            <th class="min-w-150px">Tipo</th>
+                            <th class="min-w-150px">Nivel</th>
+                            <th class="min-w-120px">Estado</th>
+                            <th class="min-w-120px text-center">Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody class="fw-semibold text-gray-600">
+                        <tr *ngFor="let h of habitacionesPagina; let i = index">
+                            <td>{{ h.nNroHabitacion }}</td>
+                            <td>{{ h.tipo_habitacion?.cNombreTipo }}</td>
+                            <td>{{ h.nivel?.cNombreNivel }}</td>
+                            <td>
+                                <span *ngIf="h.nEstado== 2" class="mx-1 badge badge-light-warning fs-8 fw-bolder">
+                                    Sucia
+                                </span>
+
+                                <span *ngIf="h.nEstado== 0" class="mx-1 badge badge-light-primary fs-8 fw-bolder">
+                                    Bloqueada
+                                </span>
+
+                                <span *ngIf="h.nEstado== 1" class="mx-1 badge badge-light-success fs-8 fw-bolder">
+                                    Activa
+                                </span>
+
+                                <span *ngIf="h.bTieneIncidenciaActiva && h.incidencia_activa.nEstado == 0"
+                                    class="mx-1 badge badge-light-warning fs-8 fw-bolder">
+                                    Pendiente de Revisión
+                                </span>
+
+                                <span *ngIf="h.bTieneIncidenciaActiva && h.incidencia_activa.nEstado == 1"
+                                    class="mx-1 badge badge-light-success fs-8 fw-bolder">
+                                    Por Habilitar
+                                </span>
+
+                                <span *ngIf="h.bTieneIncidenciaActiva && h.incidencia_activa.nEstado == 2"
+                                    class="mx-1 badge badge-light-danger fs-8 fw-bolder">
+                                    Con Incidencia
+                                </span>
+
+
+
+
+
+
+
+                            </td>
+                            <td class="text-center">
+                                <button class="btn btn-sm btn-light-primary me-2" (click)="verIncidencias(h)">
+                                    Detalles
+                                </button>
+
+                            </td>
+
+                        </tr>
+
+                        <tr *ngIf="habitacionesPagina.length === 0">
+                            <td colspan="5" class="text-center py-4 text-gray-500">
+                                No se encontraron habitaciones.
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Paginación -->
+            <div class="row align-items-center mt-5">
+                <!-- Selector de cantidad -->
+                <div class="col-sm-12 col-md-5 mb-2 mb-md-0">
+                    <select class="form-select form-select-solid form-select-sm w-auto" [(ngModel)]="registrosPorPagina"
+                        (change)="cambiarRegistrosPorPagina(registrosPorPagina)">
+                        <option *ngFor="let opcion of opcionesPorPagina" [value]="opcion">
+                            {{ opcion }}
+                        </option>
+                    </select>
+                </div>
+
+                <!-- Botones de paginación -->
+                <div class="col-sm-12 col-md-7 d-flex align-items-center justify-content-center justify-content-md-end">
+                    <nav aria-label="pagination">
+                        <ul class="pagination">
+                            <li class="page-item" [class.disabled]="paginaActual === 1">
+                                <button class="page-link previous" (click)="cambiarPagina(paginaActual - 1)"
+                                    [disabled]="paginaActual === 1">
+                                    <i class="previous"></i>
+                                </button>
+                            </li>
+
+                            <li class="page-item" *ngFor="let p of paginas" [class.active]="p === paginaActual">
+                                <button class="page-link" (click)="cambiarPagina(p)"
+                                    [attr.aria-current]="p === paginaActual ? 'page' : null">
+                                    {{ p }}
+                                </button>
+                            </li>
+
+                            <li class="page-item" [class.disabled]="paginaActual === totalPaginas">
+                                <button class="page-link next" (click)="cambiarPagina(paginaActual + 1)"
+                                    [disabled]="paginaActual === totalPaginas">
+                                    <i class="next"></i>
+                                </button>
+                            </li>
+                        </ul>
+                    </nav>
+                </div>
+            </div>
+        </div>
+
+    </div>
+    <!--end::Card body-->
+</div>

@@ -1,5 +1,8 @@
-import { Component } from '@angular/core';
+import { ChangeDetectorRef, Component } from '@angular/core';
 import { SvGeneralService } from '../service/sv-general.service';
+import { UserEntity } from 'src/app/models/UsuarioEntity';
+import { MatDialog } from '@angular/material/dialog';
+import { AddEditUsuarioComponent } from './add-edit-usuario/add-edit-usuario.component';
 
 @Component({
   selector: 'app-usuarios',
@@ -7,33 +10,6 @@ import { SvGeneralService } from '../service/sv-general.service';
   styleUrls: ['./usuarios.component.scss']
 })
 export class UsuariosComponent {
-  isLoading$: any;
-  lstUsuarios: any = [];
 
-  totalPages: number = 0;
-  currentPage: number = 0;
-
-  constructor(
-    public _service: SvGeneralService
-  ) {
-
-
-  }
-
-  ngOnInit(): void {
-    this.isLoading$ = this._service.isLoading$;
-    this.BotonListarUsuarios();
-
-  }
-
-
-  BotonListarUsuarios() {
-
-    this._service.GetUsuarios().subscribe((resp: any) => {
-      console.log(resp);
-      this.lstUsuarios = resp.usuarios;
-
-    });
-  }
 
 }

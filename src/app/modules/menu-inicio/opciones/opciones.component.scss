@@ -1,0 +1,24 @@
+.hover-card {
+    transition: all 0.3s ease;
+    border-radius: 1rem;
+
+    &:hover {
+        transform: translateY(-6px);
+        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.12);
+        border: 1px solid rgba(59, 113, 202, 0.35);
+    }
+}
+
+.symbol {
+    width: 60px;
+    height: 60px;
+}
+
+.badge {
+    transition: background 0.2s ease, color 0.2s ease;
+
+    &:hover {
+        background: #2a71d0 !important;
+        color: #fff !important;
+    }
+}
