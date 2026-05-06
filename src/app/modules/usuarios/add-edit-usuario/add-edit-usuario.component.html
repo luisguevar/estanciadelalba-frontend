@@ -67,6 +67,38 @@
 
 
                 </div>
+
+                <div class="row">
+                    <div class="col-12">
+                        <div class="form-group position-relative">
+                            <label class="fw-semibold fs-6 mb-2">Nueva Contraseña</label>
+                            <input [type]="showPassword ? 'text' : 'password'" class="form-control"
+                                placeholder="Nueva contraseña" [(ngModel)]="password" />
+                            <i class="fa mt-1" [ngClass]="showPassword ? 'fa-eye-slash' : 'fa-eye'"
+                                (click)="showPassword = !showPassword"
+                                style="position:absolute; right:10px; top:38px; cursor:pointer;"></i>
+                        </div>
+                    </div>
+
+
+                </div>
+
+
+                <div class="row">
+
+                    <div class="col-12">
+                        <div class="form-group position-relative">
+                            <label class="fw-semibold fs-6 mb-2">Confirmar</label>
+                            <input [type]="showPasswordConfirm ? 'text' : 'password'" class="form-control"
+                                placeholder="Confirmar contraseña" [(ngModel)]="passwordConfirm" />
+                            <i class="fa mt-1" [ngClass]="showPasswordConfirm ? 'fa-eye-slash' : 'fa-eye'"
+                                (click)="showPasswordConfirm = !showPasswordConfirm"
+                                style="position:absolute; right:10px; top:38px; cursor:pointer;"></i>
+                        </div>
+                    </div>
+                </div>
+
+
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal"

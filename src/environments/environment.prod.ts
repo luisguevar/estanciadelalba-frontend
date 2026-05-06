@@ -157,9 +157,9 @@ export const environment = {
     },
   },
 
-  URL_BACKEND: 'https://api-estancia-test.gemaswsolutions.com/',
-  URL_SERVICIOS: 'https://api-estancia-test.gemaswsolutions.com/api',
-  URL_FRONTED: 'https://estancia-test.gemaswsolutions.com',
+  URL_BACKEND: 'https://api-estancia.gemaswsolutions.com/',
+  URL_SERVICIOS: 'https://api-estancia.gemaswsolutions.com/api',
+  URL_FRONTED: 'https://mypanel.estanciadelalba.com',
 
 };
 

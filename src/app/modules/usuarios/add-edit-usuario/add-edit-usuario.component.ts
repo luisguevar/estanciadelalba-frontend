@@ -32,6 +32,11 @@ export class AddEditUsuarioComponent implements OnInit {
   ];
 
   bPermisoEdicion: boolean = false;
+  password: string = '';
+  passwordConfirm: string = '';
+
+  showPassword = false;
+  showPasswordConfirm = false;
 
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: any,
@@ -68,12 +73,13 @@ export class AddEditUsuarioComponent implements OnInit {
       return;
     }
 
-    let usuario_id: number = 0;
-
-
-    if (this.usuario && this.usuario.id) {
-      usuario_id = this.usuario.id;
+    // Validar contraseñas si fueron ingresadas
+    if (this.password && this.password !== this.passwordConfirm) {
+      this.toaster.error('Las contraseñas no coinciden', 'Error');
+      return;
     }
+
+    let usuario_id: number = this.usuario?.id || 0;
 
     const nuevoUsuario: UserEntity = {
       id: usuario_id,
@@ -82,44 +88,86 @@ export class AddEditUsuarioComponent implements OnInit {
       dni: this.cNroDocumento,
       rol_id: this.rol_id,
       estado: this.estado,
-      password: this.cNroDocumento
+      password: this.password 
     };
 
-    this.alertService.showConfirmationAlert(
-      "¿Está seguro?",
-      "Registrar Usuario",
-      "Confirmar",
-      "question"
-    ).then((isConfirmed) => {
-      if (isConfirmed) {
-        const peticion = this.bEdit
-          ? this._service.PostUsuarioUpdate(nuevoUsuario)
-          : this._service.PostUsuarioRegister(nuevoUsuario);
 
-        peticion.subscribe({
-          next: (resp) => {
-            if (resp.success) {
-              this.toaster.success(
-                this.bEdit
-                  ? 'Usuario actualizado correctamente'
-                  : 'Usuario registrado correctamente',
-                'Éxito'
-              );
-              this.dialogRef.close(true);
-            } else {
-              this.toaster.error('Ocurrió un error en la operación', 'Error');
-            }
-          },
-          error: (err) => {
-            console.error(err);
-            this.toaster.error('Error en el servidor', 'Error');
-          }
+    // Verificar si es edición
+    if (this.bEdit) {
+      // Si hay password, avisar cambio de contraseña
+      if (this.password) {
+        if (this.password.length < 8) {
+          this.toaster.error('La contraseña debe tener al menos 8 caracteres', 'Error');
+          return;
+        }
+
+        this.alertService.showConfirmationAlert(
+          "¿Está seguro?",
+          "Se realizará un cambio de contraseña para este usuario",
+          "Confirmar",
+          "warning"
+        ).then((isConfirmed) => {
+          if (isConfirmed) this.guardarUsuario(nuevoUsuario);
+        });
+      } else {
+        // Edición normal sin cambio de contraseña
+        this.alertService.showConfirmationAlert(
+          "¿Está seguro?",
+          "Actualizar datos del usuario",
+          "Confirmar",
+          "question"
+        ).then((isConfirmed) => {
+          if (isConfirmed) this.guardarUsuario(nuevoUsuario);
         });
       }
-    });
+    } else {
+      // Registro: contraseña obligatoria
+      if (!this.password) {
+        this.toaster.error('Debe ingresar una contraseña para el registro', 'Error');
+        return;
+      }
 
+      if (this.password.length < 8) {
+        this.toaster.error('La contraseña debe tener al menos 8 caracteres', 'Error');
+        return;
+      }
 
+      this.alertService.showConfirmationAlert(
+        "¿Está seguro?",
+        "Registrar nuevo usuario",
+        "Confirmar",
+        "question"
+      ).then((isConfirmed) => {
+        if (isConfirmed) this.guardarUsuario(nuevoUsuario);
+      });
+    }
   }
+
+  // Método auxiliar para ejecutar la petición
+  guardarUsuario(nuevoUsuario: UserEntity) {
+    const peticion = this.bEdit
+      ? this._service.PostUsuarioUpdate(nuevoUsuario)
+      : this._service.PostUsuarioRegister(nuevoUsuario);
+
+    peticion.subscribe({
+      next: (resp) => {
+        if (resp.success) {
+          this.toaster.success(
+            this.bEdit ? 'Usuario actualizado correctamente' : 'Usuario registrado correctamente',
+            'Éxito'
+          );
+          this.dialogRef.close(true);
+        } else {
+          this.toaster.error('Ocurrió un error en la operación', 'Error');
+        }
+      },
+      error: (err) => {
+        console.error(err);
+        this.toaster.error('Error en el servidor', 'Error');
+      }
+    });
+  }
+
 
 
 
