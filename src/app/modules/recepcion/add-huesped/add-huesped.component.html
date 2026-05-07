@@ -22,6 +22,7 @@
                     </div>
                 </div>
                 <br>
+                <form [formGroup]="form">
                 <div class="row mt-2">
                     <div class="col-12">
                         <div class="row mb-3">
@@ -29,8 +30,12 @@
                                 <div class="form-group">
                                     <label>Nombres: <span class="text-danger">*</span></label>
                                     <input type="text" class="form-control" placeholder="Nombres"
-                                        [(ngModel)]="cNombres" />
-
+                                        formControlName="cNombres"
+                                        [class.is-invalid]="form.get('cNombres')?.invalid && form.get('cNombres')?.touched" />
+                                    <div class="invalid-feedback">
+                                        <span *ngIf="form.get('cNombres')?.errors?.['required']">El nombre es obligatorio.</span>
+                                        <span *ngIf="form.get('cNombres')?.errors?.['minlength']">Mínimo 2 caracteres.</span>
+                                    </div>
                                 </div>
                             </div>
 
@@ -38,21 +43,24 @@
                                 <div class="form-group">
                                     <label>Apellidos: <span class="text-danger">*</span></label>
                                     <input type="text" class="form-control" placeholder="Apellidos"
-                                        [(ngModel)]="cApellidos" />
-
+                                        formControlName="cApellidos"
+                                        [class.is-invalid]="form.get('cApellidos')?.invalid && form.get('cApellidos')?.touched" />
+                                    <div class="invalid-feedback">
+                                        <span *ngIf="form.get('cApellidos')?.errors?.['required']">El apellido es obligatorio.</span>
+                                        <span *ngIf="form.get('cApellidos')?.errors?.['minlength']">Mínimo 2 caracteres.</span>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                         <div class="row mb-3">
 
                             <div class="col-6">
-                                <div class="form-group ">
+                                <div class="form-group">
                                     <label>Tipo:</label>
-                                    <select class="form-control" id="tipoHabitacionSelect" [(ngModel)]="nTipoDocumento">
+                                    <select class="form-control" formControlName="nTipoDocumento">
                                         <option disabled [value]="0">Seleccione</option>
                                         <option *ngFor="let tipo of lstTipoDocumentos" [value]="tipo.nId">{{
-                                            tipo.cNombre
-                                            }}</option>
+                                            tipo.cNombre }}</option>
                                     </select>
                                 </div>
                             </div>
@@ -61,45 +69,49 @@
                                 <div class="form-group">
                                     <label>Nro Documento: <span class="text-danger">*</span></label>
                                     <input type="text" class="form-control" placeholder="Nro Documento"
-                                        [(ngModel)]="cNroDocumento" />
-
+                                        formControlName="cNroDocumento"
+                                        [class.is-invalid]="form.get('cNroDocumento')?.invalid && form.get('cNroDocumento')?.touched" />
+                                    <div class="invalid-feedback">
+                                        El nro de documento es obligatorio.
+                                    </div>
                                 </div>
                             </div>
 
-
                             <div class="col-12">
                                 <div class="form-group">
-                                    <label>Correo: </label>
+                                    <label>Correo:</label>
                                     <input type="text" class="form-control" placeholder="Correo"
-                                        [(ngModel)]="cCorreo" />
-
+                                        formControlName="cCorreo"
+                                        [class.is-invalid]="form.get('cCorreo')?.invalid && form.get('cCorreo')?.touched" />
+                                    <div class="invalid-feedback">
+                                        Ingrese un correo válido.
+                                    </div>
                                 </div>
                             </div>
                         </div>
                         <div class="row mb-3">
                             <div class="col-6">
-                                <div class="form-group ">
+                                <div class="form-group">
                                     <label>Pais Origen:</label>
-                                    <select class="form-control" id="tipoHabitacionSelect" [(ngModel)]="pais_id">
+                                    <select class="form-control" formControlName="pais_id">
                                         <option disabled [value]="0">Seleccione</option>
                                         <option *ngFor="let tipo of paises" [value]="tipo.id">{{
-                                            tipo.cNombre
-                                            }}</option>
+                                            tipo.cNombre }}</option>
                                     </select>
                                 </div>
                             </div>
 
                             <div class="col-6">
                                 <div class="form-group">
-                                    <label>Celular contacto: </label>
+                                    <label>Celular contacto:</label>
                                     <input type="text" class="form-control" placeholder="Celular contacto"
-                                        [(ngModel)]="cCelular" />
-
+                                        formControlName="cCelular" />
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
+                </form>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal"

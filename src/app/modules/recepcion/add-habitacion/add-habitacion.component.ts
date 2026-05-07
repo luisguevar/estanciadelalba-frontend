@@ -73,6 +73,7 @@ export class AddHabitacionComponent {
     this.dpCheckIn = this.data.dpCheckIn;
     this.dpCheckOut = this.data.dpCheckOut;
     this.nTotalNochesReserva = this.data.nTotalNochesReserva;
+    this.habitacionesOcupadas = this.data.habitacionesOcupadas || new Set<number>();
 
   }
 
@@ -105,7 +106,7 @@ export class AddHabitacionComponent {
         const lstFilteredNiveles: NivelHabitacionEntity[] = this.lstNiveles
           .map((nivel: NivelHabitacionEntity) => {
             const habitacionesDisponibles = nivel.lstHabitaciones?.filter(
-              (habitacion => (habitacion.nEstadoEstancia === 3 || habitacion.nEstadoEstancia === 4 || habitacion.nEstadoEstancia === 5 || habitacion.nEstadoEstancia === 0) && habitacion.nColorHabitacion === 5)
+              (habitacion => (habitacion.nEstadoEstancia === 3 || habitacion.nEstadoEstancia === 4 || habitacion.nEstadoEstancia === 5 || habitacion.nEstadoEstancia === 0) && habitacion.nColorHabitacion === 1 && !this.habitacionesOcupadas.has(habitacion.id || 0))
             );
 
 

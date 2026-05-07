@@ -46,6 +46,9 @@ export class GestionarTarifaHoteleraComponent {
 
   bReadOnly: boolean = false;
 
+  bCargando: boolean = true;
+  bMostrarFiltro: boolean = false;
+
   bPermisoEdicion: boolean = false;
   bPermisoEliminacion: boolean = false;
 
@@ -88,6 +91,7 @@ export class GestionarTarifaHoteleraComponent {
 
   LoadData(dFechaInicioSemana: string) {
 
+    this.bCargando = true;
     this._service.GetTarifaHotelera(dFechaInicioSemana).subscribe((resp: any) => {
 
       if (resp.success) {
@@ -96,12 +100,12 @@ export class GestionarTarifaHoteleraComponent {
         this.serviciosDisponibles = resp.servicios;
         this.diasDisponibles = resp.dias;
         this.lstTiposHabitaciones = resp.tipoHabitaciones;
-        /*   this.desde = 0;
-          this.hasta = 10; */
 
       }
-      /*      this.lstUsuarios = resp.usuarios; */
+      this.bCargando = false;
 
+    }, () => {
+      this.bCargando = false;
     });
   }
 
