@@ -55,6 +55,14 @@ export class AsignarPrecioTemporadaComponent {
   }
 
 
+  get today(): string {
+    const d = new Date();
+    const year = d.getFullYear();
+    const month = String(d.getMonth() + 1).padStart(2, '0');
+    const day = String(d.getDate()).padStart(2, '0');
+    return `${year}-${month}-${day}`;
+  }
+
   cambiarPagina(e: PageEvent) {
 
     this.desde = e.pageIndex * e.pageSize;
@@ -76,20 +84,25 @@ export class AsignarPrecioTemporadaComponent {
     const fechaInicio = new Date(fechaInicioParts[0], fechaInicioParts[1] - 1, fechaInicioParts[2]);
     const fechaFin = new Date(fechaFinParts[0], fechaFinParts[1] - 1, fechaFinParts[2]);
 
-    // Obtener la fecha de ayer correctamente
-    const fechaAyer = new Date();
-    fechaAyer.setDate(fechaAyer.getDate() - 1);
-    fechaAyer.setHours(0, 0, 0, 0);
+    // Obtener la fecha actual
+    const hoy = new Date();
+    hoy.setHours(0, 0, 0, 0);
 
-    // Validar que la fecha de inicio sea mayor a la fecha de ayer
-    if (fechaInicio <= fechaAyer) {
-      this.toaster.warning('Temporada', 'La fecha de inicio debe ser mayor a la fecha de hoy.');
+    // Validar que la fecha de inicio no supere la fecha actual
+    if (fechaInicio > hoy) {
+      this.toaster.warning('Temporada', 'La fecha de inicio no puede superar la fecha actual.');
+      return;
+    }
+
+    // Validar que la fecha de fin no supere la fecha actual
+    if (fechaFin > hoy) {
+      this.toaster.warning('Temporada', 'La fecha de fin no puede superar la fecha actual.');
       return;
     }
 
     // Validar que la fecha de fin sea igual o mayor a la fecha de inicio
     if (fechaFin < fechaInicio) {
-      this.toaster.warning('Temporada', 'Las fechas no son válidas.');
+      this.toaster.warning('Temporada', 'La fecha de fin no puede ser menor a la fecha de inicio.');
       return;
     }
 

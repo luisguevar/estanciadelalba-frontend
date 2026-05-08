@@ -19,7 +19,7 @@
                                     <div class="form-group row">
                                         <div class="col-12">
                                             <input class="form-control" type="date" [(ngModel)]="cFechaInicio"
-                                                placeholder="Check-in" />
+                                                [max]="today" placeholder="Check-in" />
                                         </div>
                                         <label class="label-datepicket col-12 col-form-label">Inicio
                                             de
@@ -33,7 +33,7 @@
                                     <div class="form-group row">
                                         <div class="col-12">
                                             <input class="form-control" type="date" [(ngModel)]="cFechaFin"
-                                                placeholder="Check-in" />
+                                                [max]="today" placeholder="Check-in" />
                                         </div>
                                         <label class="label-datepicket col-12 col-form-label">Fin de
                                             Temporada</label>
